@@ -22,12 +22,13 @@ const config: Config = {
   			]
   		},
   		colors: {
+  			/* Legacy aliases — prefer bg-background, text-foreground, text-primary */
   			character: {
-  				black: '#0a0a0a',
-  				white: '#fafafa',
-  				red: '#c41e3a',
-  				yellow: '#f5c518',
-  				gray: '#6b7280'
+  				black: '#141823',
+  				white: '#F4F8FC',
+  				red: '#b91c3c',
+  				yellow: '#8a5b00',
+  				gray: '#3d4556'
   			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
