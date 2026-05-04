@@ -15,6 +15,8 @@ import {
   optimizerPolicies,
   partnerPromotionRules,
   optimizerPolicyAuditLog,
+  bundles,
+  carts,
 } from "../db/schema";
 import { eq, inArray, ne } from "drizzle-orm";
 import { computeAndPersistProductClassStats } from "../lib/product-class-stats";
@@ -31,6 +33,43 @@ const QualifierRuleSeedSchema = z
   .refine((v) => Boolean(v.matchTag || v.matchProductId), {
     message: "Qualifier rule requires matchTag or matchProductId",
   });
+
+/** When canonical slug row exists from INSERT … onConflictDoNothing and legacy row still exists, merge FKs then drop legacy */
+async function mergeOrRenameNeedSlug(
+  legacySlug: string,
+  canonicalSlug: string,
+  patch: { name?: string; description?: string | null; priorityTier?: number }
+) {
+  const legacyRows = await db.select().from(needs).where(eq(needs.slug, legacySlug)).limit(1);
+  const canonRows = await db.select().from(needs).where(eq(needs.slug, canonicalSlug)).limit(1);
+  const legacy = legacyRows[0];
+  const canon = canonRows[0];
+
+  if (!legacy) return;
+
+  if (!canon) {
+    await db
+      .update(needs)
+      .set({ slug: canonicalSlug, ...patch })
+      .where(eq(needs.slug, legacySlug));
+    return;
+  }
+
+  if (legacy.id === canon.id) {
+    await db.update(needs).set(patch).where(eq(needs.id, canon.id));
+    return;
+  }
+
+  await db.update(bundles).set({ needId: canon.id }).where(eq(bundles.needId, legacy.id));
+  await db.update(carts).set({ needId: canon.id }).where(eq(carts.needId, legacy.id));
+  await db.update(productClasses).set({ needId: canon.id }).where(eq(productClasses.needId, legacy.id));
+
+  await db.delete(needProductRules).where(eq(needProductRules.needId, legacy.id));
+  await db.delete(needs).where(eq(needs.id, legacy.id));
+
+  await db.update(needs).set(patch).where(eq(needs.id, canon.id));
+}
+
 async function seed() {
   console.log("Seeding database...");
 
@@ -113,47 +152,35 @@ async function seed() {
     .onConflictDoNothing({ target: needs.slug });
 
   // Legacy slug migrations — preserve ids / FKs; bidirectional swaps need a __tmp__ slug step (brief).
-  await db
-    .update(needs)
-    .set({
-      slug: "blood-sugar-support",
-      name: "Blood Sugar Support",
-      priorityTier: 1,
-    })
-    .where(eq(needs.slug, "blood-sugar"));
+  await mergeOrRenameNeedSlug("blood-sugar", "blood-sugar-support", {
+    name: "Blood Sugar Support",
+    priorityTier: 1,
+  });
 
-  await db
-    .update(needs)
-    .set({
-      slug: "joint-comfort-mobility",
-      name: "Joint Comfort & Mobility",
-      priorityTier: 2,
-    })
-    .where(eq(needs.slug, "mobility-fall"));
+  await mergeOrRenameNeedSlug("mobility-fall", "joint-comfort-mobility", {
+    name: "Joint Comfort & Mobility",
+    priorityTier: 2,
+  });
 
-  await db
-    .update(needs)
-    .set({ slug: "respiratory-support", name: "Respiratory Support", priorityTier: 2 })
-    .where(eq(needs.slug, "respiratory"));
+  await mergeOrRenameNeedSlug("respiratory", "respiratory-support", {
+    name: "Respiratory Support",
+    priorityTier: 2,
+  });
 
-  await db
-    .update(needs)
-    .set({ slug: "sleep-mood-support", name: "Sleep & Mood Support", priorityTier: 2 })
-    .where(eq(needs.slug, "sleep-mood"));
+  await mergeOrRenameNeedSlug("sleep-mood", "sleep-mood-support", {
+    name: "Sleep & Mood Support",
+    priorityTier: 2,
+  });
 
-  await db
-    .update(needs)
-    .set({ slug: "cognitive-support", name: "Cognitive Support", priorityTier: 2 })
-    .where(eq(needs.slug, "cognitive"));
+  await mergeOrRenameNeedSlug("cognitive", "cognitive-support", {
+    name: "Cognitive Support",
+    priorityTier: 2,
+  });
 
-  await db
-    .update(needs)
-    .set({
-      slug: "vision-hearing-support",
-      name: "Vision & Hearing Support",
-      priorityTier: 2,
-    })
-    .where(eq(needs.slug, "vision-hearing"));
+  await mergeOrRenameNeedSlug("vision-hearing", "vision-hearing-support", {
+    name: "Vision & Hearing Support",
+    priorityTier: 2,
+  });
 
   await db
     .insert(needs)
