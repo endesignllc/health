@@ -55,30 +55,142 @@ async function seed() {
   await db
     .insert(needs)
     .values([
-      { slug: "blood-sugar", name: "Blood Sugar Support", description: "Products to support healthy blood sugar levels" },
-      { slug: "heart-health", name: "Heart Health", description: "Supports cardiovascular wellness" },
-      { slug: "mobility-fall", name: "Mobility & Fall Prevention", description: "Safety and mobility aids" },
-      { slug: "pain-inflammation", name: "Pain & Inflammation", description: "Pain relief and anti-inflammatory support" },
-      { slug: "respiratory", name: "Respiratory Support", description: "Breathing and respiratory wellness" },
       {
-        slug: "medication-adherence",
-        name: "Daily routines & organization",
-        description: "Pill organizers, reminders, and helpers for day-to-day routines",
+        slug: "blood-sugar-support",
+        name: "Blood Sugar Support",
+        description: "Products to support healthy blood sugar levels",
+        priorityTier: 1,
       },
-      { slug: "sleep-mood", name: "Sleep & Mood Support", description: "Rest and emotional wellness" },
-      { slug: "cognitive", name: "Cognitive Support", description: "Brain health and mental clarity" },
-      { slug: "vision-hearing", name: "Vision & Hearing Support", description: "Sensory support products" },
+      {
+        slug: "heart-health",
+        name: "Heart Health",
+        description: "Supports cardiovascular wellness",
+        priorityTier: 1,
+      },
+      {
+        slug: "joint-comfort-mobility",
+        name: "Joint Comfort & Mobility",
+        description: "Mobility aids and joint comfort support",
+        priorityTier: 2,
+      },
+      {
+        slug: "pain-inflammation",
+        name: "Pain & Inflammation",
+        description: "Pain relief and anti-inflammatory support",
+        priorityTier: 2,
+      },
+      {
+        slug: "respiratory-support",
+        name: "Respiratory Support",
+        description: "Breathing and respiratory wellness",
+        priorityTier: 2,
+      },
+      {
+        slug: "sleep-mood-support",
+        name: "Sleep & Mood Support",
+        description: "Rest and emotional wellness",
+        priorityTier: 2,
+      },
+      {
+        slug: "cognitive-support",
+        name: "Cognitive Support",
+        description: "Brain health and mental clarity",
+        priorityTier: 2,
+      },
+      {
+        slug: "vision-hearing-support",
+        name: "Vision & Hearing Support",
+        description: "Sensory support products",
+        priorityTier: 2,
+      },
+      {
+        slug: "bladder-support",
+        name: "Bladder Support",
+        description: "Comfort and wellness products for bladder health",
+        priorityTier: 1,
+      },
     ])
     .onConflictDoNothing({ target: needs.slug });
+
+  // Legacy slug migrations — preserve ids / FKs; bidirectional swaps need a __tmp__ slug step (brief).
+  await db
+    .update(needs)
+    .set({
+      slug: "blood-sugar-support",
+      name: "Blood Sugar Support",
+      priorityTier: 1,
+    })
+    .where(eq(needs.slug, "blood-sugar"));
 
   await db
     .update(needs)
     .set({
-      name: "Daily routines & organization",
-      description:
-        "Pill organizers, reminders, and helpers for day-to-day routines",
+      slug: "joint-comfort-mobility",
+      name: "Joint Comfort & Mobility",
+      priorityTier: 2,
     })
-    .where(eq(needs.slug, "medication-adherence"));
+    .where(eq(needs.slug, "mobility-fall"));
+
+  await db
+    .update(needs)
+    .set({ slug: "respiratory-support", name: "Respiratory Support", priorityTier: 2 })
+    .where(eq(needs.slug, "respiratory"));
+
+  await db
+    .update(needs)
+    .set({ slug: "sleep-mood-support", name: "Sleep & Mood Support", priorityTier: 2 })
+    .where(eq(needs.slug, "sleep-mood"));
+
+  await db
+    .update(needs)
+    .set({ slug: "cognitive-support", name: "Cognitive Support", priorityTier: 2 })
+    .where(eq(needs.slug, "cognitive"));
+
+  await db
+    .update(needs)
+    .set({
+      slug: "vision-hearing-support",
+      name: "Vision & Hearing Support",
+      priorityTier: 2,
+    })
+    .where(eq(needs.slug, "vision-hearing"));
+
+  await db
+    .insert(needs)
+    .values({
+      slug: "bladder-support",
+      name: "Bladder Support",
+      description: "Comfort and wellness products for bladder health",
+      priorityTier: 1,
+    })
+    .onConflictDoNothing({ target: needs.slug });
+
+  const DROP_SLUGS = ["medication-adherence", "daily-routines-organization"];
+  const droppedNeedRows = await db.select({ id: needs.id }).from(needs).where(inArray(needs.slug, DROP_SLUGS));
+  const droppedIds = droppedNeedRows.map((r) => r.id);
+  if (droppedIds.length > 0) {
+    await db.delete(needProductRules).where(inArray(needProductRules.needId, droppedIds));
+    await db.update(productClasses).set({ needId: null }).where(inArray(productClasses.needId, droppedIds));
+  }
+
+  await db
+    .update(needs)
+    .set({ priorityTier: 1 })
+    .where(inArray(needs.slug, ["blood-sugar-support", "heart-health", "bladder-support"]));
+
+  await db
+    .update(needs)
+    .set({ priorityTier: 2 })
+    .where(
+      inArray(needs.slug, [
+        "pain-inflammation",
+        "respiratory-support",
+        "joint-comfort-mobility",
+        "cognitive-support",
+        "vision-hearing-support",
+        "sleep-mood-support",
+      ])
+    );
 
   const needsData = await db.select().from(needs);
   const needMap = Object.fromEntries(needsData.map((n) => [n.slug, n.id]));
@@ -150,6 +262,7 @@ async function seed() {
     unitsPerPackage?: number;
     estimatedDailyUse?: number | null;
     alternateSkus?: string[];
+    isEverydayEssential?: boolean;
   }> = [
     {
       sku: "VIT-D3-1000",
@@ -241,7 +354,7 @@ async function seed() {
     { sku: "MOB-RAIL", name: "Bedside Rail", categorySlug: "mobility", priceCents: 3499, tags: ["mobility", "safety"], supplyDays: 365 },
     { sku: "VIT-B6", name: "Vitamin B6 100mg", categorySlug: "vitamins", priceCents: 599, tags: ["value"], supplyDays: 30 },
     { sku: "SUP-GARLIC", name: "Garlic Extract", categorySlug: "supplements", priceCents: 999, tags: ["heart", "value"], supplyDays: 30 },
-    { sku: "MED-LABELS", name: "Medication Labels", categorySlug: "mobility", priceCents: 499, tags: ["adherence", "value"], supplyDays: 365 },
+    { sku: "MED-LABELS", name: "Medication Labels", categorySlug: "mobility", priceCents: 499, tags: ["adherence", "value"], supplyDays: 365, isEverydayEssential: true },
     {
       sku: "HEAR-AMP-A",
       name: "Medline ClearTone In-Ear Hearing Amplifier Rechargeable",
@@ -274,6 +387,69 @@ async function seed() {
       tags: ["form:bte", "power:disposable", "usability:easy_controls"],
       supplyDays: 365,
     },
+    {
+      sku: "ESS-TISSUES",
+      name: "Soft Facial Tissues 160ct",
+      categorySlug: "respiratory",
+      priceCents: 329,
+      tags: ["staple", "maintenance", "value"],
+      supplyDays: 14,
+      isEverydayEssential: true,
+    },
+    {
+      sku: "ESS-SANITIZER",
+      name: "Hand Sanitizer Gel 8oz",
+      categorySlug: "respiratory",
+      priceCents: 399,
+      tags: ["staple", "maintenance"],
+      supplyDays: 45,
+      isEverydayEssential: true,
+    },
+    {
+      sku: "ESS-LIP",
+      name: "Moisturizing Lip Balm",
+      categorySlug: "vitamins",
+      priceCents: 249,
+      tags: ["staple", "maintenance"],
+      supplyDays: 60,
+      isEverydayEssential: true,
+    },
+    {
+      sku: "ESS-COTTON",
+      name: "Cotton Swabs 300ct",
+      categorySlug: "mobility",
+      priceCents: 349,
+      tags: ["staple", "maintenance"],
+      supplyDays: 90,
+      isEverydayEssential: true,
+    },
+    {
+      sku: "ESS-WIPES",
+      name: "Cleansing Wipes 48ct",
+      categorySlug: "mobility",
+      priceCents: 599,
+      tags: ["staple", "maintenance"],
+      supplyDays: 30,
+      isEverydayEssential: true,
+    },
+    {
+      sku: "ESS-GLOVES",
+      name: "Disposable Nitrile Gloves 20ct",
+      categorySlug: "mobility",
+      priceCents: 799,
+      tags: ["staple", "maintenance"],
+      supplyDays: 90,
+      isEverydayEssential: true,
+    },
+    {
+      sku: "ESS-BANDAGE",
+      name: "Fabric Adhesive Bandages 30ct",
+      categorySlug: "pain-relief",
+      priceCents: 449,
+      tags: ["value", "staple", "maintenance"],
+      supplyDays: 180,
+      isEverydayEssential: true,
+    },
   ];
 
   for (const p of productList) {
@@ -291,6 +467,7 @@ async function seed() {
         alternateSkus: p.alternateSkus ?? null,
         eligible: true,
         active: true,
+        isEverydayEssential: p.isEverydayEssential ?? false,
       })
       .onConflictDoUpdate({
         target: products.sku,
@@ -299,6 +476,7 @@ async function seed() {
           unitsPerPackage: p.unitsPerPackage ?? 1,
           estimatedDailyUse: p.estimatedDailyUse ?? null,
           alternateSkus: p.alternateSkus ?? null,
+          isEverydayEssential: p.isEverydayEssential ?? false,
         },
       });
   }
@@ -310,7 +488,7 @@ async function seed() {
         slug: "hearing-amplifier",
         canonicalName: "Hearing Amplifier",
         description: "Non-prescription hearing amplification devices.",
-        needId: needMap["vision-hearing"] ?? null,
+        needId: needMap["vision-hearing-support"] ?? null,
       },
       {
         slug: "digital-arm-bp-monitor",
@@ -322,13 +500,13 @@ async function seed() {
         slug: "blood-glucose-meter",
         canonicalName: "Blood glucose meter",
         description: "Device for checking blood sugar levels.",
-        needId: needMap["blood-sugar"]!,
+        needId: needMap["blood-sugar-support"]!,
       },
       {
         slug: "pulse-oximeter",
         canonicalName: "Finger pulse oximeter",
         description: "Portable oxygen saturation reader.",
-        needId: needMap["respiratory"]!,
+        needId: needMap["respiratory-support"]!,
       },
       {
         slug: "digital-thermometer",
@@ -632,63 +810,63 @@ async function seed() {
   const hasRules = existingRules.length > 0;
 
   if (!hasRules) {
-  for (const need of needsData) {
-    const slug = need.slug;
-    if (slug === "blood-sugar") {
-      await db.insert(needProductRules).values([
-        { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["monitoring"]!, minItems: 0, maxItems: 1, priorityWeight: 2 },
-      ]);
-    } else if (slug === "heart-health") {
-      await db.insert(needProductRules).values([
-        { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["pain-relief"]!, minItems: 0, maxItems: 1, priorityWeight: 1 },
-      ]);
-    } else if (slug === "mobility-fall") {
-      await db.insert(needProductRules).values([
-        { needId: need.id, requiredCategoryId: catMap["mobility"]!, minItems: 2, maxItems: 4, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 0, maxItems: 1, priorityWeight: 2 },
-      ]);
-    } else if (slug === "pain-inflammation") {
-      await db.insert(needProductRules).values([
-        { needId: need.id, requiredCategoryId: catMap["pain-relief"]!, minItems: 1, maxItems: 3, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 1, maxItems: 2, priorityWeight: 2 },
-      ]);
-    } else if (slug === "respiratory") {
-      await db.insert(needProductRules).values([
-        { needId: need.id, requiredCategoryId: catMap["respiratory"]!, minItems: 1, maxItems: 3, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 0, maxItems: 1, priorityWeight: 2 },
-        { needId: need.id, requiredCategoryId: catMap["monitoring"]!, minItems: 0, maxItems: 1, priorityWeight: 1 },
-      ]);
-    } else if (slug === "medication-adherence") {
-      await db.insert(needProductRules).values([
-        { needId: need.id, requiredCategoryId: catMap["mobility"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["monitoring"]!, minItems: 0, maxItems: 2, priorityWeight: 2 },
-      ]);
-    } else if (slug === "sleep-mood") {
-      await db.insert(needProductRules).values([
-        { needId: need.id, requiredCategoryId: catMap["sleep-mood"]!, minItems: 1, maxItems: 3, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 0, maxItems: 1, priorityWeight: 2 },
-      ]);
-    } else if (slug === "cognitive") {
-      await db.insert(needProductRules).values([
-        { needId: need.id, requiredCategoryId: catMap["cognitive"]!, minItems: 1, maxItems: 6, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 0, maxItems: 3, priorityWeight: 2 },
-        { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 0, maxItems: 4, priorityWeight: 1 },
-        { needId: need.id, requiredCategoryId: catMap["sleep-mood"]!, minItems: 0, maxItems: 2, priorityWeight: 1 },
-      ]);
-    } else if (slug === "vision-hearing") {
-      await db.insert(needProductRules).values([
-        { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
-        { needId: need.id, requiredCategoryId: catMap["mobility"]!, minItems: 0, maxItems: 2, priorityWeight: 2 },
-      ]);
+    for (const need of needsData) {
+      const slug = need.slug;
+      if (slug === "blood-sugar-support") {
+        await db.insert(needProductRules).values([
+          { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["monitoring"]!, minItems: 0, maxItems: 1, priorityWeight: 2 },
+        ]);
+      } else if (slug === "heart-health") {
+        await db.insert(needProductRules).values([
+          { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["pain-relief"]!, minItems: 0, maxItems: 1, priorityWeight: 1 },
+        ]);
+      } else if (slug === "joint-comfort-mobility") {
+        await db.insert(needProductRules).values([
+          { needId: need.id, requiredCategoryId: catMap["mobility"]!, minItems: 2, maxItems: 4, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 0, maxItems: 1, priorityWeight: 2 },
+        ]);
+      } else if (slug === "pain-inflammation") {
+        await db.insert(needProductRules).values([
+          { needId: need.id, requiredCategoryId: catMap["pain-relief"]!, minItems: 1, maxItems: 3, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 1, maxItems: 2, priorityWeight: 2 },
+        ]);
+      } else if (slug === "respiratory-support") {
+        await db.insert(needProductRules).values([
+          { needId: need.id, requiredCategoryId: catMap["respiratory"]!, minItems: 1, maxItems: 3, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 0, maxItems: 1, priorityWeight: 2 },
+          { needId: need.id, requiredCategoryId: catMap["monitoring"]!, minItems: 0, maxItems: 1, priorityWeight: 1 },
+        ]);
+      } else if (slug === "sleep-mood-support") {
+        await db.insert(needProductRules).values([
+          { needId: need.id, requiredCategoryId: catMap["sleep-mood"]!, minItems: 1, maxItems: 3, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 0, maxItems: 1, priorityWeight: 2 },
+        ]);
+      } else if (slug === "cognitive-support") {
+        await db.insert(needProductRules).values([
+          { needId: need.id, requiredCategoryId: catMap["cognitive"]!, minItems: 1, maxItems: 6, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 0, maxItems: 3, priorityWeight: 2 },
+          { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 0, maxItems: 4, priorityWeight: 1 },
+          { needId: need.id, requiredCategoryId: catMap["sleep-mood"]!, minItems: 0, maxItems: 2, priorityWeight: 1 },
+        ]);
+      } else if (slug === "vision-hearing-support") {
+        await db.insert(needProductRules).values([
+          { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["mobility"]!, minItems: 0, maxItems: 2, priorityWeight: 2 },
+        ]);
+      } else if (slug === "bladder-support") {
+        await db.insert(needProductRules).values([
+          { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
+          { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 0, maxItems: 2, priorityWeight: 2 },
+          { needId: need.id, requiredCategoryId: catMap["mobility"]!, minItems: 0, maxItems: 1, priorityWeight: 1 },
+        ]);
+      }
     }
-  }
   } else {
-    // Refresh cognitive rules when rules exist (expanded for budget-fill)
-    const cognitiveNeed = needsData.find((n) => n.slug === "cognitive");
+    const cognitiveNeed = needsData.find((n) => n.slug === "cognitive-support");
     if (cognitiveNeed) {
       await db.delete(needProductRules).where(eq(needProductRules.needId, cognitiveNeed.id));
       await db.insert(needProductRules).values([
@@ -696,6 +874,22 @@ async function seed() {
         { needId: cognitiveNeed.id, requiredCategoryId: catMap["vitamins"]!, minItems: 0, maxItems: 3, priorityWeight: 2 },
         { needId: cognitiveNeed.id, requiredCategoryId: catMap["supplements"]!, minItems: 0, maxItems: 4, priorityWeight: 1 },
         { needId: cognitiveNeed.id, requiredCategoryId: catMap["sleep-mood"]!, minItems: 0, maxItems: 2, priorityWeight: 1 },
+      ]);
+    }
+  }
+
+  const bladderNeedRow = needsData.find((n) => n.slug === "bladder-support");
+  if (bladderNeedRow) {
+    const bladderRulesExisting = await db
+      .select({ id: needProductRules.id })
+      .from(needProductRules)
+      .where(eq(needProductRules.needId, bladderNeedRow.id))
+      .limit(1);
+    if (bladderRulesExisting.length === 0) {
+      await db.insert(needProductRules).values([
+        { needId: bladderNeedRow.id, requiredCategoryId: catMap["supplements"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
+        { needId: bladderNeedRow.id, requiredCategoryId: catMap["vitamins"]!, minItems: 0, maxItems: 2, priorityWeight: 2 },
+        { needId: bladderNeedRow.id, requiredCategoryId: catMap["mobility"]!, minItems: 0, maxItems: 1, priorityWeight: 1 },
       ]);
     }
   }

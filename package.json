@@ -30,6 +30,7 @@
     "intel:pipeline": "npm run intel:extract-pdfs && npm run intel:build-rollups",
     "db:drop": "drizzle-kit drop",
     "test:qualifiers": "npx tsx scripts/test-qualifiers.ts",
+    "test:wizard": "npx tsx scripts/test-wizard.ts",
     "test:optimizer-baseline": "npx tsx scripts/test-optimizer-baseline.ts",
     "test:optimizer-policy": "npx tsx scripts/test-optimizer-policy.ts"
   },

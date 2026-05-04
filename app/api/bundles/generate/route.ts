@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { buildBundles } from "@/lib/bundle-builder";
+import { buildBundles, BundleValidationError } from "@/lib/bundle-builder";
 import type { QualifierAnswer } from "@/lib/qualifiers";
 import { db } from "@/lib/db";
 import { products } from "@/db/schema";
@@ -12,7 +12,9 @@ const QualifierAnswerSchema = z.object({
 });
 
 const GenerateSchema = z.object({
-  needSlug: z.string().min(1),
+  needSlug: z.string().optional(),
+  needSlugs: z.array(z.string()).optional(),
+  includeEveryday: z.boolean().optional(),
   budgetCents: z.number().int().min(2500).max(500_000),
   cadence: z.enum(["monthly", "quarterly"]),
   goals: z.array(z.string()).optional().default([]),
@@ -27,7 +29,7 @@ export async function POST(req: NextRequest) {
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    return NextResponse.json({ error: "Validation failed" }, { status: 400 });
   }
 
   const parsed = GenerateSchema.safeParse(body);
@@ -36,9 +38,26 @@ export async function POST(req: NextRequest) {
   }
 
   const d = parsed.data;
+
+  const slugSet = new Set<string>();
+  for (const s of d.needSlugs ?? []) {
+    const t = s.trim();
+    if (t) slugSet.add(t);
+  }
+  const legacy = d.needSlug?.trim();
+  if (legacy) slugSet.add(legacy);
+  const mergedSlugs = [...slugSet];
+
+  const includeEveryday = d.includeEveryday !== false;
+
+  if (mergedSlugs.length === 0 && !includeEveryday) {
+    return NextResponse.json({ error: "Validation failed" }, { status: 400 });
+  }
+
   try {
     const bundles = await buildBundles({
-      needSlug: d.needSlug,
+      needSlugs: mergedSlugs,
+      includeEveryday,
       budgetCents: d.budgetCents,
       cadence: d.cadence,
       goals: d.goals,
@@ -99,8 +118,10 @@ export async function POST(req: NextRequest) {
         : {}),
     });
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "Bundle generation failed";
-    const status = msg.includes("not found") ? 404 : 500;
-    return NextResponse.json({ error: msg }, { status });
+    if (e instanceof BundleValidationError) {
+      return NextResponse.json({ error: "Validation failed" }, { status: 400 });
+    }
+    console.error("bundle generate failed");
+    return NextResponse.json({ error: "Bundle generation failed" }, { status: 500 });
   }
 }

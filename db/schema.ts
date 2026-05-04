@@ -16,6 +16,8 @@ export const needs = pgTable("needs", {
   slug: text("slug").notNull().unique(),
   name: text("name").notNull(),
   description: text("description"),
+  /** 1 = Essential, 2 = Beneficial, 3 = Comfort — drives bundle tier budgeting / ordering */
+  priorityTier: integer("priority_tier").default(2).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -163,6 +165,8 @@ export const products = pgTable("products", {
   alternateSkus: text("alternate_skus").array(),
   eligible: boolean("eligible").default(true).notNull(),
   tags: text("tags").array(),
+  /** Universal OTC staples (tissues, sanitizer, etc.) — not tied to a clinical need slug */
+  isEverydayEssential: boolean("is_everyday_essential").default(false).notNull(),
   active: boolean("active").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

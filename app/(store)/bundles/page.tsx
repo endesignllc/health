@@ -3,15 +3,18 @@ import { buildBundles, formatPrice } from "@/lib/bundle-builder";
 import { BundlesList } from "@/components/BundlesList";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { normalizeNeedSlugsFromUrl } from "@/lib/legacy-need-slugs";
 
 interface PageProps {
   searchParams: Promise<{
     budgetCents?: string;
     cadence?: string;
     needSlug?: string;
+    needSlugs?: string;
     goals?: string;
     usageIntensity?: string;
     shopper?: string;
+    includeEveryday?: string;
   }>;
 }
 
@@ -19,17 +22,26 @@ export default async function BundlesPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const budgetCents = parseInt(params.budgetCents ?? "10000", 10);
   const cadence = (params.cadence ?? "monthly") as "monthly" | "quarterly";
-  const needSlug = params.needSlug ?? "";
+
+  const fromListParam = params.needSlugs
+    ? params.needSlugs.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+  const fromLegacySingular = params.needSlug?.trim() ? [params.needSlug.trim()] : [];
+  const mergedSlugs = [...fromListParam, ...fromLegacySingular];
+  const needSlugs = normalizeNeedSlugsFromUrl(mergedSlugs);
+
+  const includeEveryday = params.includeEveryday !== "false";
+
   const goals = params.goals ? params.goals.split(",").filter(Boolean) : [];
   const usageIntensity =
     params.usageIntensity === "occasional" ? "occasional" : "daily";
 
-  if (!needSlug) {
+  if (needSlugs.length === 0 && !includeEveryday) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-12 text-center">
-        <h1 className="text-2xl font-bold mb-4">Select Your Need</h1>
+        <h1 className="text-2xl font-bold mb-4">Pick at least one need or include everyday essentials</h1>
         <p className="text-muted-foreground mb-6">
-          Complete the build wizard to see your optimized bundle.
+          Complete the build wizard with a category selected, or turn on everyday essentials.
         </p>
         <Button asChild>
           <Link href="/build">Build My Bundle</Link>
@@ -41,7 +53,8 @@ export default async function BundlesPage({ searchParams }: PageProps) {
   const bundles = await buildBundles({
     budgetCents,
     cadence,
-    needSlug,
+    needSlugs,
+    includeEveryday,
     goals,
     usageIntensity,
   });
@@ -59,8 +72,8 @@ export default async function BundlesPage({ searchParams }: PageProps) {
         set to use your allowance up to a small buffer so you stay within benefit.
       </p>
       <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
-        Organized as core picks for your goals, helpful additions based on your
-        needs, then everyday items that use remaining benefit when it fits.
+        Items are grouped by what you asked for—needs show tier-guided picks first,
+        then everyday essentials when selected.
       </p>
       <p className="text-xs text-muted-foreground mb-8 leading-relaxed border-l-2 border-muted pl-3">
         This is not medical advice. Products are for general wellness and convenient
@@ -69,7 +82,14 @@ export default async function BundlesPage({ searchParams }: PageProps) {
 
       <BundlesList
         initialBundles={bundles}
-        params={{ budgetCents, cadence, needSlug, goals, usageIntensity }}
+        params={{
+          budgetCents,
+          cadence,
+          needSlugs,
+          includeEveryday,
+          goals,
+          usageIntensity,
+        }}
       />
     </div>
   );

@@ -1,9 +1,23 @@
 import { db } from "./db";
 import { products, productCategories, needs } from "@/db/schema";
-import { eq, and, ilike, or, asc, count } from "drizzle-orm";
+import { eq, and, ilike, or, asc, count, notInArray } from "drizzle-orm";
+
+/** Deprecated needs rows may remain for historical FKs — excluded from the build wizard */
+const EXCLUDED_BUILD_WIZARD_SLUGS = [
+  "medication-adherence",
+  "daily-routines-organization",
+] as const;
 
 export async function getAllNeeds() {
   return db.select().from(needs);
+}
+
+export async function getBuildWizardNeeds() {
+  return db
+    .select()
+    .from(needs)
+    .where(notInArray(needs.slug, [...EXCLUDED_BUILD_WIZARD_SLUGS]))
+    .orderBy(asc(needs.name));
 }
 
 export async function getNeedBySlug(slug: string) {

@@ -14,9 +14,17 @@ import {
   type UsageIntensity,
 } from "@/lib/sufficiency";
 export type { Cadence } from "@/lib/sufficiency";
-import { expandWellnessGoalsToTagHints } from "@/lib/wellness-goals";
 
 const DEFAULT_BUFFER_CENTS = 500; // $5
+
+/** Unknown slug / resolver mismatch — maps to HTTP 400 + sanitized body */
+export class BundleValidationError extends Error {
+  readonly code = "BUNDLE_VALIDATION";
+  constructor() {
+    super("Bundle validation failed");
+    this.name = "BundleValidationError";
+  }
+}
 
 /** Max quantity of a product a person would use before benefit renews */
 export function maxQtyForCadence(cadence: Cadence, supplyDays: number): number {
@@ -31,6 +39,8 @@ export type BundleTier = "optimized";
 /** Core = rule-driven picks; support = extra need-category fill; maintenance = everyday balance. */
 export type BundleItemSection = "core" | "support" | "maintenance";
 
+export type BundleNeedTier = 1 | 2 | 3;
+
 export interface BundleItem {
   productId: string;
   productSku: string;
@@ -43,14 +53,22 @@ export interface BundleItem {
   quantity: number;
   lineTotalCents: number;
   section: BundleItemSection;
+  /** Display grouping — canonical need slug or `"everyday"` */
+  bundleSection: string;
+  /** Need tier when `bundleSection` is a need slug; null for everyday */
+  priorityTier: BundleNeedTier | null;
   sufficiency?: LineSufficiency;
 }
 
 export interface BuiltBundle {
   id?: string;
   bundleSku: string;
+  /** Primary need for cart routing — lowest priority_tier, ties broken by URL order; `"everyday"` when essentials-only */
   needSlug: string;
   needName: string;
+  needSlugs: string[];
+  needNames: string[];
+  includeEveryday: boolean;
   cadence: Cadence;
   budgetCents: number;
   tier: BundleTier;
@@ -67,40 +85,46 @@ export interface BuiltBundle {
 }
 
 export interface BundleBuilderInput {
-  needSlug: string;
+  /** Preferred — canonical DB slugs */
+  needSlugs?: string[];
+  /** Deprecated shim — wraps to `[needSlug]` when `needSlugs` absent */
+  needSlug?: string;
+  includeEveryday: boolean;
   budgetCents: number;
   cadence: Cadence;
+  /** Accepted for backward compat; ignored for ranking / selection */
   goals?: string[];
   bufferCents?: number;
   usageIntensity?: UsageIntensity;
   qualifierAnswers?: QualifierAnswer[];
 }
 
-function scoringGoalTags(goals?: string[]): string[] {
-  if (!goals?.length) return [];
-  const out = new Set<string>();
-  for (const g of goals) {
-    const expanded = expandWellnessGoalsToTagHints([g]);
-    if (expanded.length > 0) expanded.forEach((x) => out.add(x));
-    else out.add(g.toLowerCase());
-  }
-  return [...out];
-}
+type EligibleProduct = {
+  id: string;
+  sku: string;
+  name: string;
+  imageUrl: string | null;
+  productClassId: string | null;
+  categoryId: string;
+  category: { slug: string } | null;
+  priceCents: number;
+  supplyDays: number | null;
+  tags: string[] | null;
+  isEverydayEssential: boolean;
+};
 
-function maintenanceScore(
-  p: { tags: string[] | null; priceCents: number },
-  goalTags: string[]
-): number {
+type NeedRow = {
+  id: string;
+  slug: string;
+  name: string;
+  priorityTier: number;
+};
+
+function maintenanceScore(p: { tags: string[] | null; priceCents: number }): number {
   let score = 0;
   const tags = p.tags ?? [];
   if (tags.includes("maintenance")) score += 5;
   if (tags.includes("staple")) score += 4;
-  if (goalTags.length) {
-    const goalMatches = goalTags.filter((g) =>
-      tags.some((t) => t.toLowerCase().includes(g.toLowerCase()))
-    );
-    score += goalMatches.length;
-  }
   if (tags.includes("value")) score += 2;
   if (tags.includes("core")) score += 1;
   return score * 100_000 - p.priceCents;
@@ -114,7 +138,6 @@ const MAINTENANCE_CATEGORY_SLUGS = new Set([
   "respiratory",
 ]);
 
-/** Everyday / balance SKUs (may overlap need categories—different products fill remaining benefit). */
 function isMaintenanceCandidate(
   p: {
     id: string;
@@ -145,21 +168,39 @@ function strongerSection(a: BundleItemSection, b: BundleItemSection): BundleItem
   return sectionRank(a) >= sectionRank(b) ? a : b;
 }
 
+/** Lower rank wins when merging duplicate SKUs across sections */
+function bundleMetaRank(
+  bundleSection: string,
+  priorityTier: BundleNeedTier | null,
+  urlOrder: string[]
+): number {
+  const tier = priorityTier ?? 999;
+  const idx =
+    bundleSection === "everyday"
+      ? 99_999
+      : Math.max(0, urlOrder.indexOf(bundleSection));
+  return tier * 1_000_000 + idx;
+}
+
+function mergeBundleMeta(
+  existing: { bundleSection: string; priorityTier: BundleNeedTier | null },
+  incoming: { bundleSection: string; priorityTier: BundleNeedTier | null },
+  urlOrder: string[]
+): { bundleSection: string; priorityTier: BundleNeedTier | null } {
+  const ra = bundleMetaRank(existing.bundleSection, existing.priorityTier, urlOrder);
+  const rb = bundleMetaRank(incoming.bundleSection, incoming.priorityTier, urlOrder);
+  return ra <= rb ? existing : incoming;
+}
+
 function addOrMergeLine(
   items: BundleItem[],
   qtyByProduct: Map<string, number>,
-  product: {
-    id: string;
-    sku: string;
-    name: string;
-    imageUrl: string | null;
-    productClassId: string | null;
-    categoryId: string;
-    category: { slug: string } | null;
-    priceCents: number;
-  },
+  product: EligibleProduct,
   qty: number,
-  section: BundleItemSection
+  section: BundleItemSection,
+  bundleSection: string,
+  priorityTier: BundleNeedTier | null,
+  urlOrder: string[]
 ) {
   const lineTotal = product.priceCents * qty;
   const existing = items.find((it) => it.productId === product.id);
@@ -167,6 +208,13 @@ function addOrMergeLine(
     existing.quantity += qty;
     existing.lineTotalCents += lineTotal;
     existing.section = strongerSection(existing.section, section);
+    const m = mergeBundleMeta(
+      { bundleSection: existing.bundleSection, priorityTier: existing.priorityTier },
+      { bundleSection, priorityTier },
+      urlOrder
+    );
+    existing.bundleSection = m.bundleSection;
+    existing.priorityTier = m.priorityTier;
   } else {
     items.push({
       productId: product.id,
@@ -180,17 +228,33 @@ function addOrMergeLine(
       quantity: qty,
       lineTotalCents: lineTotal,
       section,
+      bundleSection,
+      priorityTier,
     });
   }
   qtyByProduct.set(product.id, (qtyByProduct.get(product.id) ?? 0) + qty);
 }
 
-type RankedCandidate<TProduct extends { id: string }> = {
+type RankedCandidate<TProduct extends { id: string; priceCents: number; sku: string }> = {
   product: TProduct;
   score: number;
 };
 
-function applyQualifierAdjustmentsToRanked<TProduct extends { id: string }>(
+function sortCandidatesDeterministic<
+  TProduct extends { id: string; priceCents: number; sku: string },
+>(ranked: RankedCandidate<TProduct>[]): RankedCandidate<TProduct>[] {
+  return [...ranked].sort((a, b) => {
+    const ds = b.score - a.score;
+    if (ds !== 0) return ds;
+    const dp = a.product.priceCents - b.product.priceCents;
+    if (dp !== 0) return dp;
+    return a.product.sku.localeCompare(b.product.sku);
+  });
+}
+
+function applyQualifierAdjustmentsOnly<
+  TProduct extends { id: string; priceCents: number; sku: string },
+>(
   ranked: RankedCandidate<TProduct>[],
   adjustments: Map<string, ProductAdjustment>
 ): RankedCandidate<TProduct>[] {
@@ -199,15 +263,18 @@ function applyQualifierAdjustmentsToRanked<TProduct extends { id: string }>(
     .map((entry) => ({
       ...entry,
       score: entry.score + (adjustments.get(entry.product.id)?.scoreDelta ?? 0),
-    }))
-    .sort((a, b) => b.score - a.score);
+    }));
 }
 
-export function rankClassCandidates<TProduct extends { id: string }>(params: {
+export function rankClassCandidates<
+  TProduct extends { id: string; priceCents: number; sku: string },
+>(params: {
   ranked: RankedCandidate<TProduct>[];
   adjustments: Map<string, ProductAdjustment>;
 }): RankedCandidate<TProduct>[] {
-  return applyQualifierAdjustmentsToRanked(params.ranked, params.adjustments);
+  return sortCandidatesDeterministic(
+    applyQualifierAdjustmentsOnly(params.ranked, params.adjustments)
+  );
 }
 
 function sumSectionCents(items: BundleItem[], section: BundleItemSection): number {
@@ -216,33 +283,290 @@ function sumSectionCents(items: BundleItem[], section: BundleItemSection): numbe
     .reduce((s, i) => s + i.lineTotalCents, 0);
 }
 
-/**
- * One budget-tuned bundle: need-aligned items first (rules + category fill),
- * then everyday / maintenance fill up to the benefit cap (without going over).
- */
-export async function buildBundles(
-  input: BundleBuilderInput
-): Promise<BuiltBundle[]> {
-  const bufferCents = input.bufferCents ?? DEFAULT_BUFFER_CENTS;
-  const capCents = Math.max(0, input.budgetCents - bufferCents);
-  const goalTags = scoringGoalTags(input.goals);
-  const usageIntensity: UsageIntensity = input.usageIntensity ?? "daily";
+function normalizeNeedSlugInput(input: BundleBuilderInput): string[] {
+  const raw =
+    input.needSlugs ??
+    (input.needSlug !== undefined && input.needSlug !== "" ? [input.needSlug] : []);
+  const ordered: string[] = [];
+  for (const s of raw) {
+    const t = s.trim();
+    if (!t) continue;
+    if (!ordered.includes(t)) ordered.push(t);
+  }
+  return ordered;
+}
 
-  const need = await db.query.needs.findFirst({
-    where: eq(needs.slug, input.needSlug),
+function computePrimaryNeed(
+  resolvedNeeds: NeedRow[],
+  urlOrder: string[]
+): { slug: string; name: string } {
+  if (resolvedNeeds.length === 0) {
+    return { slug: "everyday", name: "Everyday Essentials" };
+  }
+  const sorted = [...resolvedNeeds].sort((a, b) => {
+    if (a.priorityTier !== b.priorityTier) return a.priorityTier - b.priorityTier;
+    return urlOrder.indexOf(a.slug) - urlOrder.indexOf(b.slug);
   });
-  if (!need) throw new Error("Need not found");
+  const first = sorted[0];
+  return { slug: first.slug, name: first.name };
+}
+
+function excludeEverydayFromNeedPools(p: EligibleProduct, includeEverydaySlot: boolean): boolean {
+  return !(includeEverydaySlot && p.isEverydayEssential);
+}
+
+const TIER_WEIGHT: Record<number, number> = {
+  1: 0.6,
+  2: 0.35,
+  3: 0.05,
+};
+
+async function allocateEverydayEssentials(params: {
+  everydayBudgetMax: number;
+  cadence: Cadence;
+  eligibleProducts: EligibleProduct[];
+  qualifierAdjustments: Map<string, ProductAdjustment>;
+  classQualifierBonus: (productClassId: string | null) => number;
+  items: BundleItem[];
+  qtyByProduct: Map<string, number>;
+  globalSpent: { cents: number };
+  capCents: number;
+  urlOrder: string[];
+}): Promise<void> {
+  const {
+    everydayBudgetMax,
+    cadence,
+    eligibleProducts,
+    qualifierAdjustments,
+    classQualifierBonus,
+    items,
+    qtyByProduct,
+    globalSpent,
+    capCents,
+    urlOrder,
+  } = params;
+
+  let everydaySpent = 0;
+  const pool = eligibleProducts.filter((p) => p.isEverydayEssential);
+
+  const ranked = rankClassCandidates({
+    ranked: pool.map((p) => ({
+      product: p,
+      score:
+        (p.supplyDays ?? 30) * 1_000_000 -
+        p.priceCents +
+        classQualifierBonus(p.productClassId),
+    })),
+    adjustments: qualifierAdjustments,
+  });
+
+  for (const { product } of ranked) {
+    if (everydaySpent >= everydayBudgetMax) break;
+    const remainingSlot = everydayBudgetMax - everydaySpent;
+    const remainingCap = capCents - globalSpent.cents;
+    const remaining = Math.min(remainingSlot, remainingCap);
+    if (remaining <= 0) break;
+
+    const supplyDays = product.supplyDays ?? 30;
+    const maxQty = maxQtyForCadence(cadence, supplyDays);
+    const currentQty = qtyByProduct.get(product.id) ?? 0;
+    if (currentQty >= maxQty) continue;
+
+    const canAdd = Math.min(
+      maxQty - currentQty,
+      Math.floor(remaining / product.priceCents)
+    );
+    if (canAdd < 1) continue;
+
+    const qty = canAdd;
+    const lineTotal = product.priceCents * qty;
+    if (globalSpent.cents + lineTotal <= capCents && everydaySpent + lineTotal <= everydayBudgetMax) {
+      globalSpent.cents += lineTotal;
+      everydaySpent += lineTotal;
+      addOrMergeLine(
+        items,
+        qtyByProduct,
+        product,
+        qty,
+        "maintenance",
+        "everyday",
+        null,
+        urlOrder
+      );
+    }
+  }
+}
+
+async function allocateSingleNeed(params: {
+  need: NeedRow;
+  subNeedCap: number;
+  cadence: Cadence;
+  eligibleProducts: EligibleProduct[];
+  qualifierAdjustments: Map<string, ProductAdjustment>;
+  classQualifierBonus: (productClassId: string | null) => number;
+  items: BundleItem[];
+  qtyByProduct: Map<string, number>;
+  globalSpent: { cents: number };
+  capCents: number;
+  urlOrder: string[];
+  includeEverydaySlot: boolean;
+}): Promise<void> {
+  const {
+    need,
+    subNeedCap,
+    cadence,
+    eligibleProducts,
+    qualifierAdjustments,
+    classQualifierBonus,
+    items,
+    qtyByProduct,
+    globalSpent,
+    capCents,
+    urlOrder,
+    includeEverydaySlot,
+  } = params;
+
+  const tierNum = need.priorityTier as BundleNeedTier;
+  const bundleSection = need.slug;
 
   const rules = await db.query.needProductRules.findMany({
     where: eq(needProductRules.needId, need.id),
     with: { requiredCategory: true },
   });
 
-  const eligibleProducts = await db.query.products.findMany({
-    where: and(eq(products.active, true), eq(products.eligible, true)),
-    with: { category: true },
+  const categoryIdsFromRules = [...new Set(rules.map((r) => r.requiredCategoryId))];
+  const productsByCategory = new Map<string, EligibleProduct[]>();
+  for (const p of eligibleProducts) {
+    if (!excludeEverydayFromNeedPools(p, includeEverydaySlot)) continue;
+    if (categoryIdsFromRules.includes(p.categoryId)) {
+      const list = productsByCategory.get(p.categoryId) ?? [];
+      list.push(p);
+      productsByCategory.set(p.categoryId, list);
+    }
+  }
+
+  let needSpent = 0;
+  const roomGlobal = () => capCents - globalSpent.cents;
+  const roomNeed = () => Math.min(subNeedCap - needSpent, roomGlobal());
+
+  const sortedRules = [...rules].sort(
+    (a, b) => (b.priorityWeight ?? 0) - (a.priorityWeight ?? 0)
+  );
+
+  for (const rule of sortedRules) {
+    const remaining = roomNeed();
+    if (remaining <= 0) break;
+
+    const catProducts = productsByCategory.get(rule.requiredCategoryId) ?? [];
+    if (catProducts.length === 0) continue;
+
+    const scored = rankClassCandidates({
+      ranked: catProducts.map((p) => {
+        let score = rule.priorityWeight ?? 1;
+        const tags = p.tags ?? [];
+        if (tags.includes("core") || tags.includes("preferred")) score += 3;
+        if (tags.includes("value")) score += 2;
+        score += classQualifierBonus(p.productClassId);
+        return { product: p, score };
+      }),
+      adjustments: qualifierAdjustments,
+    });
+
+    const maxItems = Math.min(
+      rule.maxItems,
+      Math.floor(remaining / (scored[0]?.product.priceCents ?? 1)) || 1
+    );
+    const toAdd = Math.min(rule.maxItems, Math.max(rule.minItems, maxItems));
+
+    for (let i = 0; i < toAdd && i < scored.length; i++) {
+      const { product } = scored[i];
+      const supplyDays = product.supplyDays ?? 30;
+      const maxQty = maxQtyForCadence(cadence, supplyDays);
+      const rm = roomNeed();
+      if (rm <= 0) break;
+      const qty = Math.min(maxQty, Math.floor(rm / product.priceCents) || 1);
+      if (qty < 1) continue;
+      const lineTotal = product.priceCents * qty;
+      if (globalSpent.cents + lineTotal <= capCents && needSpent + lineTotal <= subNeedCap) {
+        globalSpent.cents += lineTotal;
+        needSpent += lineTotal;
+        addOrMergeLine(items, qtyByProduct, product, qty, "core", bundleSection, tierNum, urlOrder);
+      }
+    }
+  }
+
+  const allPoolProducts = eligibleProducts.filter(
+    (p) =>
+      categoryIdsFromRules.includes(p.categoryId) &&
+      excludeEverydayFromNeedPools(p, includeEverydaySlot)
+  );
+
+  const scoredPool = rankClassCandidates({
+    ranked: allPoolProducts.map((p) => {
+      let score = 1;
+      const tags = p.tags ?? [];
+      if (tags.includes("core") || tags.includes("preferred")) score += 3;
+      if (tags.includes("value")) score += 2;
+      score += classQualifierBonus(p.productClassId);
+      return { product: p, score };
+    }),
+    adjustments: qualifierAdjustments,
   });
-  const qualifierAnswers = input.qualifierAnswers ?? [];
+
+  for (const { product } of scoredPool) {
+    const rm = roomNeed();
+    if (rm <= 0) break;
+    const supplyDays = product.supplyDays ?? 30;
+    const maxQty = maxQtyForCadence(cadence, supplyDays);
+    const currentQty = qtyByProduct.get(product.id) ?? 0;
+    if (currentQty >= maxQty) continue;
+    const canAdd = Math.min(maxQty - currentQty, Math.floor(rm / product.priceCents));
+    if (canAdd < 1) continue;
+    const qty = canAdd;
+    const lineTotal = product.priceCents * qty;
+    if (globalSpent.cents + lineTotal <= capCents && needSpent + lineTotal <= subNeedCap) {
+      globalSpent.cents += lineTotal;
+      needSpent += lineTotal;
+      addOrMergeLine(items, qtyByProduct, product, qty, "support", bundleSection, tierNum, urlOrder);
+    }
+  }
+
+  const inBundle = new Set(items.map((i) => i.productId));
+  const maintPool = rankClassCandidates({
+    ranked: eligibleProducts
+      .filter(
+        (p) =>
+          categoryIdsFromRules.includes(p.categoryId) &&
+          excludeEverydayFromNeedPools(p, includeEverydaySlot) &&
+          isMaintenanceCandidate(p, inBundle)
+      )
+      .map((p) => ({
+        product: p,
+        score: maintenanceScore(p) + classQualifierBonus(p.productClassId),
+      })),
+    adjustments: qualifierAdjustments,
+  });
+
+  for (const { product } of maintPool) {
+    const rm = roomNeed();
+    if (rm <= 0) break;
+    const supplyDays = product.supplyDays ?? 30;
+    const maxQty = maxQtyForCadence(cadence, supplyDays);
+    const currentQty = qtyByProduct.get(product.id) ?? 0;
+    if (currentQty >= maxQty) continue;
+    const canAdd = Math.min(maxQty - currentQty, Math.floor(rm / product.priceCents));
+    if (canAdd < 1) continue;
+    const qty = canAdd;
+    const lineTotal = product.priceCents * qty;
+    if (globalSpent.cents + lineTotal <= capCents && needSpent + lineTotal <= subNeedCap) {
+      globalSpent.cents += lineTotal;
+      needSpent += lineTotal;
+      addOrMergeLine(items, qtyByProduct, product, qty, "maintenance", bundleSection, tierNum, urlOrder);
+    }
+  }
+}
+
+async function buildQualifierContext(eligibleProducts: EligibleProduct[], qualifierAnswers: QualifierAnswer[]) {
   const classIds = [
     ...new Set(
       eligibleProducts
@@ -277,154 +601,147 @@ export async function buildBundles(
   const classQualifierBonus = (productClassId: string | null): number =>
     productClassId && classIdsWithQualifiers.has(productClassId) ? 10 : 0;
 
-  const categoryIdsFromRules = [
-    ...new Set(rules.map((r) => r.requiredCategoryId)),
-  ];
-  const productsByCategory = new Map<string, typeof eligibleProducts>();
-  for (const p of eligibleProducts) {
-    if (categoryIdsFromRules.includes(p.categoryId)) {
-      const list = productsByCategory.get(p.categoryId) ?? [];
-      list.push(p);
-      productsByCategory.set(p.categoryId, list);
-    }
+  return { qualifierAdjustments, classQualifierBonus };
+}
+
+/**
+ * One budget-tuned bundle: multi-need tier budgets + optional everyday essentials slot.
+ */
+export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBundle[]> {
+  const bufferCents = input.bufferCents ?? DEFAULT_BUFFER_CENTS;
+  const capCents = Math.max(0, input.budgetCents - bufferCents);
+  const usageIntensity: UsageIntensity = input.usageIntensity ?? "daily";
+
+  const urlOrder = normalizeNeedSlugInput(input);
+
+  const resolvedRows =
+    urlOrder.length > 0
+      ? await db.query.needs.findMany({
+          where: inArray(needs.slug, urlOrder),
+        })
+      : [];
+
+  if (urlOrder.length > 0 && resolvedRows.length !== urlOrder.length) {
+    throw new BundleValidationError();
   }
+
+  const resolvedNeeds: NeedRow[] = resolvedRows.map((r) => ({
+    id: r.id,
+    slug: r.slug,
+    name: r.name,
+    priorityTier: r.priorityTier,
+  }));
+
+  const primary = computePrimaryNeed(resolvedNeeds, urlOrder);
+  const nameBySlug = Object.fromEntries(resolvedNeeds.map((r) => [r.slug, r.name]));
+  const needNamesResolved = urlOrder.map((s) => nameBySlug[s]).filter(Boolean);
+
+  const eligibleProductsRaw = await db.query.products.findMany({
+    where: and(eq(products.active, true), eq(products.eligible, true)),
+    with: { category: true },
+  });
+
+  const eligibleProducts: EligibleProduct[] = eligibleProductsRaw.map((p) => ({
+    id: p.id,
+    sku: p.sku,
+    name: p.name,
+    imageUrl: p.imageUrl,
+    productClassId: p.productClassId,
+    categoryId: p.categoryId,
+    category: p.category,
+    priceCents: p.priceCents,
+    supplyDays: p.supplyDays,
+    tags: p.tags,
+    isEverydayEssential: p.isEverydayEssential,
+  }));
+
+  const qualifierAnswers = input.qualifierAnswers ?? [];
+  const { qualifierAdjustments, classQualifierBonus } = await buildQualifierContext(
+    eligibleProducts,
+    qualifierAnswers
+  );
 
   const items: BundleItem[] = [];
   const qtyByProduct = new Map<string, number>();
-  let subtotalCents = 0;
+  const globalSpent = { cents: 0 };
 
-  const sortedRules = [...rules].sort(
-    (a, b) => (b.priorityWeight ?? 0) - (a.priorityWeight ?? 0)
-  );
+  const includeSlot = input.includeEveryday;
 
-  for (const rule of sortedRules) {
-    const catProducts = productsByCategory.get(rule.requiredCategoryId) ?? [];
-    const remaining = capCents - subtotalCents;
-    if (remaining <= 0 || catProducts.length === 0) continue;
-
-    const scored = rankClassCandidates({
-      ranked: catProducts
-      .map((p) => {
-        let score = rule.priorityWeight ?? 1;
-        const tags = p.tags ?? [];
-        if (goalTags.length) {
-          const goalMatches = goalTags.filter((g) =>
-            tags.some((t) => t.toLowerCase().includes(g.toLowerCase()))
-          );
-          score += goalMatches.length * 2;
-        }
-        if (tags.includes("core") || tags.includes("preferred")) score += 3;
-        if (tags.includes("value")) score += 2;
-        score += classQualifierBonus(p.productClassId);
-        return { product: p, score };
-      })
-      .sort((a, b) => b.score - a.score),
-      adjustments: qualifierAdjustments,
+  if (resolvedNeeds.length === 0 && includeSlot) {
+    await allocateEverydayEssentials({
+      everydayBudgetMax: capCents,
+      cadence: input.cadence,
+      eligibleProducts,
+      qualifierAdjustments,
+      classQualifierBonus,
+      items,
+      qtyByProduct,
+      globalSpent,
+      capCents,
+      urlOrder,
     });
+  } else if (resolvedNeeds.length > 0) {
+    const everydayReserve =
+      includeSlot ? Math.min(Math.floor(input.budgetCents * 0.1), 1500, capCents) : 0;
+    const needPool = Math.max(0, capCents - everydayReserve);
 
-    const maxItems = Math.min(
-      rule.maxItems,
-      Math.floor(remaining / (scored[0]?.product.priceCents ?? 1)) || 1
-    );
-    const toAdd = Math.min(rule.maxItems, Math.max(rule.minItems, maxItems));
+    const tiers = [1, 2, 3] as const;
+    const needsByTier = (t: number) =>
+      resolvedNeeds.filter((n) => n.priorityTier === t).sort((a, b) => urlOrder.indexOf(a.slug) - urlOrder.indexOf(b.slug));
 
-    for (let i = 0; i < toAdd && i < scored.length; i++) {
-      const { product } = scored[i];
-      const price = product.priceCents;
-      const supplyDays = product.supplyDays ?? 30;
-      const maxQty = maxQtyForCadence(input.cadence, supplyDays);
-      const room = capCents - subtotalCents;
-      const qty = Math.min(maxQty, Math.floor(room / price) || 1);
-      if (qty < 1) continue;
-      const lineTotal = price * qty;
-      if (subtotalCents + lineTotal <= capCents) {
-        subtotalCents += lineTotal;
-        addOrMergeLine(items, qtyByProduct, product, qty, "core");
+    for (const tier of tiers) {
+      const tierNeeds = needsByTier(tier);
+      if (tierNeeds.length === 0) continue;
+      const weight = TIER_WEIGHT[tier] ?? 0;
+      const tierBudget = Math.floor(needPool * weight);
+      const perNeed = Math.floor(tierBudget / tierNeeds.length);
+
+      for (const need of tierNeeds) {
+        await allocateSingleNeed({
+          need,
+          subNeedCap: perNeed,
+          cadence: input.cadence,
+          eligibleProducts,
+          qualifierAdjustments,
+          classQualifierBonus,
+          items,
+          qtyByProduct,
+          globalSpent,
+          capCents,
+          urlOrder,
+          includeEverydaySlot: includeSlot,
+        });
       }
     }
-  }
 
-  const allPoolProducts = eligibleProducts.filter((p) =>
-    categoryIdsFromRules.includes(p.categoryId)
-  );
-  const scoredPool = rankClassCandidates({
-    ranked: allPoolProducts
-    .map((p) => {
-      let score = 1;
-      const tags = p.tags ?? [];
-      if (goalTags.length) {
-        const goalMatches = goalTags.filter((g) =>
-          tags.some((t) => t.toLowerCase().includes(g.toLowerCase()))
-        );
-        score += goalMatches.length * 2;
-      }
-      if (tags.includes("core") || tags.includes("preferred")) score += 3;
-      if (tags.includes("value")) score += 2;
-      score += classQualifierBonus(p.productClassId);
-      return { product: p, score };
-    })
-    .sort((a, b) => b.score - a.score),
-    adjustments: qualifierAdjustments,
-  });
-
-  for (const { product } of scoredPool) {
-    const remaining = capCents - subtotalCents;
-    if (remaining <= 0) break;
-    const supplyDays = product.supplyDays ?? 30;
-    const maxQty = maxQtyForCadence(input.cadence, supplyDays);
-    const currentQty = qtyByProduct.get(product.id) ?? 0;
-    if (currentQty >= maxQty) continue;
-    const canAdd = Math.min(
-      maxQty - currentQty,
-      Math.floor(remaining / product.priceCents)
-    );
-    if (canAdd < 1) continue;
-    const qty = canAdd;
-    const lineTotal = product.priceCents * qty;
-    if (subtotalCents + lineTotal <= capCents) {
-      subtotalCents += lineTotal;
-      addOrMergeLine(items, qtyByProduct, product, qty, "support");
+    if (includeSlot) {
+      const everydayBudgetMax = Math.min(Math.floor(input.budgetCents * 0.1), 1500, capCents);
+      await allocateEverydayEssentials({
+        everydayBudgetMax,
+        cadence: input.cadence,
+        eligibleProducts,
+        qualifierAdjustments,
+        classQualifierBonus,
+        items,
+        qtyByProduct,
+        globalSpent,
+        capCents,
+        urlOrder,
+      });
     }
   }
 
-  const inBundle = new Set(items.map((i) => i.productId));
-  const maintPool = rankClassCandidates({
-    ranked: eligibleProducts
-    .filter((p) => isMaintenanceCandidate(p, inBundle))
-    .map((p) => ({
-      product: p,
-      score: maintenanceScore(p, goalTags) + classQualifierBonus(p.productClassId),
-    }))
-    .sort((a, b) => b.score - a.score),
-    adjustments: qualifierAdjustments,
-  });
+  const subtotalCents = globalSpent.cents;
 
-  for (const { product } of maintPool) {
-    const remaining = capCents - subtotalCents;
-    if (remaining <= 0) break;
-    const supplyDays = product.supplyDays ?? 30;
-    const maxQty = maxQtyForCadence(input.cadence, supplyDays);
-    const currentQty = qtyByProduct.get(product.id) ?? 0;
-    if (currentQty >= maxQty) continue;
-    const canAdd = Math.min(
-      maxQty - currentQty,
-      Math.floor(remaining / product.priceCents)
-    );
-    if (canAdd < 1) continue;
-    const qty = canAdd;
-    const lineTotal = product.priceCents * qty;
-    if (subtotalCents + lineTotal <= capCents) {
-      subtotalCents += lineTotal;
-      addOrMergeLine(items, qtyByProduct, product, qty, "maintenance");
-    }
-  }
-
-  const bundleSku = `BNDL-${need.slug.toUpperCase().slice(0, 3)}-${input.budgetCents / 100}-${input.cadence === "quarterly" ? "Q" : "M"}-OPT`;
+  const bundleSku = `BNDL-${primary.slug.replace(/-/g, "").slice(0, 6).toUpperCase()}-${input.budgetCents / 100}-${input.cadence === "quarterly" ? "Q" : "M"}-OPT`;
 
   const draft: BuiltBundle = {
     bundleSku,
-    needSlug: need.slug,
-    needName: need.name,
+    needSlug: primary.slug,
+    needName: primary.name,
+    needSlugs: urlOrder,
+    needNames: needNamesResolved,
+    includeEveryday: input.includeEveryday,
     cadence: input.cadence,
     budgetCents: input.budgetCents,
     tier: "optimized",

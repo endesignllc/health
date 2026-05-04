@@ -24,6 +24,8 @@ type BundleLine = {
   quantity: number;
   lineTotalCents: number;
   section: BundleItemSection;
+  bundleSection: string;
+  priorityTier: 1 | 2 | 3 | null;
   sufficiency?: {
     label: string;
     coverageDays: number | null;
@@ -34,6 +36,9 @@ type BuiltBundle = {
   bundleSku: string;
   needSlug: string;
   needName: string;
+  needSlugs: string[];
+  needNames: string[];
+  includeEveryday: boolean;
   cadence: "monthly" | "quarterly";
   budgetCents: number;
   tier: "optimized";
@@ -51,9 +56,9 @@ type BuiltBundle = {
 const SECTION_ORDER: BundleItemSection[] = ["core", "support", "maintenance"];
 
 const SECTION_HEADINGS: Record<BundleItemSection, string> = {
-  core: "Core — everyday essentials",
-  support: "Support — helpful additions based on your needs",
-  maintenance: "Everyday maintenance & balance",
+  core: "Core picks",
+  support: "Support — helpful additions",
+  maintenance: "Maintenance & balance",
 };
 
 function bundleSupplyNote(summary: BundleSufficiencySummary): string | null {
@@ -86,6 +91,48 @@ function lineSupplyHint(label: string, coverageDays: number | null): string | nu
   return null;
 }
 
+function orderedBundleSections(bundle: BuiltBundle): string[] {
+  const tierBySection = new Map<string, number | null>();
+  for (const it of bundle.items) {
+    if (!tierBySection.has(it.bundleSection)) {
+      tierBySection.set(it.bundleSection, it.priorityTier);
+    }
+  }
+  const keys = [...tierBySection.keys()].filter((k) => k !== "everyday");
+  keys.sort((a, b) => {
+    const ta = tierBySection.get(a) ?? 999;
+    const tb = tierBySection.get(b) ?? 999;
+    if (ta !== tb) return ta - tb;
+    const ia = bundle.needSlugs.indexOf(a);
+    const ib = bundle.needSlugs.indexOf(b);
+    const ea = ia === -1 ? 999 : ia;
+    const eb = ib === -1 ? 999 : ib;
+    return ea - eb;
+  });
+  if (tierBySection.has("everyday")) keys.push("everyday");
+  return keys;
+}
+
+function sectionHeading(bundle: BuiltBundle, slug: string): string {
+  if (slug === "everyday") return "Everyday essentials";
+  const idx = bundle.needSlugs.indexOf(slug);
+  const nm = idx >= 0 ? bundle.needNames[idx] : slug.replace(/-/g, " ");
+  const titled = nm.replace(/\b\w/g, (c) => c.toUpperCase());
+  return `Your ${titled}`;
+}
+
+function tierPillLabel(tier: number): string {
+  if (tier === 1) return "Essential";
+  if (tier === 2) return "Beneficial";
+  return "Comfort";
+}
+
+function tierPillClass(tier: number): string {
+  if (tier === 1) return "bg-emerald-600 hover:bg-emerald-600 text-white border-transparent";
+  if (tier === 2) return "bg-sky-600 hover:bg-sky-600 text-white border-transparent";
+  return "bg-muted text-muted-foreground border-border";
+}
+
 export function BundlesList({
   initialBundles,
   params,
@@ -94,7 +141,8 @@ export function BundlesList({
   params: {
     budgetCents: number;
     cadence: "monthly" | "quarterly";
-    needSlug: string;
+    needSlugs: string[];
+    includeEveryday: boolean;
     goals: string[];
     usageIntensity: "daily" | "occasional";
   };
@@ -117,7 +165,12 @@ export function BundlesList({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...params,
+          budgetCents: params.budgetCents,
+          cadence: params.cadence,
+          needSlugs: params.needSlugs,
+          includeEveryday: params.includeEveryday,
+          goals: params.goals,
+          usageIntensity: params.usageIntensity,
           qualifierAnswers: flatQualifierAnswers,
         }),
       });
@@ -140,7 +193,6 @@ export function BundlesList({
     );
   }
 
-  const bySection = (s: BundleItemSection) => bundle.items.filter((i) => i.section === s);
   const supplyNote = bundleSupplyNote(bundle.sufficiency);
 
   return (
@@ -171,59 +223,82 @@ export function BundlesList({
           <p className="text-xs text-muted-foreground mt-2">Updating recommendations…</p>
         )}
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col gap-8">
-        {SECTION_ORDER.map((section) => {
-          const sectionItems = bySection(section);
-          if (!sectionItems.length) return null;
-          const seenClassIds = new Set<string>();
+      <CardContent className="flex-1 flex flex-col gap-10">
+        {orderedBundleSections(bundle).map((bundleSectionSlug) => {
+          const tierHead =
+            bundle.items.find((i) => i.bundleSection === bundleSectionSlug)?.priorityTier ?? null;
+
           return (
-            <section key={section}>
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">
-                {SECTION_HEADINGS[section]}
-              </h3>
-              <ul className="space-y-2">
-                {sectionItems.map((item) => {
-                  const classId = item.productClassId;
-                  const shouldRenderPanel =
-                    Boolean(classId) && !seenClassIds.has(classId as string);
-                  if (classId) seenClassIds.add(classId);
-                  return (
-                    <li
-                      key={`${item.section}-${item.productId}`}
-                      className="text-sm border-b border-border/40 pb-2 last:border-0"
-                    >
-                      <div className="flex justify-between gap-2">
-                        <span>
-                          {item.productName} {item.quantity > 1 && `×${item.quantity}`}
-                          {item.sufficiency && (
-                            <span className="block text-xs text-muted-foreground mt-0.5">
-                              {lineSupplyHint(
-                                item.sufficiency.label,
-                                item.sufficiency.coverageDays
-                              )}
-                            </span>
-                          )}
-                        </span>
-                        <span className="text-muted-foreground shrink-0">
-                          {formatPrice(item.lineTotalCents)}
-                        </span>
-                      </div>
-                      {shouldRenderPanel && classId && (
-                        <QualifierPanel
-                          productClassId={classId}
-                          answers={qualifierAnswersByClass[classId] ?? []}
-                          onChange={(nextAnswers) =>
-                            setQualifierAnswersByClass((prev) => ({
-                              ...prev,
-                              [classId]: nextAnswers,
-                            }))
-                          }
-                        />
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
+            <section key={bundleSectionSlug} className="space-y-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-base font-semibold text-foreground">
+                  {sectionHeading(bundle, bundleSectionSlug)}
+                </h3>
+                {tierHead !== null && (
+                  <Badge className={tierPillClass(tierHead)} variant="outline">
+                    {tierPillLabel(tierHead)}
+                  </Badge>
+                )}
+              </div>
+
+              {SECTION_ORDER.map((section) => {
+                const sectionItems = bundle.items.filter(
+                  (i) => i.bundleSection === bundleSectionSlug && i.section === section
+                );
+                if (!sectionItems.length) return null;
+                const seenClassIds = new Set<string>();
+                return (
+                  <div key={`${bundleSectionSlug}-${section}`}>
+                    <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                      {SECTION_HEADINGS[section]}
+                    </h4>
+                    <ul className="space-y-2">
+                      {sectionItems.map((item) => {
+                        const classId = item.productClassId;
+                        const shouldRenderPanel =
+                          Boolean(classId) && !seenClassIds.has(classId as string);
+                        if (classId) seenClassIds.add(classId);
+                        return (
+                          <li
+                            key={`${bundleSectionSlug}-${item.section}-${item.productId}`}
+                            className="text-sm border-b border-border/40 pb-2 last:border-0"
+                          >
+                            <div className="flex justify-between gap-2">
+                              <span>
+                                {item.productName}{" "}
+                                {item.quantity > 1 && `×${item.quantity}`}
+                                {item.sufficiency && (
+                                  <span className="block text-xs text-muted-foreground mt-0.5">
+                                    {lineSupplyHint(
+                                      item.sufficiency.label,
+                                      item.sufficiency.coverageDays
+                                    )}
+                                  </span>
+                                )}
+                              </span>
+                              <span className="text-muted-foreground shrink-0">
+                                {formatPrice(item.lineTotalCents)}
+                              </span>
+                            </div>
+                            {shouldRenderPanel && classId && (
+                              <QualifierPanel
+                                productClassId={classId}
+                                answers={qualifierAnswersByClass[classId] ?? []}
+                                onChange={(nextAnswers) =>
+                                  setQualifierAnswersByClass((prev) => ({
+                                    ...prev,
+                                    [classId]: nextAnswers,
+                                  }))
+                                }
+                              />
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                );
+              })}
             </section>
           );
         })}

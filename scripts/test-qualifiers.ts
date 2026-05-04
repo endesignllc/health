@@ -8,6 +8,7 @@ import { rankClassCandidates } from "@/lib/bundle-builder";
 type Candidate = {
   id: string;
   sku: string;
+  priceCents: number;
   productClassId: string | null;
   tags: string[] | null;
 };
@@ -19,30 +20,35 @@ const fixtureProducts: Candidate[] = [
   {
     id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
     sku: "HEAR-AMP-A",
+    priceCents: 5999,
     productClassId: HEARING_CLASS_ID,
     tags: ["form:ite", "power:rechargeable", "usability:easy_controls"],
   },
   {
     id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2",
     sku: "HEAR-AMP-B",
+    priceCents: 5499,
     productClassId: HEARING_CLASS_ID,
     tags: ["form:bte", "power:rechargeable"],
   },
   {
     id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3",
     sku: "HEAR-AMP-C",
+    priceCents: 4299,
     productClassId: HEARING_CLASS_ID,
     tags: ["form:ite", "power:disposable"],
   },
   {
     id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4",
     sku: "HEAR-AMP-D",
+    priceCents: 4699,
     productClassId: HEARING_CLASS_ID,
     tags: ["form:bte", "power:disposable", "usability:easy_controls"],
   },
   {
     id: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1",
     sku: "UNTOUCHED-NO-CLASS",
+    priceCents: 999,
     productClassId: null,
     tags: ["power:rechargeable"],
   },
