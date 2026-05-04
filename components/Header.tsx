@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getCart } from "@/lib/cart";
+import { SiteLogo } from "@/components/SiteLogo";
 
 const navLinkClass =
   "inline-flex items-center min-h-[44px] px-3 rounded-md text-base font-semibold text-foreground hover:bg-accent hover:text-accent-foreground transition-colors underline-offset-4 hover:underline";
@@ -15,9 +16,9 @@ export default async function Header() {
           <div className="flex items-center justify-between gap-4">
             <Link
               href="/"
-              className="font-bold text-xl sm:text-2xl text-primary tracking-tight hover:text-[hsl(203,89%,26%)] transition-colors shrink-0"
+              className="shrink-0 inline-flex items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card hover:opacity-95 transition-opacity"
             >
-              Health Benefits Shop
+              <SiteLogo priority />
             </Link>
             <Link
               href="/cart"

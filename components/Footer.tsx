@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SiteLogo } from "@/components/SiteLogo";
 
 const footerLink =
   "inline-flex items-center min-h-[44px] text-base font-medium text-foreground underline-offset-4 hover:underline decoration-2 hover:text-primary transition-colors";
@@ -9,8 +10,11 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
-            <Link href="/" className="font-bold text-xl text-primary hover:text-[hsl(203,89%,26%)] transition-colors">
-              Health Benefits Shop
+            <Link
+              href="/"
+              className="inline-flex rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-muted hover:opacity-95 transition-opacity"
+            >
+              <SiteLogo className="h-10 w-auto max-w-[min(100%,280px)]" />
             </Link>
             <p className="mt-5 text-base text-muted-foreground leading-relaxed max-w-sm">
               Build a budget-fitting bundle of health and wellness products. Shop by need—never by diagnosis.

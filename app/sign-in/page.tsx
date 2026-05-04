@@ -1,6 +1,7 @@
 import { signIn, auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { SiteLogo } from "@/components/SiteLogo";
 
 export const metadata = {
   title: "Sign in",
@@ -23,8 +24,11 @@ export default async function SignInPage({
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted px-4 py-12">
       <div className="w-full max-w-md space-y-8 text-center rounded-xl border-2 border-border bg-card p-8 sm:p-10 shadow-sm">
-        <div className="space-y-3">
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary tracking-tight">Health Benefits Shop</h1>
+        <h1 className="sr-only">Sign in to Health Benefits Shop</h1>
+        <div className="flex justify-center">
+          <SiteLogo className="h-14 sm:h-16 w-auto max-w-full" priority />
+        </div>
+        <div className="space-y-2 pt-2">
           <p className="text-base font-semibold text-foreground">Private preview</p>
         </div>
         <p className="text-base text-muted-foreground leading-relaxed">
