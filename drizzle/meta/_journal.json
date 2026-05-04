@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1772551681279,
+      "tag": "0000_lumpy_wild_pack",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1772564767561,
+      "tag": "0001_flat_inertia",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1776982361996,
+      "tag": "0002_lean_chat",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1776992927301,
+      "tag": "0003_conscious_firebrand",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1777053013200,
+      "tag": "0004_complex_zarek",
+      "breakpoints": true
+    }
+  ]
+}

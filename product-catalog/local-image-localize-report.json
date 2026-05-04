@@ -1,0 +1,15 @@
+{
+  "inputRows": 268,
+  "uniqueFilesInBatch": 261,
+  "downloaded": 261,
+  "failedDownloads": 0,
+  "failedFiles": [],
+  "keyMappings": 522,
+  "dbRowsChecked": 1141,
+  "dbMatched": 110,
+  "dbUpdated": 110,
+  "coverage": {
+    "active_total": 1140,
+    "active_with_image": 110
+  }
+}

@@ -1,0 +1,11 @@
+slug,title,description,price,active,category,image,featured
+leather-wallet,Classic Leather Wallet,"Hand-stitched full-grain leather bifold wallet with 6 card slots and a bill compartment. Ages beautifully with use.",49.99,true,Accessories,/images/leather-wallet.jpg,true
+canvas-tote,Canvas Market Tote,"Heavy-duty 12oz canvas tote with reinforced handles and interior zip pocket. Perfect for farmers markets or daily errands.",34.99,true,Bags,/images/canvas-tote.jpg,true
+ceramic-mug,Handmade Ceramic Mug,"Wheel-thrown stoneware mug with a comfortable thumb-rest handle. Microwave and dishwasher safe. Holds 14oz.",28.00,true,Kitchen,/images/ceramic-mug.jpg,false
+linen-notebook,Linen-Bound Notebook,"192 pages of 90gsm cream paper in a durable linen cover. Lay-flat binding. A5 size. Ideal for journaling or sketching.",22.00,true,Stationery,/images/linen-notebook.jpg,false
+brass-keychain,Solid Brass Keychain,"Machined solid brass keychain with a smooth matte finish. Develops a natural patina over time. Comes in a cotton pouch.",18.00,true,Accessories,/images/brass-keychain.jpg,false
+beeswax-candle,Beeswax Pillar Candle,"100% pure beeswax candle with a cotton wick. Burns clean and slow with a natural honey scent. Burns 60+ hours.",32.00,true,Home,/images/beeswax-candle.jpg,true
+merino-beanie,Merino Wool Beanie,"100% extra-fine merino wool. Naturally temperature-regulating and itch-free. One size fits most.",42.00,true,Apparel,/images/merino-beanie.jpg,false
+oak-coasters,Oak Wood Coaster Set,"Set of 4 solid oak coasters with a natural oil finish. Non-slip cork base. 4 inch diameter.",36.00,true,Home,/images/oak-coasters.jpg,false
+cotton-pouch,Organic Cotton Pouch,"Drawstring pouch in 100% GOTS-certified organic cotton. Natural undyed. Great for travel or gifting.",14.00,true,Bags,/images/cotton-pouch.jpg,false
+ceramic-planter,Speckled Ceramic Planter,"Hand-glazed stoneware planter with drainage hole and matching saucer. Fits 4 inch nursery pots. Speckled grey finish.",45.00,true,Home,/images/ceramic-planter.jpg,true

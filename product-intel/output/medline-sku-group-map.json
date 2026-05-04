@@ -1,0 +1,814 @@
+[
+  {
+    "sku": "H130",
+    "itemNumber": "H130",
+    "genericTypeKey": "3-in-1-bath-safety-kit",
+    "groupKey": "3-in-1-bath-safety-kit::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "H131",
+    "itemNumber": "H131",
+    "genericTypeKey": "handheld-shower-head",
+    "groupKey": "handheld-shower-head::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "H132",
+    "itemNumber": "H132",
+    "genericTypeKey": "round-shower-stool",
+    "groupKey": "round-shower-stool::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "606774",
+    "itemNumber": "606774",
+    "genericTypeKey": "3-in-1-bath-safety-kit",
+    "groupKey": "3-in-1-bath-safety-kit::standard",
+    "confidence": 0.6
+  },
+  {
+    "sku": "1012",
+    "itemNumber": "1012",
+    "genericTypeKey": "cetirizine-antihistamine-allergy-tablets-10mg",
+    "groupKey": "cetirizine-antihistamine-allergy-tablets-10mg::strength:10 mg",
+    "confidence": 0.92
+  },
+  {
+    "sku": "1044",
+    "itemNumber": "1044",
+    "genericTypeKey": "isopropyl-alcohol-prep-pad-x",
+    "groupKey": "isopropyl-alcohol-prep-pad-x::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "6008",
+    "itemNumber": "6008",
+    "genericTypeKey": "no-sting-burn-spray",
+    "groupKey": "no-sting-burn-spray::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "8482",
+    "itemNumber": "8482",
+    "genericTypeKey": "antiseptic-cleaning-spray-no-sting",
+    "groupKey": "antiseptic-cleaning-spray-no-sting::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "6556",
+    "itemNumber": "6556",
+    "genericTypeKey": "sterile-saline-wound-wash-spray",
+    "groupKey": "sterile-saline-wound-wash-spray::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1929",
+    "itemNumber": "1929",
+    "genericTypeKey": "sterile-conform-stretch-gauze-bandage-x",
+    "groupKey": "sterile-conform-stretch-gauze-bandage-x::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "1066",
+    "itemNumber": "1066",
+    "genericTypeKey": "transparent-adhesive-tape-x-yd",
+    "groupKey": "transparent-adhesive-tape-x-yd::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "1108",
+    "itemNumber": "1108",
+    "genericTypeKey": "fitright-incontinence-liner-x",
+    "groupKey": "fitright-incontinence-liner-x::standard",
+    "confidence": 0.6
+  },
+  {
+    "sku": "1408",
+    "itemNumber": "1408",
+    "genericTypeKey": "fitright-optifit-stretch-ultra-brief-med/reg",
+    "groupKey": "fitright-optifit-stretch-ultra-brief-med/reg::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "1409",
+    "itemNumber": "1409",
+    "genericTypeKey": "fitright-optifit-stretch-ultra-brief-l/xl",
+    "groupKey": "fitright-optifit-stretch-ultra-brief-l/xl::size:L",
+    "confidence": 0.82
+  },
+  {
+    "sku": "1475",
+    "itemNumber": "1475",
+    "genericTypeKey": "fluff-polymer-underpad-heavy-absorbency-quilted-x",
+    "groupKey": "fluff-polymer-underpad-heavy-absorbency-quilted-x::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "1427",
+    "itemNumber": "1427",
+    "genericTypeKey": "fluff-polymer-underpad-heavy-absorbency-x",
+    "groupKey": "fluff-polymer-underpad-heavy-absorbency-x::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "1619",
+    "itemNumber": "1619",
+    "genericTypeKey": "fitright-underpad-heavy-absorbency-x",
+    "groupKey": "fitright-underpad-heavy-absorbency-x::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "1163",
+    "itemNumber": "1163",
+    "genericTypeKey": "super-wrapped-adult-toothbrush",
+    "groupKey": "super-wrapped-adult-toothbrush::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1883",
+    "itemNumber": "1883",
+    "genericTypeKey": "wrapped-adult-toothbrush",
+    "groupKey": "wrapped-adult-toothbrush::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "4110",
+    "itemNumber": "4110",
+    "genericTypeKey": "sparkle-fresh-toothpaste",
+    "groupKey": "sparkle-fresh-toothpaste::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "2098",
+    "itemNumber": "2098",
+    "genericTypeKey": "denture-container-lid",
+    "groupKey": "denture-container-lid::standard",
+    "confidence": 0.6
+  },
+  {
+    "sku": "1099",
+    "itemNumber": "1099",
+    "genericTypeKey": "digital-blood-pressure-monitor-univ-cuff",
+    "groupKey": "digital-blood-pressure-monitor-univ-cuff::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "3952",
+    "itemNumber": "3952",
+    "genericTypeKey": "digital-blood-pressure-monitor-adult-cuff",
+    "groupKey": "digital-blood-pressure-monitor-adult-cuff::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "1089",
+    "itemNumber": "1089",
+    "genericTypeKey": "oral-digital-thermometer",
+    "groupKey": "oral-digital-thermometer::standard",
+    "confidence": 0.72
+  },
+  {
+    "sku": "1088",
+    "itemNumber": "1088",
+    "genericTypeKey": "large-display-oral-digital-thermometer",
+    "groupKey": "large-display-oral-digital-thermometer::size:large",
+    "confidence": 0.82
+  },
+  {
+    "sku": "1190",
+    "itemNumber": "1190",
+    "genericTypeKey": "aspirin-enteric-coated-tablets",
+    "groupKey": "aspirin-enteric-coated-tablets::strength:81 mg",
+    "confidence": 0.92
+  },
+  {
+    "sku": "4201",
+    "itemNumber": "4201",
+    "genericTypeKey": "ibuprofen-tablets",
+    "groupKey": "ibuprofen-tablets::strength:200 mg",
+    "confidence": 0.92
+  },
+  {
+    "sku": "2034",
+    "itemNumber": "2034",
+    "genericTypeKey": "activice-topical-pain-reliever-spray",
+    "groupKey": "activice-topical-pain-reliever-spray::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1723",
+    "itemNumber": "1723",
+    "genericTypeKey": "ultrasoft-disposable-dry-cleansing-cloth-x",
+    "groupKey": "ultrasoft-disposable-dry-cleansing-cloth-x::standard",
+    "confidence": 0.6
+  },
+  {
+    "sku": "1719",
+    "itemNumber": "1719",
+    "genericTypeKey": "fitright-aloe-quilted-personal-wipes-flip-top",
+    "groupKey": "fitright-aloe-quilted-personal-wipes-flip-top::standard",
+    "confidence": 0.6
+  },
+  {
+    "sku": "1103",
+    "itemNumber": "1103",
+    "genericTypeKey": "fitright-aloe-personal-wipes-scented-flip-top",
+    "groupKey": "fitright-aloe-personal-wipes-scented-flip-top::standard",
+    "confidence": 0.6
+  },
+  {
+    "sku": "1858",
+    "itemNumber": "1858",
+    "genericTypeKey": "fitright-aloe-personal-wipes-unscented-flip-top",
+    "groupKey": "fitright-aloe-personal-wipes-unscented-flip-top::standard",
+    "confidence": 0.6
+  },
+  {
+    "sku": "2078",
+    "itemNumber": "2078",
+    "genericTypeKey": "vitamin-e-softgels",
+    "groupKey": "vitamin-e-softgels::strength:90 mg",
+    "confidence": 0.92
+  },
+  {
+    "sku": "1297",
+    "itemNumber": "1297",
+    "genericTypeKey": "vitamin-e-softgels",
+    "groupKey": "vitamin-e-softgels::strength:180 mg",
+    "confidence": 0.92
+  },
+  {
+    "sku": "3416",
+    "itemNumber": "3416",
+    "genericTypeKey": "flaxseed-oil-softgel-1000mg",
+    "groupKey": "flaxseed-oil-softgel-1000mg::strength:1000 mg",
+    "confidence": 0.92
+  },
+  {
+    "sku": "3378",
+    "itemNumber": "3378",
+    "genericTypeKey": "fish-oil-softgels",
+    "groupKey": "fish-oil-softgels::strength:1000 mg",
+    "confidence": 0.92
+  },
+  {
+    "sku": "7297",
+    "itemNumber": "7297",
+    "genericTypeKey": "bedding-seating-support-living-aids-skintegrity-wound",
+    "groupKey": "bedding-seating-support-living-aids-skintegrity-wound::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "6006",
+    "itemNumber": "6006",
+    "genericTypeKey": "contoured-lumbar-cushion-foam-ideal-wheelchairs-car",
+    "groupKey": "contoured-lumbar-cushion-foam-ideal-wheelchairs-car::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "3377",
+    "itemNumber": "3377",
+    "genericTypeKey": "invalid-foam-ring-contoured-cushion-puncture-resistant-foam",
+    "groupKey": "invalid-foam-ring-contoured-cushion-puncture-resistant-foam::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "6166",
+    "itemNumber": "6166",
+    "genericTypeKey": "rubber-bath-mat-suction-cups-bottom-x",
+    "groupKey": "rubber-bath-mat-suction-cups-bottom-x::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "5001",
+    "itemNumber": "5001",
+    "genericTypeKey": "24-inch-knurled-chrome-grab-bar-mounts-directly",
+    "groupKey": "24-inch-knurled-chrome-grab-bar-mounts-directly::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "7507",
+    "itemNumber": "7507",
+    "genericTypeKey": "handheld-showerhead-kit-standard-spray-includes-diverter",
+    "groupKey": "handheld-showerhead-kit-standard-spray-includes-diverter::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "6047",
+    "itemNumber": "6047",
+    "genericTypeKey": "shower-chair-arms-back-helps-provide-stability",
+    "groupKey": "shower-chair-arms-back-helps-provide-stability::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "6043",
+    "itemNumber": "6043",
+    "genericTypeKey": "locking-raised-toilet-seat-arms-wide-contoured",
+    "groupKey": "locking-raised-toilet-seat-arms-wide-contoured::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "7119",
+    "itemNumber": "7119",
+    "genericTypeKey": "medication-aids-exercise-strength-training-curved-grip",
+    "groupKey": "medication-aids-exercise-strength-training-curved-grip::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "2126",
+    "itemNumber": "2126",
+    "genericTypeKey": "pistol-grip-reacher-extends-your-reach-by",
+    "groupKey": "pistol-grip-reacher-extends-your-reach-by::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1984",
+    "itemNumber": "1984",
+    "genericTypeKey": "pill-cutter-crusher-compact-size-is-great",
+    "groupKey": "pill-cutter-crusher-compact-size-is-great::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1091",
+    "itemNumber": "1091",
+    "genericTypeKey": "7-day-pill-reminder-organizer-compartments-each-day",
+    "groupKey": "7-day-pill-reminder-organizer-compartments-each-day::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1698",
+    "itemNumber": "1698",
+    "genericTypeKey": "7-day-pill-organizer-separate-color-coded-compartments-am/pm",
+    "groupKey": "7-day-pill-organizer-separate-color-coded-compartments-am/pm::size:L",
+    "confidence": 0.78
+  },
+  {
+    "sku": "3559",
+    "itemNumber": "3559",
+    "genericTypeKey": "dressings-gauze-elastic-bandages-hydrogen-peroxide-3%",
+    "groupKey": "dressings-gauze-elastic-bandages-hydrogen-peroxide-3%::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1073",
+    "itemNumber": "1073",
+    "genericTypeKey": "70%-isopropyl-alcohol-topical-first-aid-essential",
+    "groupKey": "70%-isopropyl-alcohol-topical-first-aid-essential::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1044",
+    "itemNumber": "1044",
+    "genericTypeKey": "isopropyl-alcohol-prep-pads-medium-pad-saturated",
+    "groupKey": "isopropyl-alcohol-prep-pads-medium-pad-saturated::size:medium",
+    "confidence": 0.9
+  },
+  {
+    "sku": "6556",
+    "itemNumber": "6556",
+    "genericTypeKey": "sterile-saline-wound-wash-gently-cleanses-minor",
+    "groupKey": "sterile-saline-wound-wash-gently-cleanses-minor::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1929",
+    "itemNumber": "1929",
+    "genericTypeKey": "conforming-stretch-gauze-bandage-x-1-ply-rayon",
+    "groupKey": "conforming-stretch-gauze-bandage-x-1-ply-rayon::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1068",
+    "itemNumber": "1068",
+    "genericTypeKey": "sterile-cotton-gauze-bandage-gently-stretches-conform",
+    "groupKey": "sterile-cotton-gauze-bandage-gently-stretches-conform::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "4009",
+    "itemNumber": "4009",
+    "genericTypeKey": "woven-cotton-gauze-sponges-x-12-ply-gauze",
+    "groupKey": "woven-cotton-gauze-sponges-x-12-ply-gauze::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1446",
+    "itemNumber": "1446",
+    "genericTypeKey": "nonsterile-matrix-elastic-bandage-easy-wrap-x",
+    "groupKey": "nonsterile-matrix-elastic-bandage-easy-wrap-x::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "2101",
+    "itemNumber": "2101",
+    "genericTypeKey": "nonsterile-matrix-elastic-bandage-easy-wrap-x",
+    "groupKey": "nonsterile-matrix-elastic-bandage-easy-wrap-x::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "3731",
+    "itemNumber": "3731",
+    "genericTypeKey": "home-essentials-digital-hearing-amplifier-battery-powered-behind-the-ear",
+    "groupKey": "home-essentials-digital-hearing-amplifier-battery-powered-behind-the-ear::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1327",
+    "itemNumber": "1327",
+    "genericTypeKey": "female-urinal-translucent-plastic",
+    "groupKey": "female-urinal-translucent-plastic::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1328",
+    "itemNumber": "1328",
+    "genericTypeKey": "supreme-male-urinal-holds-/1",
+    "groupKey": "supreme-male-urinal-holds-/1::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1099",
+    "itemNumber": "1099",
+    "genericTypeKey": "digital-blood-pressure-monitor-stores-measurements-users",
+    "groupKey": "digital-blood-pressure-monitor-stores-measurements-users::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "6252",
+    "itemNumber": "6252",
+    "genericTypeKey": "oximeters-touch-fingertip-pulse-oximeter-quickly-reads",
+    "groupKey": "oximeters-touch-fingertip-pulse-oximeter-quickly-reads::size:large",
+    "confidence": 0.9
+  },
+  {
+    "sku": "1100",
+    "itemNumber": "1100",
+    "genericTypeKey": "infrared-talking-ear/forehead-thermometer-reading-just-second",
+    "groupKey": "infrared-talking-ear/forehead-thermometer-reading-just-second::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1094",
+    "itemNumber": "1094",
+    "genericTypeKey": "infrared-no-touch-forehead-thermometer-takes-body-surface",
+    "groupKey": "infrared-no-touch-forehead-thermometer-takes-body-surface::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1089",
+    "itemNumber": "1089",
+    "genericTypeKey": "oral-digital-thermometer-results-seconds-one-piece-snap-on",
+    "groupKey": "oral-digital-thermometer-results-seconds-one-piece-snap-on::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1411",
+    "itemNumber": "1411",
+    "genericTypeKey": "bladder-pads-fitright-activedge-guards-men-protection",
+    "groupKey": "bladder-pads-fitright-activedge-guards-men-protection::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1615",
+    "itemNumber": "1615",
+    "genericTypeKey": "underpads-fitright-underpads-fluff/polymer-core-waterproof-backing",
+    "groupKey": "underpads-fitright-underpads-fluff/polymer-core-waterproof-backing::absorbency:moderate",
+    "confidence": 0.9
+  },
+  {
+    "sku": "1619",
+    "itemNumber": "1619",
+    "genericTypeKey": "fitright-ultra-underpads-fluff/polymer-core-absorbency-odor",
+    "groupKey": "fitright-ultra-underpads-fluff/polymer-core-absorbency-odor::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "4053",
+    "itemNumber": "4053",
+    "genericTypeKey": "pro-best-polymer-underpads-disposable-all-purpose-pad",
+    "groupKey": "pro-best-polymer-underpads-disposable-all-purpose-pad::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "3633",
+    "itemNumber": "3633",
+    "genericTypeKey": "disposable-deluxe-fluff-underpads-36x36-disposable-all-purpose",
+    "groupKey": "disposable-deluxe-fluff-underpads-36x36-disposable-all-purpose::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1614",
+    "itemNumber": "1614",
+    "genericTypeKey": "sofnit-reusable-twill-underpad-absorbent-55%-cotton/45%",
+    "groupKey": "sofnit-reusable-twill-underpad-absorbent-55%-cotton/45%::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "6836",
+    "itemNumber": "6836",
+    "genericTypeKey": "fitright-activedge-underwear-women-odor-leak-protection",
+    "groupKey": "fitright-activedge-underwear-women-odor-leak-protection::strength:9 g",
+    "confidence": 0.98
+  },
+  {
+    "sku": "1866",
+    "itemNumber": "1866",
+    "genericTypeKey": "allergy-sinus-cetirizine-allergy-relief-tablets-24-hour",
+    "groupKey": "allergy-sinus-cetirizine-allergy-relief-tablets-24-hour::strength:10 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "1012",
+    "itemNumber": "1012",
+    "genericTypeKey": "cetirizine-allergy-relief-tablets-24-hour-relief-compare",
+    "groupKey": "cetirizine-allergy-relief-tablets-24-hour-relief-compare::strength:10 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "3707",
+    "itemNumber": "3707",
+    "genericTypeKey": "remedy-clinical-antifungal-ointment-2%-miconazole-nitrate",
+    "groupKey": "remedy-clinical-antifungal-ointment-2%-miconazole-nitrate::size:S",
+    "confidence": 0.9
+  },
+  {
+    "sku": "7424",
+    "itemNumber": "7424",
+    "genericTypeKey": "acetaminophen-tablets-pain-reliever-fever-reducer",
+    "groupKey": "acetaminophen-tablets-pain-reliever-fever-reducer::strength:325 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "7425",
+    "itemNumber": "7425",
+    "genericTypeKey": "acetaminophen-tablets-pain-reliever-fever-reducer",
+    "groupKey": "acetaminophen-tablets-pain-reliever-fever-reducer::strength:500 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "1715",
+    "itemNumber": "1715",
+    "genericTypeKey": "low-dose-chewable-aspirin-tablets-compare-active-ingredient",
+    "groupKey": "low-dose-chewable-aspirin-tablets-compare-active-ingredient::strength:81 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "1207",
+    "itemNumber": "1207",
+    "genericTypeKey": "strength-pain-relief-tablets-acetaminophen-aspirin-caffeine",
+    "groupKey": "strength-pain-relief-tablets-acetaminophen-aspirin-caffeine::strength:250 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "1190",
+    "itemNumber": "1190",
+    "genericTypeKey": "low-dose-enteric-aspirin-tablets-coated-easier-swallowing",
+    "groupKey": "low-dose-enteric-aspirin-tablets-coated-easier-swallowing::strength:81 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "6008",
+    "itemNumber": "6008",
+    "genericTypeKey": "burn-spray-aloe-vera-no-sting-pain-relieving",
+    "groupKey": "burn-spray-aloe-vera-no-sting-pain-relieving::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "4201",
+    "itemNumber": "4201",
+    "genericTypeKey": "ibuprofen-tablets-nsaid-pain-reliever-fever-reducer",
+    "groupKey": "ibuprofen-tablets-nsaid-pain-reliever-fever-reducer::strength:200 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "2033",
+    "itemNumber": "2033",
+    "genericTypeKey": "activice-topical-pain-reliever-roll-on-3oz-fast-acting",
+    "groupKey": "activice-topical-pain-reliever-roll-on-3oz-fast-acting::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "2221",
+    "itemNumber": "2221",
+    "genericTypeKey": "activice-topical-pain-reliever-gel-fast-acting-muscle",
+    "groupKey": "activice-topical-pain-reliever-gel-fast-acting-muscle::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "2034",
+    "itemNumber": "2034",
+    "genericTypeKey": "activice-topical-pain-reliever-spray-fast-acting-muscle",
+    "groupKey": "activice-topical-pain-reliever-spray-fast-acting-muscle::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1205",
+    "itemNumber": "1205",
+    "genericTypeKey": "naproxen-sodium-tablets-relief-up-hours-compare",
+    "groupKey": "naproxen-sodium-tablets-relief-up-hours-compare::strength:220 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "1237",
+    "itemNumber": "1237",
+    "genericTypeKey": "pure-gentle-saline-enema-laxative-ready-to-use-squeeze",
+    "groupKey": "pure-gentle-saline-enema-laxative-ready-to-use-squeeze::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1234",
+    "itemNumber": "1234",
+    "genericTypeKey": "senna-natural-laxative-tablets-compare-active-ingredients",
+    "groupKey": "senna-natural-laxative-tablets-compare-active-ingredients::strength:8.6 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "5013",
+    "itemNumber": "5013",
+    "genericTypeKey": "walkers-rollators-folding-t-handle-aluminum-cane-compact",
+    "groupKey": "walkers-rollators-folding-t-handle-aluminum-cane-compact::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "6044",
+    "itemNumber": "6044",
+    "genericTypeKey": "basic-steel-rollator-padded-backrest-x-seat",
+    "groupKey": "basic-steel-rollator-padded-backrest-x-seat::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "8466",
+    "itemNumber": "8466",
+    "genericTypeKey": "spectrum-hand-sanitizer-gel-moisturizing-70%-ethyl",
+    "groupKey": "spectrum-hand-sanitizer-gel-moisturizing-70%-ethyl::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "4170",
+    "itemNumber": "4170",
+    "genericTypeKey": "spectrum-hand-sanitizer-gel-moisturizing-70%-ethyl",
+    "groupKey": "spectrum-hand-sanitizer-gel-moisturizing-70%-ethyl::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1103",
+    "itemNumber": "1103",
+    "genericTypeKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard",
+    "groupKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1858",
+    "itemNumber": "1858",
+    "genericTypeKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard",
+    "groupKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1466",
+    "itemNumber": "1466",
+    "genericTypeKey": "remedy-clinical-barrier-cream-cloths-botanical-6%",
+    "groupKey": "remedy-clinical-barrier-cream-cloths-botanical-6%::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "6157",
+    "itemNumber": "6157",
+    "genericTypeKey": "fitright-panty-liners-very-light-absorbency-individually",
+    "groupKey": "fitright-panty-liners-very-light-absorbency-individually::absorbency:light",
+    "confidence": 0.78
+  },
+  {
+    "sku": "1440",
+    "itemNumber": "1440",
+    "genericTypeKey": "gel-hallux-bunion-guard-washable-reusable-hypoallergenic",
+    "groupKey": "gel-hallux-bunion-guard-washable-reusable-hypoallergenic::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "6883",
+    "itemNumber": "6883",
+    "genericTypeKey": "adjustable-heel-lift-layers-foam-fits-right",
+    "groupKey": "adjustable-heel-lift-layers-foam-fits-right::size:medium",
+    "confidence": 0.78
+  },
+  {
+    "sku": "2227",
+    "itemNumber": "2227",
+    "genericTypeKey": "sparklefresh-denture-adhesive-cream-compare-fixodent",
+    "groupKey": "sparklefresh-denture-adhesive-cream-compare-fixodent::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "6919",
+    "itemNumber": "6919",
+    "genericTypeKey": "2-sided-denture-brush-large-brush-head-removes",
+    "groupKey": "2-sided-denture-brush-large-brush-head-removes::size:large",
+    "confidence": 0.78
+  },
+  {
+    "sku": "2098",
+    "itemNumber": "2098",
+    "genericTypeKey": "denture-container-lid-aqua-clear-lid",
+    "groupKey": "denture-container-lid-aqua-clear-lid::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1163",
+    "itemNumber": "1163",
+    "genericTypeKey": "super-adult-toothbrush-bristles-are-gentle-teeth",
+    "groupKey": "super-adult-toothbrush-bristles-are-gentle-teeth::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "1883",
+    "itemNumber": "1883",
+    "genericTypeKey": "adult-toothbrush-bristles-are-gentle-teeth-gums",
+    "groupKey": "adult-toothbrush-bristles-are-gentle-teeth-gums::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "4110",
+    "itemNumber": "4110",
+    "genericTypeKey": "sparklefresh-toothpaste-fluoride-help-protect-against-cavities",
+    "groupKey": "sparklefresh-toothpaste-fluoride-help-protect-against-cavities::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "3436",
+    "itemNumber": "3436",
+    "genericTypeKey": "remedy-clinical-lip-balm-soothes-protects-shea",
+    "groupKey": "remedy-clinical-lip-balm-soothes-protects-shea::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1247",
+    "itemNumber": "1247",
+    "genericTypeKey": "remedy-specialized-skin-cream-all-over-body-cream",
+    "groupKey": "remedy-specialized-skin-cream-all-over-body-cream::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "3605",
+    "itemNumber": "3605",
+    "genericTypeKey": "face-covering-braces-supports-astm-level-3-ply",
+    "groupKey": "face-covering-braces-supports-astm-level-3-ply::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1536",
+    "itemNumber": "1536",
+    "genericTypeKey": "wraparound-wrist-support-fits-right-or-left",
+    "groupKey": "wraparound-wrist-support-fits-right-or-left::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "7179",
+    "itemNumber": "7179",
+    "genericTypeKey": "80%-cotton-15%-polyester-5%-spandex-white",
+    "groupKey": "80%-cotton-15%-polyester-5%-spandex-white::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "3384",
+    "itemNumber": "3384",
+    "genericTypeKey": "compressed-memory-foam-cpap-pillow-helps-keep",
+    "groupKey": "compressed-memory-foam-cpap-pillow-helps-keep::size:L",
+    "confidence": 0.78
+  },
+  {
+    "sku": "1041",
+    "itemNumber": "1041",
+    "genericTypeKey": "accu-therm-reusable-hot/cold-gel-microwave-hot-therapy",
+    "groupKey": "accu-therm-reusable-hot/cold-gel-microwave-hot-therapy::standard",
+    "confidence": 0.8
+  },
+  {
+    "sku": "7192",
+    "itemNumber": "7192",
+    "genericTypeKey": "instant-hot-pop-knead-apply-targeted-heat",
+    "groupKey": "instant-hot-pop-knead-apply-targeted-heat::size:medium",
+    "confidence": 0.78
+  },
+  {
+    "sku": "1915",
+    "itemNumber": "1915",
+    "genericTypeKey": "reusable-english-style-ice-bag-blue-cloth-covering",
+    "groupKey": "reusable-english-style-ice-bag-blue-cloth-covering::standard",
+    "confidence": 0.68
+  },
+  {
+    "sku": "1265",
+    "itemNumber": "1265",
+    "genericTypeKey": "digestive-health-letter-vitamins-coenzyme-q10-softgels",
+    "groupKey": "digestive-health-letter-vitamins-coenzyme-q10-softgels::strength:100 mg",
+    "confidence": 0.98
+  },
+  {
+    "sku": "3378",
+    "itemNumber": "3378",
+    "genericTypeKey": "fish-oil-softgels-rich-essential-omega-3-fatty",
+    "groupKey": "fish-oil-softgels-rich-essential-omega-3-fatty::strength:1000 mg",
+    "confidence": 0.98
+  }
+]

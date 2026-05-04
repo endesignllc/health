@@ -1,0 +1,1 @@
+ALTER TABLE "products" ADD COLUMN "supply_days" integer DEFAULT 30 NOT NULL;

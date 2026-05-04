@@ -1,0 +1,317 @@
+[
+  {
+    "sku": "H130",
+    "itemNumber": "H130",
+    "productNameRaw": "606774 MEDLINE 3-IN-1 BATH SAFETY KIT",
+    "genericTypeKey": "3-in-1-bath-safety-kit",
+    "suggestedGroupKey": "3-in-1-bath-safety-kit::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "H131",
+    "itemNumber": "H131",
+    "productNameRaw": "741740 MEDLINE HANDHELD SHOWER HEAD",
+    "genericTypeKey": "handheld-shower-head",
+    "suggestedGroupKey": "handheld-shower-head::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "H132",
+    "itemNumber": "H132",
+    "productNameRaw": "345583 MEDLINE ROUND SHOWER STOOL",
+    "genericTypeKey": "round-shower-stool",
+    "suggestedGroupKey": "round-shower-stool::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "606774",
+    "itemNumber": "606774",
+    "productNameRaw": "Medline 3-In-1 Bath Safety Kit 00",
+    "genericTypeKey": "3-in-1-bath-safety-kit",
+    "suggestedGroupKey": "3-in-1-bath-safety-kit::standard",
+    "confidence": 0.6,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1108",
+    "itemNumber": "1108",
+    "productNameRaw": "Medline FitRight Plus Incontinence Liner 13” x 30” 20",
+    "genericTypeKey": "fitright-incontinence-liner-x",
+    "suggestedGroupKey": "fitright-incontinence-liner-x::standard",
+    "confidence": 0.6,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "2098",
+    "itemNumber": "2098",
+    "productNameRaw": "Medline Denture Container with Lid 1",
+    "genericTypeKey": "denture-container-lid",
+    "suggestedGroupKey": "denture-container-lid::standard",
+    "confidence": 0.6,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1723",
+    "itemNumber": "1723",
+    "productNameRaw": "Medline Ultrasoft Disposable Dry Cleansing Cloth 12” x 14” 90",
+    "genericTypeKey": "ultrasoft-disposable-dry-cleansing-cloth-x",
+    "suggestedGroupKey": "ultrasoft-disposable-dry-cleansing-cloth-x::standard",
+    "confidence": 0.6,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1719",
+    "itemNumber": "1719",
+    "productNameRaw": "Medline FitRight Aloe Quilted Personal Wipes, Soft Pack with Flip Top 48",
+    "genericTypeKey": "fitright-aloe-quilted-personal-wipes-flip-top",
+    "suggestedGroupKey": "fitright-aloe-quilted-personal-wipes-flip-top::standard",
+    "confidence": 0.6,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1103",
+    "itemNumber": "1103",
+    "productNameRaw": "Medline FitRight Aloe Personal Wipes Scented, Soft Pack with Flip Top 100",
+    "genericTypeKey": "fitright-aloe-personal-wipes-scented-flip-top",
+    "suggestedGroupKey": "fitright-aloe-personal-wipes-scented-flip-top::standard",
+    "confidence": 0.6,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1858",
+    "itemNumber": "1858",
+    "productNameRaw": "Medline FitRight Aloe Personal Wipes Unscented, Soft Pack with Flip Top 100",
+    "genericTypeKey": "fitright-aloe-personal-wipes-unscented-flip-top",
+    "suggestedGroupKey": "fitright-aloe-personal-wipes-unscented-flip-top::standard",
+    "confidence": 0.6,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "7297",
+    "itemNumber": "7297",
+    "productNameRaw": "Bedding & Seating Support Daily Living Aids Medline Skintegrity Wound Cleanser 8 oz. Fast, thorough and gentle cleansing of wounds in all stages",
+    "genericTypeKey": "bedding-seating-support-living-aids-skintegrity-wound",
+    "suggestedGroupKey": "bedding-seating-support-living-aids-skintegrity-wound::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "6006",
+    "itemNumber": "6006",
+    "productNameRaw": "Medline Contoured Lumbar Cushion Premium foam. Ideal for wheelchairs, car, home, office. Firm support. 14” x 13”.",
+    "genericTypeKey": "contoured-lumbar-cushion-foam-ideal-wheelchairs-car",
+    "suggestedGroupKey": "contoured-lumbar-cushion-foam-ideal-wheelchairs-car::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "6166",
+    "itemNumber": "6166",
+    "productNameRaw": "Medline Rubber Bath Mat Suction cups on bottom. 13.4” x 29”",
+    "genericTypeKey": "rubber-bath-mat-suction-cups-bottom-x",
+    "suggestedGroupKey": "rubber-bath-mat-suction-cups-bottom-x::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "5001",
+    "itemNumber": "5001",
+    "productNameRaw": "Medline 24-Inch Knurled Chrome Grab Bar Mounts directly to wall with included hardware. 300 lb. capacity.",
+    "genericTypeKey": "24-inch-knurled-chrome-grab-bar-mounts-directly",
+    "suggestedGroupKey": "24-inch-knurled-chrome-grab-bar-mounts-directly::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "6047",
+    "itemNumber": "6047",
+    "productNameRaw": "Medline Shower Chair with Arms and Back Helps provide extra stability while bathing. 13.5”D seat. 350 lb. weight cap.",
+    "genericTypeKey": "shower-chair-arms-back-helps-provide-stability",
+    "suggestedGroupKey": "shower-chair-arms-back-helps-provide-stability::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "7119",
+    "itemNumber": "7119",
+    "productNameRaw": "Medication Aids Exercise & Strength Training Medline Curved Grip Plastic Shoehorn 17-inches long.",
+    "genericTypeKey": "medication-aids-exercise-strength-training-curved-grip",
+    "suggestedGroupKey": "medication-aids-exercise-strength-training-curved-grip::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "2126",
+    "itemNumber": "2126",
+    "productNameRaw": "Medline Pistol Grip Reacher Extends your reach by 2 feet to grasp lightweight objects. 32” long.",
+    "genericTypeKey": "pistol-grip-reacher-extends-your-reach-by",
+    "suggestedGroupKey": "pistol-grip-reacher-extends-your-reach-by::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1984",
+    "itemNumber": "1984",
+    "productNameRaw": "Medline Pill Cutter and Crusher Compact size is great for travel. Plastic and stainless steel.",
+    "genericTypeKey": "pill-cutter-crusher-compact-size-is-great",
+    "suggestedGroupKey": "pill-cutter-crusher-compact-size-is-great::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1091",
+    "itemNumber": "1091",
+    "productNameRaw": "Medline 7-Day Pill Reminder Organizer 4 compartments for each day of the week. 7.5” x 4.25” x 1.1”.",
+    "genericTypeKey": "7-day-pill-reminder-organizer-compartments-each-day",
+    "suggestedGroupKey": "7-day-pill-reminder-organizer-compartments-each-day::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1073",
+    "itemNumber": "1073",
+    "productNameRaw": "Medline 70% Isopropyl Alcohol 16 oz. Topical first aid essential.",
+    "genericTypeKey": "70%-isopropyl-alcohol-topical-first-aid-essential",
+    "suggestedGroupKey": "70%-isopropyl-alcohol-topical-first-aid-essential::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "6556",
+    "itemNumber": "6556",
+    "productNameRaw": "Medline Sterile Saline Wound Wash 7.1 oz. Gently cleanses minor cuts, scrapes and burns.",
+    "genericTypeKey": "sterile-saline-wound-wash-gently-cleanses-minor",
+    "suggestedGroupKey": "sterile-saline-wound-wash-gently-cleanses-minor::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "3731",
+    "itemNumber": "3731",
+    "productNameRaw": "Home Essentials Medline Digital Hearing Amplifier Battery-powered, behind-the-ear style with 4-level volume control.",
+    "genericTypeKey": "home-essentials-digital-hearing-amplifier-battery-powered-behind-the-ear",
+    "suggestedGroupKey": "home-essentials-digital-hearing-amplifier-battery-powered-behind-the-ear::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1327",
+    "itemNumber": "1327",
+    "productNameRaw": "Medline Premium Female Urinal Translucent plastic.",
+    "genericTypeKey": "female-urinal-translucent-plastic",
+    "suggestedGroupKey": "female-urinal-translucent-plastic::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1328",
+    "itemNumber": "1328",
+    "productNameRaw": "Medline Supreme Male Urinal Holds 32 oz./1,000 mL.",
+    "genericTypeKey": "supreme-male-urinal-holds-/1",
+    "suggestedGroupKey": "supreme-male-urinal-holds-/1::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "2033",
+    "itemNumber": "2033",
+    "productNameRaw": "Medline ActivICE Topical Pain Reliever Roll-On 3oz. Fast-acting muscle ache relief. Compare to the active ingredients in Biofreeze.",
+    "genericTypeKey": "activice-topical-pain-reliever-roll-on-3oz-fast-acting",
+    "suggestedGroupKey": "activice-topical-pain-reliever-roll-on-3oz-fast-acting::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1237",
+    "itemNumber": "1237",
+    "productNameRaw": "Medline Pure & Gentle Saline Enema Laxative 4.5 oz. Ready-to-use, soft squeeze bottle with lubricated comfort tip. Single use.",
+    "genericTypeKey": "pure-gentle-saline-enema-laxative-ready-to-use-squeeze",
+    "suggestedGroupKey": "pure-gentle-saline-enema-laxative-ready-to-use-squeeze::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "5013",
+    "itemNumber": "5013",
+    "productNameRaw": "Walkers & Rollators Medline Folding T-Handle Aluminum Cane Compact folding design fits into a purse, suitcase. Weighs only 1 lb. yet supports 250 lbs.",
+    "genericTypeKey": "walkers-rollators-folding-t-handle-aluminum-cane-compact",
+    "suggestedGroupKey": "walkers-rollators-folding-t-handle-aluminum-cane-compact::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1103",
+    "itemNumber": "1103",
+    "productNameRaw": "Medline FitRight Aloe Personal Wipes Gentle aloe-based formula. Standard weight. 8” x 10”. Scented.",
+    "genericTypeKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard",
+    "suggestedGroupKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1858",
+    "itemNumber": "1858",
+    "productNameRaw": "Medline FitRight Aloe Personal Wipes Gentle aloe-based formula. Standard weight. 8” x 10”. Unscented.",
+    "genericTypeKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard",
+    "suggestedGroupKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "2098",
+    "itemNumber": "2098",
+    "productNameRaw": "Medline Denture Container with Lid Aqua with clear lid. 8 oz.",
+    "genericTypeKey": "denture-container-lid-aqua-clear-lid",
+    "suggestedGroupKey": "denture-container-lid-aqua-clear-lid::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "3436",
+    "itemNumber": "3436",
+    "productNameRaw": "Medline Remedy Clinical Lip Balm Soothes and protects with shea butter, aloe, botanicals and jojoba oil. Citrus flavor.",
+    "genericTypeKey": "remedy-clinical-lip-balm-soothes-protects-shea",
+    "suggestedGroupKey": "remedy-clinical-lip-balm-soothes-protects-shea::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "3605",
+    "itemNumber": "3605",
+    "productNameRaw": "Face Covering Braces & Supports Medline ASTM Level 1 3-Ply Face Mask Lightweight, medical-grade mask with ear loops. Blue.",
+    "genericTypeKey": "face-covering-braces-supports-astm-level-3-ply",
+    "suggestedGroupKey": "face-covering-braces-supports-astm-level-3-ply::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1536",
+    "itemNumber": "1536",
+    "productNameRaw": "Medline Wraparound Wrist Support Fits right or left wrist. One size fits most.",
+    "genericTypeKey": "wraparound-wrist-support-fits-right-or-left",
+    "suggestedGroupKey": "wraparound-wrist-support-fits-right-or-left::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "7179",
+    "itemNumber": "7179",
+    "productNameRaw": "80% cotton, 15% polyester, 5% spandex. White. Hot & Cold Therapies Medline Accu-Therm Instant Heavyweight Jr. Cold Pack Fold and shake to active. 6” x 10”.",
+    "genericTypeKey": "80%-cotton-15%-polyester-5%-spandex-white",
+    "suggestedGroupKey": "80%-cotton-15%-polyester-5%-spandex-white::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  },
+  {
+    "sku": "1915",
+    "itemNumber": "1915",
+    "productNameRaw": "Medline Reusable English-Style Ice Bag Blue cloth covering stays dry during use. 7” long.",
+    "genericTypeKey": "reusable-english-style-ice-bag-blue-cloth-covering",
+    "suggestedGroupKey": "reusable-english-style-ice-bag-blue-cloth-covering::standard",
+    "confidence": 0.68,
+    "reason": "low_confidence"
+  }
+]

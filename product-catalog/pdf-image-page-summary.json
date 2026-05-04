@@ -1,0 +1,299 @@
+[
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 1,
+    "sectionCount": 1,
+    "rowCount": 10,
+    "imageCount": 7,
+    "pairCount": 7,
+    "confidence": 0.7
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 2,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 10,
+    "pairCount": 10,
+    "confidence": 0.8333333333333334
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 3,
+    "sectionCount": 1,
+    "rowCount": 8,
+    "imageCount": 12,
+    "pairCount": 0,
+    "confidence": 0.4666666666666666
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 4,
+    "sectionCount": 2,
+    "rowCount": 7,
+    "imageCount": 10,
+    "pairCount": 7,
+    "confidence": 0.7
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 5,
+    "sectionCount": 1,
+    "rowCount": 10,
+    "imageCount": 7,
+    "pairCount": 7,
+    "confidence": 0.7
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 6,
+    "sectionCount": 2,
+    "rowCount": 11,
+    "imageCount": 8,
+    "pairCount": 8,
+    "confidence": 0.7272727272727273
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 7,
+    "sectionCount": 1,
+    "rowCount": 11,
+    "imageCount": 11,
+    "pairCount": 11,
+    "confidence": 1
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 8,
+    "sectionCount": 2,
+    "rowCount": 11,
+    "imageCount": 11,
+    "pairCount": 11,
+    "confidence": 1
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 9,
+    "sectionCount": 1,
+    "rowCount": 10,
+    "imageCount": 11,
+    "pairCount": 10,
+    "confidence": 0.9390909090909091
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 10,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 10,
+    "pairCount": 10,
+    "confidence": 0.8333333333333334
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 11,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 12,
+    "pairCount": 12,
+    "confidence": 1
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 12,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 12,
+    "pairCount": 12,
+    "confidence": 1
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 13,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 11,
+    "pairCount": 11,
+    "confidence": 0.9466666666666667
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 14,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 11,
+    "pairCount": 11,
+    "confidence": 0.9466666666666667
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 15,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 11,
+    "pairCount": 11,
+    "confidence": 0.9466666666666667
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 16,
+    "sectionCount": 2,
+    "rowCount": 12,
+    "imageCount": 11,
+    "pairCount": 11,
+    "confidence": 0.9466666666666667
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 17,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 12,
+    "pairCount": 12,
+    "confidence": 1
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 18,
+    "sectionCount": 2,
+    "rowCount": 11,
+    "imageCount": 11,
+    "pairCount": 11,
+    "confidence": 1
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 19,
+    "sectionCount": 1,
+    "rowCount": 10,
+    "imageCount": 9,
+    "pairCount": 9,
+    "confidence": 0.93
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 20,
+    "sectionCount": 1,
+    "rowCount": 11,
+    "imageCount": 8,
+    "pairCount": 8,
+    "confidence": 0.7272727272727273
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 21,
+    "sectionCount": 1,
+    "rowCount": 11,
+    "imageCount": 10,
+    "pairCount": 10,
+    "confidence": 0.9390909090909091
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 22,
+    "sectionCount": 2,
+    "rowCount": 11,
+    "imageCount": 11,
+    "pairCount": 11,
+    "confidence": 1
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 23,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 9,
+    "pairCount": 9,
+    "confidence": 0.75
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 24,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 11,
+    "pairCount": 11,
+    "confidence": 0.9466666666666667
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 25,
+    "sectionCount": 1,
+    "rowCount": 10,
+    "imageCount": 12,
+    "pairCount": 10,
+    "confidence": 0.8333333333333334
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 26,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 9,
+    "pairCount": 9,
+    "confidence": 0.75
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 27,
+    "sectionCount": 1,
+    "rowCount": 4,
+    "imageCount": 12,
+    "pairCount": 0,
+    "confidence": 0
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 28,
+    "sectionCount": 1,
+    "rowCount": 2,
+    "imageCount": 11,
+    "pairCount": 0,
+    "confidence": 0
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 29,
+    "sectionCount": 1,
+    "rowCount": 10,
+    "imageCount": 12,
+    "pairCount": 10,
+    "confidence": 0.8333333333333334
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 30,
+    "sectionCount": 1,
+    "rowCount": 10,
+    "imageCount": 10,
+    "pairCount": 10,
+    "confidence": 1
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 31,
+    "sectionCount": 1,
+    "rowCount": 12,
+    "imageCount": 10,
+    "pairCount": 10,
+    "confidence": 0.8333333333333334
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 32,
+    "sectionCount": 1,
+    "rowCount": 11,
+    "imageCount": 12,
+    "pairCount": 11,
+    "confidence": 0.9466666666666667
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "page": 33,
+    "sectionCount": 1,
+    "rowCount": 9,
+    "imageCount": 11,
+    "pairCount": 9,
+    "confidence": 0.8181818181818182
+  }
+]

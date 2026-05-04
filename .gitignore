@@ -1,0 +1,24 @@
+# dependencies
+/node_modules
+
+# Next.js
+/.next/
+/out/
+
+# env & secrets (never commit)
+.env
+.env*.local
+
+# debug / OS
+npm-debug.log*
+.DS_Store
+
+# Vercel
+.vercel
+
+# IDE / tooling (optional local config)
+.idea/
+.cursor/
+
+# TypeScript build info (local incremental cache)
+*.tsbuildinfo

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Catalog — PPHP/ISNP OTC</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --border: #e3e6eb;
+    --text: #1d2330;
+    --muted: #6b7280;
+    --accent: #0b6ea8;
+    --accent-soft: #e6f1f8;
+    --warn-bg: #fff5e6;
+    --warn-border: #f1b37a;
+    --err-bg: #fdecec;
+    --err-border: #e87878;
+    --ok: #2e9364;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+  }
+  header h1 { margin: 0; font-size: 18px; font-weight: 600; }
+  header .meta { color: var(--muted); font-size: 12px; }
+  header .actions { margin-left: auto; display: flex; gap: 8px; }
+  button, .btn {
+    font: inherit;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text);
+    text-decoration: none;
+    display: inline-block;
+  }
+  button:hover, .btn:hover { background: var(--accent-soft); border-color: var(--accent); }
+  .toolbar {
+    padding: 12px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .toolbar input[type="search"],
+  .toolbar select {
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font: inherit;
+    background: #fff;
+  }
+  .toolbar input[type="search"] { min-width: 260px; }
+  .layout { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 110px); }
+  nav.sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 16px;
+    overflow-y: auto;
+    max-height: calc(100vh - 110px);
+    position: sticky;
+    top: 110px;
+  }
+  nav.sidebar h3 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; }
+  nav.sidebar ul { list-style: none; padding: 0; margin: 0 0 16px; }
+  nav.sidebar li { margin: 2px 0; }
+  nav.sidebar a {
+    display: flex; justify-content: space-between;
+    padding: 5px 8px; border-radius: 4px;
+    color: var(--text); text-decoration: none;
+    font-size: 13px;
+  }
+  nav.sidebar a:hover { background: var(--accent-soft); }
+  nav.sidebar a.active { background: var(--accent); color: white; }
+  nav.sidebar a .count { color: var(--muted); font-size: 11px; }
+  nav.sidebar a.active .count { color: #cfe4f1; }
+  nav.sidebar .sub { margin-left: 10px; border-left: 1px solid var(--border); padding-left: 8px; }
+  main { padding: 16px 24px 40px; }
+  .category-header { margin: 8px 0 16px; }
+  .category-header h2 { margin: 0 0 4px; font-size: 20px; }
+  .category-header .sub { color: var(--muted); font-size: 13px; }
+  .group-label {
+    margin: 18px 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(11,110,168,0.08); }
+  .thumb {
+    aspect-ratio: 1 / 1;
+    background: #fafbfc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .thumb .no-image {
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
+    padding: 16px;
+  }
+  .thumb .match-badge {
+    position: absolute;
+    top: 6px; right: 6px;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.92);
+    border: 1px solid var(--border);
+  }
+  .match-badge.exact { color: var(--ok); border-color: #c5e5d3; }
+  .match-badge.fuzzy { color: #a4701a; border-color: var(--warn-border); background: var(--warn-bg); }
+  .match-badge.missing { color: #a93232; border-color: var(--err-border); background: var(--err-bg); }
+  .card .body {
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+  .card .sku { font-family: ui-monospace, Menlo, Consolas, monospace; color: var(--accent); font-size: 11px; font-weight: 600; }
+  .card .name { font-weight: 600; font-size: 13px; line-height: 1.3; }
+  .card .desc { color: var(--muted); font-size: 11px; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .card .foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 12px;
+    border-top: 1px solid var(--border);
+    background: #fafbfc;
+  }
+  .price { font-weight: 600; }
+  .copy {
+    font-size: 11px;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--muted);
+  }
+  .copy:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Detail modal */
+  .modal-bg {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 100; align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: 10px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .modal .img-panel { background: #fafbfc; padding: 24px; display: flex; align-items: center; justify-content: center; border-right: 1px solid var(--border); }
+  .modal .img-panel img { max-width: 100%; max-height: 500px; object-fit: contain; }
+  .modal .info-panel { padding: 24px; position: relative; }
+  .modal .close { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--muted); }
+  .modal .row { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding: 6px 0; font-size: 13px; }
+  .modal .row .k { color: var(--muted); }
+  .modal .row .v { font-weight: 500; text-align: right; word-break: break-all; }
+  .modal h2 { margin: 0 0 4px; font-size: 18px; }
+  .modal .cat { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
+  .modal .desc-full { margin: 12px 0; line-height: 1.5; }
+
+  .empty { text-align: center; color: var(--muted); padding: 60px 20px; }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.sidebar { position: static; border-right: none; border-bottom: 1px solid var(--border); max-height: none; }
+    .modal { grid-template-columns: 1fr; }
+    .modal .img-panel { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>PPHP/ISNP OTC Product Catalog</h1>
+    <div class="meta" id="summary">loading…</div>
+  </div>
+  <div class="actions">
+    <a class="btn" href="products.json" download>Download JSON</a>
+    <a class="btn" href="products.csv" download>Download CSV</a>
+  </div>
+</header>
+
+<div class="toolbar">
+  <input type="search" id="search" placeholder="Search SKU, name, description…">
+  <select id="matchFilter">
+    <option value="">All images</option>
+    <option value="exact">Exact image match</option>
+    <option value="fuzzy">Fuzzy / substituted match</option>
+    <option value="missing">Missing image</option>
+  </select>
+  <span id="resultCount" class="meta"></span>
+</div>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main id="main"></main>
+</div>
+
+<div class="modal-bg" id="modal">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script src="products.js"></script>
+<script>
+let PRODUCTS = [];
+let activeCat1 = 'ALL';
+let activeCat2 = null;
+
+async function load() {
+  // Data is embedded at the bottom of this file as window.__PRODUCTS__
+  // (fetch() doesn't work when the HTML is opened via file:// in most browsers)
+  PRODUCTS = window.__PRODUCTS__ || [];
+  const imgCount = PRODUCTS.filter(p => p.image).length;
+  const missing = PRODUCTS.length - imgCount;
+  document.getElementById('summary').textContent =
+    `${PRODUCTS.length} products • ${imgCount} with images • ${missing} missing`;
+  buildSidebar();
+  render();
+}
+
+function matchClass(p) {
+  if (!p.image) return 'missing';
+  return p.matchType === 'exact' ? 'exact' : 'fuzzy';
+}
+
+function buildSidebar() {
+  const tree = {};
+  for (const p of PRODUCTS) {
+    tree[p.cat1] = tree[p.cat1] || {};
+    tree[p.cat1][p.cat2] = (tree[p.cat1][p.cat2] || 0) + 1;
+  }
+  const sb = document.getElementById('sidebar');
+  let html = `<h3>Categories</h3><ul>
+    <li><a href="#" data-c1="ALL" class="${activeCat1==='ALL'?'active':''}">
+      All products <span class="count">${PRODUCTS.length}</span></a></li>`;
+  for (const c1 of Object.keys(tree).sort()) {
+    const total = Object.values(tree[c1]).reduce((a,b) => a+b, 0);
+    const activeC1 = activeCat1 === c1;
+    html += `<li><a href="#" data-c1="${c1}" class="${activeC1?'active':''}">
+      ${c1} <span class="count">${total}</span></a>`;
+    if (activeC1) {
+      html += `<ul class="sub"><li><a href="#" data-c1="${c1}" data-c2="" class="${!activeCat2?'active':''}">All ${c1} <span class="count">${total}</span></a></li>`;
+      for (const c2 of Object.keys(tree[c1]).sort()) {
+        const a = activeCat2 === c2 ? 'active' : '';
+        html += `<li><a href="#" data-c1="${c1}" data-c2="${c2}" class="${a}">${c2} <span class="count">${tree[c1][c2]}</span></a></li>`;
+      }
+      html += `</ul>`;
+    }
+    html += `</li>`;
+  }
+  html += `</ul>`;
+  sb.innerHTML = html;
+  sb.querySelectorAll('a').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    activeCat1 = a.dataset.c1;
+    activeCat2 = a.dataset.c2 || null;
+    buildSidebar();
+    render();
+  }));
+}
+
+function render() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const mf = document.getElementById('matchFilter').value;
+  let list = PRODUCTS.filter(p => {
+    if (activeCat1 !== 'ALL' && p.cat1 !== activeCat1) return false;
+    if (activeCat2 && p.cat2 !== activeCat2) return false;
+    if (mf) {
+      const mc = matchClass(p);
+      if (mf === 'fuzzy' && mc !== 'fuzzy') return false;
+      if (mf === 'exact' && mc !== 'exact') return false;
+      if (mf === 'missing' && mc !== 'missing') return false;
+    }
+    if (q) {
+      const hay = (p.sku + ' ' + p.name + ' ' + p.desc + ' ' + p.cat1 + ' ' + p.cat2).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  list.sort((a,b) => a.sortId.localeCompare(b.sortId));
+
+  document.getElementById('resultCount').textContent = `${list.length} result${list.length===1?'':'s'}`;
+
+  const main = document.getElementById('main');
+  if (list.length === 0) {
+    main.innerHTML = `<div class="empty">No products match.</div>`;
+    return;
+  }
+
+  // Group by cat2 if viewing all or full cat1
+  let html = '';
+  if (activeCat1 === 'ALL' || !activeCat2) {
+    const heading = activeCat1 === 'ALL' ? 'All products' : activeCat1;
+    html += `<div class="category-header"><h2>${heading}</h2><div class="sub">${list.length} of ${PRODUCTS.length} products</div></div>`;
+    // group by cat1 > cat2
+    const groups = {};
+    for (const p of list) {
+      const key = activeCat1 === 'ALL' ? `${p.cat1} › ${p.cat2}` : p.cat2;
+      groups[key] = groups[key] || [];
+      groups[key].push(p);
+    }
+    for (const g of Object.keys(groups).sort()) {
+      html += `<div class="group-label">${g}</div><div class="grid">`;
+      html += groups[g].map(cardHTML).join('');
+      html += `</div>`;
+    }
+  } else {
+    html += `<div class="category-header"><h2>${activeCat2}</h2><div class="sub">${activeCat1} • ${list.length} products</div></div>`;
+    html += `<div class="grid">${list.map(cardHTML).join('')}</div>`;
+  }
+  main.innerHTML = html;
+  main.querySelectorAll('.card').forEach(c => c.addEventListener('click', e => {
+    if (e.target.classList.contains('copy')) return;
+    openModal(c.dataset.sku);
+  }));
+  main.querySelectorAll('.copy').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(b.dataset.val);
+    b.textContent = 'Copied!';
+    setTimeout(() => b.textContent = 'Copy SKU', 1200);
+  }));
+}
+
+function cardHTML(p) {
+  const mc = matchClass(p);
+  const badge = mc === 'exact' ? 'exact match'
+              : mc === 'fuzzy' ? 'fuzzy match'
+              : 'no image';
+  const imgEl = p.image
+    ? `<img src="images/${encodeURIComponent(p.image)}" alt="${escapeHtml(p.name)}" loading="lazy">`
+    : `<div class="no-image">⚠ Image not found<br><small>${escapeHtml(p.refImage || 'n/a')}</small></div>`;
+  return `<div class="card" data-sku="${escapeHtml(p.sku)}">
+    <div class="thumb">${imgEl}<span class="match-badge ${mc}">${badge}</span></div>
+    <div class="body">
+      <div class="sku">${escapeHtml(p.sku)}</div>
+      <div class="name">${escapeHtml(p.name)}</div>
+      <div class="desc">${escapeHtml(p.desc)}</div>
+    </div>
+    <div class="foot">
+      <span class="price">${escapeHtml(p.price || '')}</span>
+      <button class="copy" data-val="${escapeHtml(p.sku)}">Copy SKU</button>
+    </div>
+  </div>`;
+}
+
+function openModal(sku) {
+  const p = PRODUCTS.find(x => x.sku === sku);
+  if (!p) return;
+  const mc = matchClass(p);
+  const imgEl = p.image
+    ? `<img src="images/${encodeURIComponent(p.image)}" alt="${escapeHtml(p.name)}">`
+    : `<div class="no-image">⚠ Image not found in Links folder</div>`;
+  const rows = [
+    ['SKU', p.sku],
+    ['Nbr', p.nbr],
+    ['Pkg', p.pkg],
+    ['Price', p.price],
+    ['Category', `${p.cat1} › ${p.cat2}`],
+    ['Sort ID', p.sortId],
+    ['Image file', p.image || '(none)'],
+    ['CSV reference', p.refImage || '(empty)'],
+    ['Match type', p.matchType || '(none)'],
+  ];
+  document.getElementById('modalContent').innerHTML = `
+    <div class="img-panel">${imgEl}</div>
+    <div class="info-panel">
+      <button class="close" onclick="closeModal()">×</button>
+      <h2>${escapeHtml(p.name)}</h2>
+      <div class="cat">${escapeHtml(p.cat1)} › ${escapeHtml(p.cat2)}</div>
+      <span class="match-badge ${mc}">${mc==='exact'?'exact match':mc==='fuzzy'?'fuzzy match':'no image'}</span>
+      <p class="desc-full">${escapeHtml(p.desc)}</p>
+      ${rows.map(([k,v]) => `<div class="row"><span class="k">${k}</span><span class="v">${escapeHtml(v||'')}</span></div>`).join('')}
+    </div>`;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function escapeHtml(s) {
+  return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('matchFilter').addEventListener('change', render);
+
+load();
+</script>
+</body>
+</html>

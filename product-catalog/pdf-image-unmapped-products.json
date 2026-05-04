@@ -1,0 +1,362 @@
+[
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6511",
+    "section": "First Aid",
+    "page": 1,
+    "rowOrderOnPage": 8,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7311",
+    "section": "First Aid",
+    "page": 1,
+    "rowOrderOnPage": 9,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7312",
+    "section": "First Aid",
+    "page": 1,
+    "rowOrderOnPage": 10,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6556",
+    "section": "First Aid",
+    "page": 2,
+    "rowOrderOnPage": 11,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7310",
+    "section": "First Aid",
+    "page": 2,
+    "rowOrderOnPage": 12,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "1068",
+    "section": "Tapes",
+    "page": 3,
+    "rowOrderOnPage": 1,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "1637",
+    "section": "Tapes",
+    "page": 3,
+    "rowOrderOnPage": 2,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "1929",
+    "section": "Tapes",
+    "page": 3,
+    "rowOrderOnPage": 3,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "1931",
+    "section": "Tapes",
+    "page": 3,
+    "rowOrderOnPage": 4,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "2101",
+    "section": "Tapes",
+    "page": 3,
+    "rowOrderOnPage": 5,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "4009",
+    "section": "Tapes",
+    "page": 3,
+    "rowOrderOnPage": 6,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6015",
+    "section": "Tapes",
+    "page": 3,
+    "rowOrderOnPage": 7,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6016",
+    "section": "Tapes",
+    "page": 3,
+    "rowOrderOnPage": 8,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6570",
+    "section": "Hearing Aids & Amplifiers",
+    "page": 5,
+    "rowOrderOnPage": 8,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7335",
+    "section": "Hearing Aids & Amplifiers",
+    "page": 5,
+    "rowOrderOnPage": 9,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7336",
+    "section": "Hearing Aids & Amplifiers",
+    "page": 5,
+    "rowOrderOnPage": 10,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "1415",
+    "section": "Incontinence",
+    "page": 6,
+    "rowOrderOnPage": 9,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "3465",
+    "section": "Hearing Aids & Amplifiers",
+    "page": 6,
+    "rowOrderOnPage": 10,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "8069",
+    "section": "Incontinence",
+    "page": 6,
+    "rowOrderOnPage": 11,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7413",
+    "section": "Medications Over the Counter",
+    "page": 10,
+    "rowOrderOnPage": 11,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7910",
+    "section": "Medications Over the Counter",
+    "page": 10,
+    "rowOrderOnPage": 12,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7692",
+    "section": "Pain & Fever Relief",
+    "page": 13,
+    "rowOrderOnPage": 12,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6707",
+    "section": "Pain & Fever Relief",
+    "page": 14,
+    "rowOrderOnPage": 12,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "8663",
+    "section": "Pain & Fever Relief",
+    "page": 15,
+    "rowOrderOnPage": 12,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6715",
+    "section": "Pain & Fever Relief",
+    "page": 16,
+    "rowOrderOnPage": 12,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "8466",
+    "section": "Mobility",
+    "page": 19,
+    "rowOrderOnPage": 10,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "3948",
+    "section": "Mobility",
+    "page": 20,
+    "rowOrderOnPage": 9,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "3963",
+    "section": "Mobility",
+    "page": 20,
+    "rowOrderOnPage": 10,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6863",
+    "section": "Mobility",
+    "page": 20,
+    "rowOrderOnPage": 11,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6883",
+    "section": "Foot Care",
+    "page": 21,
+    "rowOrderOnPage": 11,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6929",
+    "section": "Oral Care",
+    "page": 23,
+    "rowOrderOnPage": 10,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "6943",
+    "section": "Oral Care",
+    "page": 23,
+    "rowOrderOnPage": 11,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7655",
+    "section": "Oral Care",
+    "page": 23,
+    "rowOrderOnPage": 12,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7684",
+    "section": "Oral Care",
+    "page": 24,
+    "rowOrderOnPage": 12,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "5019",
+    "section": "Oral Care",
+    "page": 26,
+    "rowOrderOnPage": 10,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7056",
+    "section": "Oral Care",
+    "page": 26,
+    "rowOrderOnPage": 11,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7102",
+    "section": "Oral Care",
+    "page": 26,
+    "rowOrderOnPage": 12,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "1321",
+    "section": "Oral Care",
+    "page": 27,
+    "rowOrderOnPage": 1,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "1470",
+    "section": "Oral Care",
+    "page": 27,
+    "rowOrderOnPage": 2,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "1472",
+    "section": "Oral Care",
+    "page": 27,
+    "rowOrderOnPage": 3,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7084",
+    "section": "Oral Care",
+    "page": 27,
+    "rowOrderOnPage": 4,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "1312",
+    "section": "Oral Care",
+    "page": 28,
+    "rowOrderOnPage": 1,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7179",
+    "section": "Oral Care",
+    "page": 28,
+    "rowOrderOnPage": 2,
+    "reason": "low_page_confidence"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7258",
+    "section": "Oral Care",
+    "page": 31,
+    "rowOrderOnPage": 11,
+    "reason": "more_rows_than_images"
+  },
+  {
+    "sourceCatalog": "memorial-hermann-2026",
+    "sku": "7259",
+    "section": "Oral Care",
+    "page": 31,
+    "rowOrderOnPage": 12,
+    "reason": "more_rows_than_images"
+  }
+]

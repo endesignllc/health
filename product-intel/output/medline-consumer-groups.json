@@ -1,0 +1,1414 @@
+[
+  {
+    "groupKey": "3-in-1-bath-safety-kit::standard",
+    "genericTypeKey": "3-in-1-bath-safety-kit",
+    "lockedQualifiers": [],
+    "skuCount": 2,
+    "skus": [
+      "H130",
+      "606774"
+    ],
+    "minPriceCents": 13000,
+    "maxPriceCents": 13000,
+    "avgPriceCents": 13000
+  },
+  {
+    "groupKey": "handheld-shower-head::standard",
+    "genericTypeKey": "handheld-shower-head",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "H131"
+    ],
+    "minPriceCents": 2700,
+    "maxPriceCents": 2700,
+    "avgPriceCents": 2700
+  },
+  {
+    "groupKey": "round-shower-stool::standard",
+    "genericTypeKey": "round-shower-stool",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "H132"
+    ],
+    "minPriceCents": 3500,
+    "maxPriceCents": 3500,
+    "avgPriceCents": 3500
+  },
+  {
+    "groupKey": "cetirizine-antihistamine-allergy-tablets-10mg::strength:10 mg",
+    "genericTypeKey": "cetirizine-antihistamine-allergy-tablets-10mg",
+    "lockedQualifiers": [
+      "strength:10 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1012"
+    ],
+    "minPriceCents": 1200,
+    "maxPriceCents": 1200,
+    "avgPriceCents": 1200
+  },
+  {
+    "groupKey": "isopropyl-alcohol-prep-pad-x::standard",
+    "genericTypeKey": "isopropyl-alcohol-prep-pad-x",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1044"
+    ],
+    "minPriceCents": 600,
+    "maxPriceCents": 600,
+    "avgPriceCents": 600
+  },
+  {
+    "groupKey": "no-sting-burn-spray::standard",
+    "genericTypeKey": "no-sting-burn-spray",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "6008"
+    ],
+    "minPriceCents": 1000,
+    "maxPriceCents": 1000,
+    "avgPriceCents": 1000
+  },
+  {
+    "groupKey": "antiseptic-cleaning-spray-no-sting::standard",
+    "genericTypeKey": "antiseptic-cleaning-spray-no-sting",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "8482"
+    ],
+    "minPriceCents": 800,
+    "maxPriceCents": 800,
+    "avgPriceCents": 800
+  },
+  {
+    "groupKey": "sterile-saline-wound-wash-spray::standard",
+    "genericTypeKey": "sterile-saline-wound-wash-spray",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "6556"
+    ],
+    "minPriceCents": 1900,
+    "maxPriceCents": 1900,
+    "avgPriceCents": 1900
+  },
+  {
+    "groupKey": "sterile-conform-stretch-gauze-bandage-x::standard",
+    "genericTypeKey": "sterile-conform-stretch-gauze-bandage-x",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1929"
+    ],
+    "minPriceCents": 300,
+    "maxPriceCents": 300,
+    "avgPriceCents": 300
+  },
+  {
+    "groupKey": "transparent-adhesive-tape-x-yd::standard",
+    "genericTypeKey": "transparent-adhesive-tape-x-yd",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1066"
+    ],
+    "minPriceCents": 500,
+    "maxPriceCents": 500,
+    "avgPriceCents": 500
+  },
+  {
+    "groupKey": "fitright-incontinence-liner-x::standard",
+    "genericTypeKey": "fitright-incontinence-liner-x",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1108"
+    ],
+    "minPriceCents": 1900,
+    "maxPriceCents": 1900,
+    "avgPriceCents": 1900
+  },
+  {
+    "groupKey": "fitright-optifit-stretch-ultra-brief-med/reg::standard",
+    "genericTypeKey": "fitright-optifit-stretch-ultra-brief-med/reg",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1408"
+    ],
+    "minPriceCents": 2300,
+    "maxPriceCents": 2300,
+    "avgPriceCents": 2300
+  },
+  {
+    "groupKey": "fitright-optifit-stretch-ultra-brief-l/xl::size:L",
+    "genericTypeKey": "fitright-optifit-stretch-ultra-brief-l/xl",
+    "lockedQualifiers": [
+      "size:L"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1409"
+    ],
+    "minPriceCents": 2600,
+    "maxPriceCents": 2600,
+    "avgPriceCents": 2600
+  },
+  {
+    "groupKey": "fluff-polymer-underpad-heavy-absorbency-quilted-x::standard",
+    "genericTypeKey": "fluff-polymer-underpad-heavy-absorbency-quilted-x",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1475"
+    ],
+    "minPriceCents": 1000,
+    "maxPriceCents": 1000,
+    "avgPriceCents": 1000
+  },
+  {
+    "groupKey": "fluff-polymer-underpad-heavy-absorbency-x::standard",
+    "genericTypeKey": "fluff-polymer-underpad-heavy-absorbency-x",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1427"
+    ],
+    "minPriceCents": 900,
+    "maxPriceCents": 900,
+    "avgPriceCents": 900
+  },
+  {
+    "groupKey": "fitright-underpad-heavy-absorbency-x::standard",
+    "genericTypeKey": "fitright-underpad-heavy-absorbency-x",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1619"
+    ],
+    "minPriceCents": 1000,
+    "maxPriceCents": 1000,
+    "avgPriceCents": 1000
+  },
+  {
+    "groupKey": "super-wrapped-adult-toothbrush::standard",
+    "genericTypeKey": "super-wrapped-adult-toothbrush",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1163"
+    ],
+    "minPriceCents": 300,
+    "maxPriceCents": 300,
+    "avgPriceCents": 300
+  },
+  {
+    "groupKey": "wrapped-adult-toothbrush::standard",
+    "genericTypeKey": "wrapped-adult-toothbrush",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1883"
+    ],
+    "minPriceCents": 400,
+    "maxPriceCents": 400,
+    "avgPriceCents": 400
+  },
+  {
+    "groupKey": "sparkle-fresh-toothpaste::standard",
+    "genericTypeKey": "sparkle-fresh-toothpaste",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "4110"
+    ],
+    "minPriceCents": 300,
+    "maxPriceCents": 300,
+    "avgPriceCents": 300
+  },
+  {
+    "groupKey": "denture-container-lid::standard",
+    "genericTypeKey": "denture-container-lid",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "2098"
+    ],
+    "minPriceCents": 300,
+    "maxPriceCents": 300,
+    "avgPriceCents": 300
+  },
+  {
+    "groupKey": "digital-blood-pressure-monitor-univ-cuff::standard",
+    "genericTypeKey": "digital-blood-pressure-monitor-univ-cuff",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1099"
+    ],
+    "minPriceCents": 6500,
+    "maxPriceCents": 6500,
+    "avgPriceCents": 6500
+  },
+  {
+    "groupKey": "digital-blood-pressure-monitor-adult-cuff::standard",
+    "genericTypeKey": "digital-blood-pressure-monitor-adult-cuff",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "3952"
+    ],
+    "minPriceCents": 3900,
+    "maxPriceCents": 3900,
+    "avgPriceCents": 3900
+  },
+  {
+    "groupKey": "oral-digital-thermometer::standard",
+    "genericTypeKey": "oral-digital-thermometer",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1089"
+    ],
+    "minPriceCents": 600,
+    "maxPriceCents": 600,
+    "avgPriceCents": 600
+  },
+  {
+    "groupKey": "large-display-oral-digital-thermometer::size:large",
+    "genericTypeKey": "large-display-oral-digital-thermometer",
+    "lockedQualifiers": [
+      "size:large"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1088"
+    ],
+    "minPriceCents": 1100,
+    "maxPriceCents": 1100,
+    "avgPriceCents": 1100
+  },
+  {
+    "groupKey": "aspirin-enteric-coated-tablets::strength:81 mg",
+    "genericTypeKey": "aspirin-enteric-coated-tablets",
+    "lockedQualifiers": [
+      "strength:81 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1190"
+    ],
+    "minPriceCents": 800,
+    "maxPriceCents": 800,
+    "avgPriceCents": 800
+  },
+  {
+    "groupKey": "ibuprofen-tablets::strength:200 mg",
+    "genericTypeKey": "ibuprofen-tablets",
+    "lockedQualifiers": [
+      "strength:200 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "4201"
+    ],
+    "minPriceCents": 600,
+    "maxPriceCents": 600,
+    "avgPriceCents": 600
+  },
+  {
+    "groupKey": "activice-topical-pain-reliever-spray::standard",
+    "genericTypeKey": "activice-topical-pain-reliever-spray",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "2034"
+    ],
+    "minPriceCents": 1700,
+    "maxPriceCents": 1700,
+    "avgPriceCents": 1700
+  },
+  {
+    "groupKey": "ultrasoft-disposable-dry-cleansing-cloth-x::standard",
+    "genericTypeKey": "ultrasoft-disposable-dry-cleansing-cloth-x",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1723"
+    ],
+    "minPriceCents": 700,
+    "maxPriceCents": 700,
+    "avgPriceCents": 700
+  },
+  {
+    "groupKey": "fitright-aloe-quilted-personal-wipes-flip-top::standard",
+    "genericTypeKey": "fitright-aloe-quilted-personal-wipes-flip-top",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1719"
+    ],
+    "minPriceCents": 800,
+    "maxPriceCents": 800,
+    "avgPriceCents": 800
+  },
+  {
+    "groupKey": "fitright-aloe-personal-wipes-scented-flip-top::standard",
+    "genericTypeKey": "fitright-aloe-personal-wipes-scented-flip-top",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1103"
+    ],
+    "minPriceCents": 1000,
+    "maxPriceCents": 1000,
+    "avgPriceCents": 1000
+  },
+  {
+    "groupKey": "fitright-aloe-personal-wipes-unscented-flip-top::standard",
+    "genericTypeKey": "fitright-aloe-personal-wipes-unscented-flip-top",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1858"
+    ],
+    "minPriceCents": 1200,
+    "maxPriceCents": 1200,
+    "avgPriceCents": 1200
+  },
+  {
+    "groupKey": "vitamin-e-softgels::strength:90 mg",
+    "genericTypeKey": "vitamin-e-softgels",
+    "lockedQualifiers": [
+      "strength:90 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "2078"
+    ],
+    "minPriceCents": 800,
+    "maxPriceCents": 800,
+    "avgPriceCents": 800
+  },
+  {
+    "groupKey": "vitamin-e-softgels::strength:180 mg",
+    "genericTypeKey": "vitamin-e-softgels",
+    "lockedQualifiers": [
+      "strength:180 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1297"
+    ],
+    "minPriceCents": 1300,
+    "maxPriceCents": 1300,
+    "avgPriceCents": 1300
+  },
+  {
+    "groupKey": "flaxseed-oil-softgel-1000mg::strength:1000 mg",
+    "genericTypeKey": "flaxseed-oil-softgel-1000mg",
+    "lockedQualifiers": [
+      "strength:1000 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "3416"
+    ],
+    "minPriceCents": 800,
+    "maxPriceCents": 800,
+    "avgPriceCents": 800
+  },
+  {
+    "groupKey": "fish-oil-softgels::strength:1000 mg",
+    "genericTypeKey": "fish-oil-softgels",
+    "lockedQualifiers": [
+      "strength:1000 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "3378"
+    ],
+    "minPriceCents": 1500,
+    "maxPriceCents": 1500,
+    "avgPriceCents": 1500
+  },
+  {
+    "groupKey": "bedding-seating-support-living-aids-skintegrity-wound::standard",
+    "genericTypeKey": "bedding-seating-support-living-aids-skintegrity-wound",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "7297"
+    ],
+    "minPriceCents": 1000,
+    "maxPriceCents": 1000,
+    "avgPriceCents": 1000
+  },
+  {
+    "groupKey": "contoured-lumbar-cushion-foam-ideal-wheelchairs-car::standard",
+    "genericTypeKey": "contoured-lumbar-cushion-foam-ideal-wheelchairs-car",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "6006"
+    ],
+    "minPriceCents": 2400,
+    "maxPriceCents": 2400,
+    "avgPriceCents": 2400
+  },
+  {
+    "groupKey": "invalid-foam-ring-contoured-cushion-puncture-resistant-foam::standard",
+    "genericTypeKey": "invalid-foam-ring-contoured-cushion-puncture-resistant-foam",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "3377"
+    ],
+    "minPriceCents": 2600,
+    "maxPriceCents": 2600,
+    "avgPriceCents": 2600
+  },
+  {
+    "groupKey": "rubber-bath-mat-suction-cups-bottom-x::standard",
+    "genericTypeKey": "rubber-bath-mat-suction-cups-bottom-x",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "6166"
+    ],
+    "minPriceCents": 1600,
+    "maxPriceCents": 1600,
+    "avgPriceCents": 1600
+  },
+  {
+    "groupKey": "24-inch-knurled-chrome-grab-bar-mounts-directly::standard",
+    "genericTypeKey": "24-inch-knurled-chrome-grab-bar-mounts-directly",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "5001"
+    ],
+    "minPriceCents": 2300,
+    "maxPriceCents": 2300,
+    "avgPriceCents": 2300
+  },
+  {
+    "groupKey": "handheld-showerhead-kit-standard-spray-includes-diverter::standard",
+    "genericTypeKey": "handheld-showerhead-kit-standard-spray-includes-diverter",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "7507"
+    ],
+    "minPriceCents": 2800,
+    "maxPriceCents": 2800,
+    "avgPriceCents": 2800
+  },
+  {
+    "groupKey": "shower-chair-arms-back-helps-provide-stability::standard",
+    "genericTypeKey": "shower-chair-arms-back-helps-provide-stability",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "6047"
+    ],
+    "minPriceCents": 5350,
+    "maxPriceCents": 5350,
+    "avgPriceCents": 5350
+  },
+  {
+    "groupKey": "locking-raised-toilet-seat-arms-wide-contoured::standard",
+    "genericTypeKey": "locking-raised-toilet-seat-arms-wide-contoured",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "6043"
+    ],
+    "minPriceCents": 4300,
+    "maxPriceCents": 4300,
+    "avgPriceCents": 4300
+  },
+  {
+    "groupKey": "medication-aids-exercise-strength-training-curved-grip::standard",
+    "genericTypeKey": "medication-aids-exercise-strength-training-curved-grip",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "7119"
+    ],
+    "minPriceCents": 900,
+    "maxPriceCents": 900,
+    "avgPriceCents": 900
+  },
+  {
+    "groupKey": "pistol-grip-reacher-extends-your-reach-by::standard",
+    "genericTypeKey": "pistol-grip-reacher-extends-your-reach-by",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "2126"
+    ],
+    "minPriceCents": 2600,
+    "maxPriceCents": 2600,
+    "avgPriceCents": 2600
+  },
+  {
+    "groupKey": "pill-cutter-crusher-compact-size-is-great::standard",
+    "genericTypeKey": "pill-cutter-crusher-compact-size-is-great",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1984"
+    ],
+    "minPriceCents": 1200,
+    "maxPriceCents": 1200,
+    "avgPriceCents": 1200
+  },
+  {
+    "groupKey": "7-day-pill-reminder-organizer-compartments-each-day::standard",
+    "genericTypeKey": "7-day-pill-reminder-organizer-compartments-each-day",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1091"
+    ],
+    "minPriceCents": 1300,
+    "maxPriceCents": 1300,
+    "avgPriceCents": 1300
+  },
+  {
+    "groupKey": "7-day-pill-organizer-separate-color-coded-compartments-am/pm::size:L",
+    "genericTypeKey": "7-day-pill-organizer-separate-color-coded-compartments-am/pm",
+    "lockedQualifiers": [
+      "size:L"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1698"
+    ],
+    "minPriceCents": 1500,
+    "maxPriceCents": 1500,
+    "avgPriceCents": 1500
+  },
+  {
+    "groupKey": "dressings-gauze-elastic-bandages-hydrogen-peroxide-3%::standard",
+    "genericTypeKey": "dressings-gauze-elastic-bandages-hydrogen-peroxide-3%",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "3559"
+    ],
+    "minPriceCents": 600,
+    "maxPriceCents": 600,
+    "avgPriceCents": 600
+  },
+  {
+    "groupKey": "70%-isopropyl-alcohol-topical-first-aid-essential::standard",
+    "genericTypeKey": "70%-isopropyl-alcohol-topical-first-aid-essential",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1073"
+    ],
+    "minPriceCents": 700,
+    "maxPriceCents": 700,
+    "avgPriceCents": 700
+  },
+  {
+    "groupKey": "isopropyl-alcohol-prep-pads-medium-pad-saturated::size:medium",
+    "genericTypeKey": "isopropyl-alcohol-prep-pads-medium-pad-saturated",
+    "lockedQualifiers": [
+      "size:medium"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1044"
+    ],
+    "minPriceCents": 750,
+    "maxPriceCents": 750,
+    "avgPriceCents": 750
+  },
+  {
+    "groupKey": "sterile-saline-wound-wash-gently-cleanses-minor::standard",
+    "genericTypeKey": "sterile-saline-wound-wash-gently-cleanses-minor",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "6556"
+    ],
+    "minPriceCents": 1750,
+    "maxPriceCents": 1750,
+    "avgPriceCents": 1750
+  },
+  {
+    "groupKey": "conforming-stretch-gauze-bandage-x-1-ply-rayon::standard",
+    "genericTypeKey": "conforming-stretch-gauze-bandage-x-1-ply-rayon",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1929"
+    ],
+    "minPriceCents": 500,
+    "maxPriceCents": 500,
+    "avgPriceCents": 500
+  },
+  {
+    "groupKey": "sterile-cotton-gauze-bandage-gently-stretches-conform::standard",
+    "genericTypeKey": "sterile-cotton-gauze-bandage-gently-stretches-conform",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1068"
+    ],
+    "minPriceCents": 450,
+    "maxPriceCents": 450,
+    "avgPriceCents": 450
+  },
+  {
+    "groupKey": "woven-cotton-gauze-sponges-x-12-ply-gauze::standard",
+    "genericTypeKey": "woven-cotton-gauze-sponges-x-12-ply-gauze",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "4009"
+    ],
+    "minPriceCents": 750,
+    "maxPriceCents": 750,
+    "avgPriceCents": 750
+  },
+  {
+    "groupKey": "nonsterile-matrix-elastic-bandage-easy-wrap-x::standard",
+    "genericTypeKey": "nonsterile-matrix-elastic-bandage-easy-wrap-x",
+    "lockedQualifiers": [],
+    "skuCount": 2,
+    "skus": [
+      "1446",
+      "2101"
+    ],
+    "minPriceCents": 550,
+    "maxPriceCents": 600,
+    "avgPriceCents": 575
+  },
+  {
+    "groupKey": "home-essentials-digital-hearing-amplifier-battery-powered-behind-the-ear::standard",
+    "genericTypeKey": "home-essentials-digital-hearing-amplifier-battery-powered-behind-the-ear",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "3731"
+    ],
+    "minPriceCents": 2500,
+    "maxPriceCents": 2500,
+    "avgPriceCents": 2500
+  },
+  {
+    "groupKey": "female-urinal-translucent-plastic::standard",
+    "genericTypeKey": "female-urinal-translucent-plastic",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1327"
+    ],
+    "minPriceCents": 1600,
+    "maxPriceCents": 1600,
+    "avgPriceCents": 1600
+  },
+  {
+    "groupKey": "supreme-male-urinal-holds-/1::standard",
+    "genericTypeKey": "supreme-male-urinal-holds-/1",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1328"
+    ],
+    "minPriceCents": 1700,
+    "maxPriceCents": 1700,
+    "avgPriceCents": 1700
+  },
+  {
+    "groupKey": "digital-blood-pressure-monitor-stores-measurements-users::standard",
+    "genericTypeKey": "digital-blood-pressure-monitor-stores-measurements-users",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1099"
+    ],
+    "minPriceCents": 5300,
+    "maxPriceCents": 5300,
+    "avgPriceCents": 5300
+  },
+  {
+    "groupKey": "oximeters-touch-fingertip-pulse-oximeter-quickly-reads::size:large",
+    "genericTypeKey": "oximeters-touch-fingertip-pulse-oximeter-quickly-reads",
+    "lockedQualifiers": [
+      "size:large"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "6252"
+    ],
+    "minPriceCents": 3500,
+    "maxPriceCents": 3500,
+    "avgPriceCents": 3500
+  },
+  {
+    "groupKey": "infrared-talking-ear/forehead-thermometer-reading-just-second::standard",
+    "genericTypeKey": "infrared-talking-ear/forehead-thermometer-reading-just-second",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1100"
+    ],
+    "minPriceCents": 3500,
+    "maxPriceCents": 3500,
+    "avgPriceCents": 3500
+  },
+  {
+    "groupKey": "infrared-no-touch-forehead-thermometer-takes-body-surface::standard",
+    "genericTypeKey": "infrared-no-touch-forehead-thermometer-takes-body-surface",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1094"
+    ],
+    "minPriceCents": 5250,
+    "maxPriceCents": 5250,
+    "avgPriceCents": 5250
+  },
+  {
+    "groupKey": "oral-digital-thermometer-results-seconds-one-piece-snap-on::standard",
+    "genericTypeKey": "oral-digital-thermometer-results-seconds-one-piece-snap-on",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1089"
+    ],
+    "minPriceCents": 700,
+    "maxPriceCents": 700,
+    "avgPriceCents": 700
+  },
+  {
+    "groupKey": "bladder-pads-fitright-activedge-guards-men-protection::standard",
+    "genericTypeKey": "bladder-pads-fitright-activedge-guards-men-protection",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1411"
+    ],
+    "minPriceCents": 1900,
+    "maxPriceCents": 1900,
+    "avgPriceCents": 1900
+  },
+  {
+    "groupKey": "underpads-fitright-underpads-fluff/polymer-core-waterproof-backing::absorbency:moderate",
+    "genericTypeKey": "underpads-fitright-underpads-fluff/polymer-core-waterproof-backing",
+    "lockedQualifiers": [
+      "absorbency:moderate"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1615"
+    ],
+    "minPriceCents": 1050,
+    "maxPriceCents": 1050,
+    "avgPriceCents": 1050
+  },
+  {
+    "groupKey": "fitright-ultra-underpads-fluff/polymer-core-absorbency-odor::standard",
+    "genericTypeKey": "fitright-ultra-underpads-fluff/polymer-core-absorbency-odor",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1619"
+    ],
+    "minPriceCents": 1050,
+    "maxPriceCents": 1050,
+    "avgPriceCents": 1050
+  },
+  {
+    "groupKey": "pro-best-polymer-underpads-disposable-all-purpose-pad::standard",
+    "genericTypeKey": "pro-best-polymer-underpads-disposable-all-purpose-pad",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "4053"
+    ],
+    "minPriceCents": 6300,
+    "maxPriceCents": 6300,
+    "avgPriceCents": 6300
+  },
+  {
+    "groupKey": "disposable-deluxe-fluff-underpads-36x36-disposable-all-purpose::standard",
+    "genericTypeKey": "disposable-deluxe-fluff-underpads-36x36-disposable-all-purpose",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "3633"
+    ],
+    "minPriceCents": 5300,
+    "maxPriceCents": 5300,
+    "avgPriceCents": 5300
+  },
+  {
+    "groupKey": "sofnit-reusable-twill-underpad-absorbent-55%-cotton/45%::standard",
+    "genericTypeKey": "sofnit-reusable-twill-underpad-absorbent-55%-cotton/45%",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1614"
+    ],
+    "minPriceCents": 1300,
+    "maxPriceCents": 1300,
+    "avgPriceCents": 1300
+  },
+  {
+    "groupKey": "fitright-activedge-underwear-women-odor-leak-protection::strength:9 g",
+    "genericTypeKey": "fitright-activedge-underwear-women-odor-leak-protection",
+    "lockedQualifiers": [
+      "strength:9 g"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "6836"
+    ],
+    "minPriceCents": 900,
+    "maxPriceCents": 900,
+    "avgPriceCents": 900
+  },
+  {
+    "groupKey": "allergy-sinus-cetirizine-allergy-relief-tablets-24-hour::strength:10 mg",
+    "genericTypeKey": "allergy-sinus-cetirizine-allergy-relief-tablets-24-hour",
+    "lockedQualifiers": [
+      "strength:10 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1866"
+    ],
+    "minPriceCents": 900,
+    "maxPriceCents": 900,
+    "avgPriceCents": 900
+  },
+  {
+    "groupKey": "cetirizine-allergy-relief-tablets-24-hour-relief-compare::strength:10 mg",
+    "genericTypeKey": "cetirizine-allergy-relief-tablets-24-hour-relief-compare",
+    "lockedQualifiers": [
+      "strength:10 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1012"
+    ],
+    "minPriceCents": 1200,
+    "maxPriceCents": 1200,
+    "avgPriceCents": 1200
+  },
+  {
+    "groupKey": "remedy-clinical-antifungal-ointment-2%-miconazole-nitrate::size:S",
+    "genericTypeKey": "remedy-clinical-antifungal-ointment-2%-miconazole-nitrate",
+    "lockedQualifiers": [
+      "size:S"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "3707"
+    ],
+    "minPriceCents": 1100,
+    "maxPriceCents": 1100,
+    "avgPriceCents": 1100
+  },
+  {
+    "groupKey": "acetaminophen-tablets-pain-reliever-fever-reducer::strength:325 mg",
+    "genericTypeKey": "acetaminophen-tablets-pain-reliever-fever-reducer",
+    "lockedQualifiers": [
+      "strength:325 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "7424"
+    ],
+    "minPriceCents": 1100,
+    "maxPriceCents": 1100,
+    "avgPriceCents": 1100
+  },
+  {
+    "groupKey": "acetaminophen-tablets-pain-reliever-fever-reducer::strength:500 mg",
+    "genericTypeKey": "acetaminophen-tablets-pain-reliever-fever-reducer",
+    "lockedQualifiers": [
+      "strength:500 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "7425"
+    ],
+    "minPriceCents": 1200,
+    "maxPriceCents": 1200,
+    "avgPriceCents": 1200
+  },
+  {
+    "groupKey": "low-dose-chewable-aspirin-tablets-compare-active-ingredient::strength:81 mg",
+    "genericTypeKey": "low-dose-chewable-aspirin-tablets-compare-active-ingredient",
+    "lockedQualifiers": [
+      "strength:81 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1715"
+    ],
+    "minPriceCents": 550,
+    "maxPriceCents": 550,
+    "avgPriceCents": 550
+  },
+  {
+    "groupKey": "strength-pain-relief-tablets-acetaminophen-aspirin-caffeine::strength:250 mg",
+    "genericTypeKey": "strength-pain-relief-tablets-acetaminophen-aspirin-caffeine",
+    "lockedQualifiers": [
+      "strength:250 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1207"
+    ],
+    "minPriceCents": 950,
+    "maxPriceCents": 950,
+    "avgPriceCents": 950
+  },
+  {
+    "groupKey": "low-dose-enteric-aspirin-tablets-coated-easier-swallowing::strength:81 mg",
+    "genericTypeKey": "low-dose-enteric-aspirin-tablets-coated-easier-swallowing",
+    "lockedQualifiers": [
+      "strength:81 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1190"
+    ],
+    "minPriceCents": 900,
+    "maxPriceCents": 900,
+    "avgPriceCents": 900
+  },
+  {
+    "groupKey": "burn-spray-aloe-vera-no-sting-pain-relieving::standard",
+    "genericTypeKey": "burn-spray-aloe-vera-no-sting-pain-relieving",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "6008"
+    ],
+    "minPriceCents": 1000,
+    "maxPriceCents": 1000,
+    "avgPriceCents": 1000
+  },
+  {
+    "groupKey": "ibuprofen-tablets-nsaid-pain-reliever-fever-reducer::strength:200 mg",
+    "genericTypeKey": "ibuprofen-tablets-nsaid-pain-reliever-fever-reducer",
+    "lockedQualifiers": [
+      "strength:200 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "4201"
+    ],
+    "minPriceCents": 750,
+    "maxPriceCents": 750,
+    "avgPriceCents": 750
+  },
+  {
+    "groupKey": "activice-topical-pain-reliever-roll-on-3oz-fast-acting::standard",
+    "genericTypeKey": "activice-topical-pain-reliever-roll-on-3oz-fast-acting",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "2033"
+    ],
+    "minPriceCents": 1400,
+    "maxPriceCents": 1400,
+    "avgPriceCents": 1400
+  },
+  {
+    "groupKey": "activice-topical-pain-reliever-gel-fast-acting-muscle::standard",
+    "genericTypeKey": "activice-topical-pain-reliever-gel-fast-acting-muscle",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "2221"
+    ],
+    "minPriceCents": 1300,
+    "maxPriceCents": 1300,
+    "avgPriceCents": 1300
+  },
+  {
+    "groupKey": "activice-topical-pain-reliever-spray-fast-acting-muscle::standard",
+    "genericTypeKey": "activice-topical-pain-reliever-spray-fast-acting-muscle",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "2034"
+    ],
+    "minPriceCents": 1550,
+    "maxPriceCents": 1550,
+    "avgPriceCents": 1550
+  },
+  {
+    "groupKey": "naproxen-sodium-tablets-relief-up-hours-compare::strength:220 mg",
+    "genericTypeKey": "naproxen-sodium-tablets-relief-up-hours-compare",
+    "lockedQualifiers": [
+      "strength:220 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1205"
+    ],
+    "minPriceCents": 1250,
+    "maxPriceCents": 1250,
+    "avgPriceCents": 1250
+  },
+  {
+    "groupKey": "pure-gentle-saline-enema-laxative-ready-to-use-squeeze::standard",
+    "genericTypeKey": "pure-gentle-saline-enema-laxative-ready-to-use-squeeze",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1237"
+    ],
+    "minPriceCents": 600,
+    "maxPriceCents": 600,
+    "avgPriceCents": 600
+  },
+  {
+    "groupKey": "senna-natural-laxative-tablets-compare-active-ingredients::strength:8.6 mg",
+    "genericTypeKey": "senna-natural-laxative-tablets-compare-active-ingredients",
+    "lockedQualifiers": [
+      "strength:8.6 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1234"
+    ],
+    "minPriceCents": 800,
+    "maxPriceCents": 800,
+    "avgPriceCents": 800
+  },
+  {
+    "groupKey": "walkers-rollators-folding-t-handle-aluminum-cane-compact::standard",
+    "genericTypeKey": "walkers-rollators-folding-t-handle-aluminum-cane-compact",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "5013"
+    ],
+    "minPriceCents": 2100,
+    "maxPriceCents": 2100,
+    "avgPriceCents": 2100
+  },
+  {
+    "groupKey": "basic-steel-rollator-padded-backrest-x-seat::standard",
+    "genericTypeKey": "basic-steel-rollator-padded-backrest-x-seat",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "6044"
+    ],
+    "minPriceCents": 6300,
+    "maxPriceCents": 6300,
+    "avgPriceCents": 6300
+  },
+  {
+    "groupKey": "spectrum-hand-sanitizer-gel-moisturizing-70%-ethyl::standard",
+    "genericTypeKey": "spectrum-hand-sanitizer-gel-moisturizing-70%-ethyl",
+    "lockedQualifiers": [],
+    "skuCount": 2,
+    "skus": [
+      "8466",
+      "4170"
+    ],
+    "minPriceCents": 600,
+    "maxPriceCents": 900,
+    "avgPriceCents": 750
+  },
+  {
+    "groupKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard::standard",
+    "genericTypeKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard",
+    "lockedQualifiers": [],
+    "skuCount": 2,
+    "skus": [
+      "1103",
+      "1858"
+    ],
+    "minPriceCents": 1000,
+    "maxPriceCents": 1200,
+    "avgPriceCents": 1100
+  },
+  {
+    "groupKey": "remedy-clinical-barrier-cream-cloths-botanical-6%::standard",
+    "genericTypeKey": "remedy-clinical-barrier-cream-cloths-botanical-6%",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1466"
+    ],
+    "minPriceCents": 600,
+    "maxPriceCents": 600,
+    "avgPriceCents": 600
+  },
+  {
+    "groupKey": "fitright-panty-liners-very-light-absorbency-individually::absorbency:light",
+    "genericTypeKey": "fitright-panty-liners-very-light-absorbency-individually",
+    "lockedQualifiers": [
+      "absorbency:light"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "6157"
+    ],
+    "minPriceCents": 1100,
+    "maxPriceCents": 1100,
+    "avgPriceCents": 1100
+  },
+  {
+    "groupKey": "gel-hallux-bunion-guard-washable-reusable-hypoallergenic::standard",
+    "genericTypeKey": "gel-hallux-bunion-guard-washable-reusable-hypoallergenic",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1440"
+    ],
+    "minPriceCents": 900,
+    "maxPriceCents": 900,
+    "avgPriceCents": 900
+  },
+  {
+    "groupKey": "adjustable-heel-lift-layers-foam-fits-right::size:medium",
+    "genericTypeKey": "adjustable-heel-lift-layers-foam-fits-right",
+    "lockedQualifiers": [
+      "size:medium"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "6883"
+    ],
+    "minPriceCents": 1250,
+    "maxPriceCents": 1250,
+    "avgPriceCents": 1250
+  },
+  {
+    "groupKey": "sparklefresh-denture-adhesive-cream-compare-fixodent::standard",
+    "genericTypeKey": "sparklefresh-denture-adhesive-cream-compare-fixodent",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "2227"
+    ],
+    "minPriceCents": 800,
+    "maxPriceCents": 800,
+    "avgPriceCents": 800
+  },
+  {
+    "groupKey": "2-sided-denture-brush-large-brush-head-removes::size:large",
+    "genericTypeKey": "2-sided-denture-brush-large-brush-head-removes",
+    "lockedQualifiers": [
+      "size:large"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "6919"
+    ],
+    "minPriceCents": 600,
+    "maxPriceCents": 600,
+    "avgPriceCents": 600
+  },
+  {
+    "groupKey": "denture-container-lid-aqua-clear-lid::standard",
+    "genericTypeKey": "denture-container-lid-aqua-clear-lid",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "2098"
+    ],
+    "minPriceCents": 500,
+    "maxPriceCents": 500,
+    "avgPriceCents": 500
+  },
+  {
+    "groupKey": "super-adult-toothbrush-bristles-are-gentle-teeth::standard",
+    "genericTypeKey": "super-adult-toothbrush-bristles-are-gentle-teeth",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1163"
+    ],
+    "minPriceCents": 500,
+    "maxPriceCents": 500,
+    "avgPriceCents": 500
+  },
+  {
+    "groupKey": "adult-toothbrush-bristles-are-gentle-teeth-gums::standard",
+    "genericTypeKey": "adult-toothbrush-bristles-are-gentle-teeth-gums",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1883"
+    ],
+    "minPriceCents": 550,
+    "maxPriceCents": 550,
+    "avgPriceCents": 550
+  },
+  {
+    "groupKey": "sparklefresh-toothpaste-fluoride-help-protect-against-cavities::standard",
+    "genericTypeKey": "sparklefresh-toothpaste-fluoride-help-protect-against-cavities",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "4110"
+    ],
+    "minPriceCents": 500,
+    "maxPriceCents": 500,
+    "avgPriceCents": 500
+  },
+  {
+    "groupKey": "remedy-clinical-lip-balm-soothes-protects-shea::standard",
+    "genericTypeKey": "remedy-clinical-lip-balm-soothes-protects-shea",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "3436"
+    ],
+    "minPriceCents": 1000,
+    "maxPriceCents": 1000,
+    "avgPriceCents": 1000
+  },
+  {
+    "groupKey": "remedy-specialized-skin-cream-all-over-body-cream::standard",
+    "genericTypeKey": "remedy-specialized-skin-cream-all-over-body-cream",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1247"
+    ],
+    "minPriceCents": 1100,
+    "maxPriceCents": 1100,
+    "avgPriceCents": 1100
+  },
+  {
+    "groupKey": "face-covering-braces-supports-astm-level-3-ply::standard",
+    "genericTypeKey": "face-covering-braces-supports-astm-level-3-ply",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "3605"
+    ],
+    "minPriceCents": 1100,
+    "maxPriceCents": 1100,
+    "avgPriceCents": 1100
+  },
+  {
+    "groupKey": "wraparound-wrist-support-fits-right-or-left::standard",
+    "genericTypeKey": "wraparound-wrist-support-fits-right-or-left",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1536"
+    ],
+    "minPriceCents": 1200,
+    "maxPriceCents": 1200,
+    "avgPriceCents": 1200
+  },
+  {
+    "groupKey": "80%-cotton-15%-polyester-5%-spandex-white::standard",
+    "genericTypeKey": "80%-cotton-15%-polyester-5%-spandex-white",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "7179"
+    ],
+    "minPriceCents": 600,
+    "maxPriceCents": 600,
+    "avgPriceCents": 600
+  },
+  {
+    "groupKey": "compressed-memory-foam-cpap-pillow-helps-keep::size:L",
+    "genericTypeKey": "compressed-memory-foam-cpap-pillow-helps-keep",
+    "lockedQualifiers": [
+      "size:L"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "3384"
+    ],
+    "minPriceCents": 5100,
+    "maxPriceCents": 5100,
+    "avgPriceCents": 5100
+  },
+  {
+    "groupKey": "accu-therm-reusable-hot/cold-gel-microwave-hot-therapy::standard",
+    "genericTypeKey": "accu-therm-reusable-hot/cold-gel-microwave-hot-therapy",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1041"
+    ],
+    "minPriceCents": 600,
+    "maxPriceCents": 600,
+    "avgPriceCents": 600
+  },
+  {
+    "groupKey": "instant-hot-pop-knead-apply-targeted-heat::size:medium",
+    "genericTypeKey": "instant-hot-pop-knead-apply-targeted-heat",
+    "lockedQualifiers": [
+      "size:medium"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "7192"
+    ],
+    "minPriceCents": 650,
+    "maxPriceCents": 650,
+    "avgPriceCents": 650
+  },
+  {
+    "groupKey": "reusable-english-style-ice-bag-blue-cloth-covering::standard",
+    "genericTypeKey": "reusable-english-style-ice-bag-blue-cloth-covering",
+    "lockedQualifiers": [],
+    "skuCount": 1,
+    "skus": [
+      "1915"
+    ],
+    "minPriceCents": 1300,
+    "maxPriceCents": 1300,
+    "avgPriceCents": 1300
+  },
+  {
+    "groupKey": "digestive-health-letter-vitamins-coenzyme-q10-softgels::strength:100 mg",
+    "genericTypeKey": "digestive-health-letter-vitamins-coenzyme-q10-softgels",
+    "lockedQualifiers": [
+      "strength:100 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "1265"
+    ],
+    "minPriceCents": 1500,
+    "maxPriceCents": 1500,
+    "avgPriceCents": 1500
+  },
+  {
+    "groupKey": "fish-oil-softgels-rich-essential-omega-3-fatty::strength:1000 mg",
+    "genericTypeKey": "fish-oil-softgels-rich-essential-omega-3-fatty",
+    "lockedQualifiers": [
+      "strength:1000 mg"
+    ],
+    "skuCount": 1,
+    "skus": [
+      "3378"
+    ],
+    "minPriceCents": 1400,
+    "maxPriceCents": 1400,
+    "avgPriceCents": 1400
+  }
+]

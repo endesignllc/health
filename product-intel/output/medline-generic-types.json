@@ -1,0 +1,1224 @@
+[
+  {
+    "genericTypeKey": "3-in-1-bath-safety-kit",
+    "genericTypeName": "3-in-1 Bath Safety Kit",
+    "representativeSkus": [
+      "H130",
+      "606774"
+    ],
+    "skuCount": 2,
+    "sampleNames": [
+      "606774 MEDLINE 3-IN-1 BATH SAFETY KIT",
+      "Medline 3-In-1 Bath Safety Kit 00"
+    ]
+  },
+  {
+    "genericTypeKey": "handheld-shower-head",
+    "genericTypeName": "Handheld Shower Head",
+    "representativeSkus": [
+      "H131"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "741740 MEDLINE HANDHELD SHOWER HEAD"
+    ]
+  },
+  {
+    "genericTypeKey": "round-shower-stool",
+    "genericTypeName": "Round Shower Stool",
+    "representativeSkus": [
+      "H132"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "345583 MEDLINE ROUND SHOWER STOOL"
+    ]
+  },
+  {
+    "genericTypeKey": "cetirizine-antihistamine-allergy-tablets-10mg",
+    "genericTypeName": "Cetirizine Antihistamine Allergy Tablets 10mg Tablet/capsule",
+    "representativeSkus": [
+      "1012"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Cetirizine Antihistamine Allergy Tablets, 10mg 90"
+    ]
+  },
+  {
+    "genericTypeKey": "isopropyl-alcohol-prep-pad-x",
+    "genericTypeName": "Isopropyl Alcohol Prep Pad X Incontinence",
+    "representativeSkus": [
+      "1044"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Isopropyl Alcohol Prep Pad 1.1” x 2.4” 200"
+    ]
+  },
+  {
+    "genericTypeKey": "no-sting-burn-spray",
+    "genericTypeName": "No-sting Burn Spray Spray",
+    "representativeSkus": [
+      "6008"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline No-Sting Burn Spray"
+    ]
+  },
+  {
+    "genericTypeKey": "antiseptic-cleaning-spray-no-sting",
+    "genericTypeName": "Antiseptic Cleaning Spray No-sting Spray",
+    "representativeSkus": [
+      "8482"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Antiseptic Cleaning Spray, No-Sting"
+    ]
+  },
+  {
+    "genericTypeKey": "sterile-saline-wound-wash-spray",
+    "genericTypeName": "Sterile Saline Wound Wash Spray Spray",
+    "representativeSkus": [
+      "6556"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Sterile Saline Wound Wash Spray"
+    ]
+  },
+  {
+    "genericTypeKey": "sterile-conform-stretch-gauze-bandage-x",
+    "genericTypeName": "Sterile Conform Stretch Gauze Bandage X First-aid",
+    "representativeSkus": [
+      "1929"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Sterile Conform Stretch Gauze Bandage 4’ x 75” 1"
+    ]
+  },
+  {
+    "genericTypeKey": "transparent-adhesive-tape-x-yd",
+    "genericTypeName": "Transparent Adhesive Tape X Yd First-aid",
+    "representativeSkus": [
+      "1066"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Transparent Adhesive Tape, 2” x 10 yd 1"
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-incontinence-liner-x",
+    "genericTypeName": "Fitright Incontinence Liner X",
+    "representativeSkus": [
+      "1108"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline FitRight Plus Incontinence Liner 13” x 30” 20"
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-optifit-stretch-ultra-brief-med/reg",
+    "genericTypeName": "Fitright Optifit Stretch Ultra Brief Med/reg Incontinence",
+    "representativeSkus": [
+      "1408"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline FitRight OptiFit Stretch Ultra Brief Med/Reg 20"
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-optifit-stretch-ultra-brief-l/xl",
+    "genericTypeName": "Fitright Optifit Stretch Ultra Brief L/xl Incontinence",
+    "representativeSkus": [
+      "1409"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline FitRight OptiFit Stretch Ultra Brief L/XL 20"
+    ]
+  },
+  {
+    "genericTypeKey": "fluff-polymer-underpad-heavy-absorbency-quilted-x",
+    "genericTypeName": "Fluff Polymer Underpad Heavy Absorbency Quilted X Incontinence",
+    "representativeSkus": [
+      "1475"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Fluff and Polymer Underpad, Heavy Absorbency, Quilted, 30” x 30” 10"
+    ]
+  },
+  {
+    "genericTypeKey": "fluff-polymer-underpad-heavy-absorbency-x",
+    "genericTypeName": "Fluff Polymer Underpad Heavy Absorbency X Incontinence",
+    "representativeSkus": [
+      "1427"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Fluff and Polymer Underpad, Heavy Absorbency, 30” x 30” 10"
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-underpad-heavy-absorbency-x",
+    "genericTypeName": "Fitright Underpad Heavy Absorbency X Incontinence",
+    "representativeSkus": [
+      "1619"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline FitRight Underpad Heavy Absorbency 30” x 36” 10"
+    ]
+  },
+  {
+    "genericTypeKey": "super-wrapped-adult-toothbrush",
+    "genericTypeName": "Super Wrapped Adult Toothbrush Oral-care",
+    "representativeSkus": [
+      "1163"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Super Soft Wrapped Adult Toothbrush"
+    ]
+  },
+  {
+    "genericTypeKey": "wrapped-adult-toothbrush",
+    "genericTypeName": "Wrapped Adult Toothbrush Oral-care",
+    "representativeSkus": [
+      "1883"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Premium Wrapped Adult Toothbrush 1"
+    ]
+  },
+  {
+    "genericTypeKey": "sparkle-fresh-toothpaste",
+    "genericTypeName": "Sparkle Fresh Toothpaste Oral-care",
+    "representativeSkus": [
+      "4110"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Sparkle Fresh Toothpaste"
+    ]
+  },
+  {
+    "genericTypeKey": "denture-container-lid",
+    "genericTypeName": "Denture Container Lid",
+    "representativeSkus": [
+      "2098"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Denture Container with Lid 1"
+    ]
+  },
+  {
+    "genericTypeKey": "digital-blood-pressure-monitor-univ-cuff",
+    "genericTypeName": "Digital Blood Pressure Monitor Univ Cuff Device",
+    "representativeSkus": [
+      "1099"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Digital Blood Pressure Monitor with Univ Cuff 1"
+    ]
+  },
+  {
+    "genericTypeKey": "digital-blood-pressure-monitor-adult-cuff",
+    "genericTypeName": "Digital Blood Pressure Monitor Adult Cuff Device",
+    "representativeSkus": [
+      "3952"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Digital Blood Pressure Monitor Adult Cuff 1"
+    ]
+  },
+  {
+    "genericTypeKey": "oral-digital-thermometer",
+    "genericTypeName": "Oral Digital Thermometer Device",
+    "representativeSkus": [
+      "1089"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Oral Digital Thermometer 1"
+    ]
+  },
+  {
+    "genericTypeKey": "large-display-oral-digital-thermometer",
+    "genericTypeName": "Large Display Oral Digital Thermometer Device",
+    "representativeSkus": [
+      "1088"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Large Display Oral Digital Thermometer 1"
+    ]
+  },
+  {
+    "genericTypeKey": "aspirin-enteric-coated-tablets",
+    "genericTypeName": "Aspirin Enteric Coated Tablets Tablet/capsule",
+    "representativeSkus": [
+      "1190"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Aspirin Enteric Coated Tablets, 81 mg 120"
+    ]
+  },
+  {
+    "genericTypeKey": "ibuprofen-tablets",
+    "genericTypeName": "Ibuprofen Tablets Tablet/capsule",
+    "representativeSkus": [
+      "4201"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Ibuprofen Tablets, 200 mg 100"
+    ]
+  },
+  {
+    "genericTypeKey": "activice-topical-pain-reliever-spray",
+    "genericTypeName": "Activice Topical Pain Reliever Spray Spray",
+    "representativeSkus": [
+      "2034"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline ActivICE Topical Pain Reliever Spray"
+    ]
+  },
+  {
+    "genericTypeKey": "ultrasoft-disposable-dry-cleansing-cloth-x",
+    "genericTypeName": "Ultrasoft Disposable Dry Cleansing Cloth X",
+    "representativeSkus": [
+      "1723"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Ultrasoft Disposable Dry Cleansing Cloth 12” x 14” 90"
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-aloe-quilted-personal-wipes-flip-top",
+    "genericTypeName": "Fitright Aloe Quilted Personal Wipes Flip Top",
+    "representativeSkus": [
+      "1719"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline FitRight Aloe Quilted Personal Wipes, Soft Pack with Flip Top 48"
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-aloe-personal-wipes-scented-flip-top",
+    "genericTypeName": "Fitright Aloe Personal Wipes Scented Flip Top",
+    "representativeSkus": [
+      "1103"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline FitRight Aloe Personal Wipes Scented, Soft Pack with Flip Top 100"
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-aloe-personal-wipes-unscented-flip-top",
+    "genericTypeName": "Fitright Aloe Personal Wipes Unscented Flip Top",
+    "representativeSkus": [
+      "1858"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline FitRight Aloe Personal Wipes Unscented, Soft Pack with Flip Top 100"
+    ]
+  },
+  {
+    "genericTypeKey": "vitamin-e-softgels",
+    "genericTypeName": "Vitamin E Softgels Topical",
+    "representativeSkus": [
+      "2078",
+      "1297"
+    ],
+    "skuCount": 2,
+    "sampleNames": [
+      "Medline Vitamin E Softgels, 90 mg 100",
+      "Medline Vitamin E Softgels, 180 mg 100"
+    ]
+  },
+  {
+    "genericTypeKey": "flaxseed-oil-softgel-1000mg",
+    "genericTypeName": "Flaxseed Oil Softgel 1000mg Topical",
+    "representativeSkus": [
+      "3416"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Flaxseed Oil Softgel, 1000mg 60"
+    ]
+  },
+  {
+    "genericTypeKey": "fish-oil-softgels",
+    "genericTypeName": "Fish Oil Softgels Topical",
+    "representativeSkus": [
+      "3378"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Fish Oil Softgels, 1000 mg 90"
+    ]
+  },
+  {
+    "genericTypeKey": "bedding-seating-support-living-aids-skintegrity-wound",
+    "genericTypeName": "Bedding Seating Support Living Aids Skintegrity Wound",
+    "representativeSkus": [
+      "7297"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Bedding & Seating Support Daily Living Aids Medline Skintegrity Wound Cleanser 8 oz. Fast, thorough and gentle cleansing of wounds in all stages"
+    ]
+  },
+  {
+    "genericTypeKey": "contoured-lumbar-cushion-foam-ideal-wheelchairs-car",
+    "genericTypeName": "Contoured Lumbar Cushion Foam Ideal Wheelchairs Car",
+    "representativeSkus": [
+      "6006"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Contoured Lumbar Cushion Premium foam. Ideal for wheelchairs, car, home, office. Firm support. 14” x 13”."
+    ]
+  },
+  {
+    "genericTypeKey": "invalid-foam-ring-contoured-cushion-puncture-resistant-foam",
+    "genericTypeName": "Invalid Foam Ring Contoured Cushion Puncture-resistant Foam Device",
+    "representativeSkus": [
+      "3377"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Invalid Foam Ring Contoured Cushion Puncture-resistant foam with washable cover. 16” diameter."
+    ]
+  },
+  {
+    "genericTypeKey": "rubber-bath-mat-suction-cups-bottom-x",
+    "genericTypeName": "Rubber Bath Mat Suction Cups Bottom X",
+    "representativeSkus": [
+      "6166"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Rubber Bath Mat Suction cups on bottom. 13.4” x 29”"
+    ]
+  },
+  {
+    "genericTypeKey": "24-inch-knurled-chrome-grab-bar-mounts-directly",
+    "genericTypeName": "24-inch Knurled Chrome Grab Bar Mounts Directly",
+    "representativeSkus": [
+      "5001"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline 24-Inch Knurled Chrome Grab Bar Mounts directly to wall with included hardware. 300 lb. capacity."
+    ]
+  },
+  {
+    "genericTypeKey": "handheld-showerhead-kit-standard-spray-includes-diverter",
+    "genericTypeName": "Handheld Showerhead Kit Standard Spray Includes Diverter Spray",
+    "representativeSkus": [
+      "7507"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Handheld Showerhead Kit Standard spray. Includes diverter valve, wall holder and extra-long 7-foot hose."
+    ]
+  },
+  {
+    "genericTypeKey": "shower-chair-arms-back-helps-provide-stability",
+    "genericTypeName": "Shower Chair Arms Back Helps Provide Stability",
+    "representativeSkus": [
+      "6047"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Shower Chair with Arms and Back Helps provide extra stability while bathing. 13.5”D seat. 350 lb. weight cap."
+    ]
+  },
+  {
+    "genericTypeKey": "locking-raised-toilet-seat-arms-wide-contoured",
+    "genericTypeName": "Locking Raised Toilet Seat Arms Wide Contoured Incontinence",
+    "representativeSkus": [
+      "6043"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Locking Raised Toilet Seat with Arms Wide, contoured surface raises seat level by 5”. Padded arms. 400 lb. weight capacity."
+    ]
+  },
+  {
+    "genericTypeKey": "medication-aids-exercise-strength-training-curved-grip",
+    "genericTypeName": "Medication Aids Exercise Strength Training Curved Grip",
+    "representativeSkus": [
+      "7119"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medication Aids Exercise & Strength Training Medline Curved Grip Plastic Shoehorn 17-inches long."
+    ]
+  },
+  {
+    "genericTypeKey": "pistol-grip-reacher-extends-your-reach-by",
+    "genericTypeName": "Pistol Grip Reacher Extends Your Reach By",
+    "representativeSkus": [
+      "2126"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Pistol Grip Reacher Extends your reach by 2 feet to grasp lightweight objects. 32” long."
+    ]
+  },
+  {
+    "genericTypeKey": "pill-cutter-crusher-compact-size-is-great",
+    "genericTypeName": "Pill Cutter Crusher Compact Size Is Great",
+    "representativeSkus": [
+      "1984"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Pill Cutter and Crusher Compact size is great for travel. Plastic and stainless steel."
+    ]
+  },
+  {
+    "genericTypeKey": "7-day-pill-reminder-organizer-compartments-each-day",
+    "genericTypeName": "7-day Pill Reminder Organizer Compartments Each Day",
+    "representativeSkus": [
+      "1091"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline 7-Day Pill Reminder Organizer 4 compartments for each day of the week. 7.5” x 4.25” x 1.1”."
+    ]
+  },
+  {
+    "genericTypeKey": "7-day-pill-organizer-separate-color-coded-compartments-am/pm",
+    "genericTypeName": "7-day Pill Organizer Separate Color-coded Compartments Am/pm",
+    "representativeSkus": [
+      "1698"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline 7-Day Pill Organizer Separate, color-coded compartments for AM/PM doses. 8.75”L x 4.5”W x 0.8”H."
+    ]
+  },
+  {
+    "genericTypeKey": "dressings-gauze-elastic-bandages-hydrogen-peroxide-3%",
+    "genericTypeName": "Dressings Gauze Elastic Bandages Hydrogen Peroxide 3% First-aid",
+    "representativeSkus": [
+      "3559"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Dressings & Gauze Elastic Bandages Medline Hydrogen Peroxide 3% 16 oz. Multi-use first aid antiseptic."
+    ]
+  },
+  {
+    "genericTypeKey": "70%-isopropyl-alcohol-topical-first-aid-essential",
+    "genericTypeName": "70% Isopropyl Alcohol Topical First Aid Essential",
+    "representativeSkus": [
+      "1073"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline 70% Isopropyl Alcohol 16 oz. Topical first aid essential."
+    ]
+  },
+  {
+    "genericTypeKey": "isopropyl-alcohol-prep-pads-medium-pad-saturated",
+    "genericTypeName": "Isopropyl Alcohol Prep Pads Medium Pad Saturated Incontinence",
+    "representativeSkus": [
+      "1044"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Isopropyl Alcohol Prep Pads Medium pad saturated with 70% isopropyl alcohol. 1.125” x 2.375”."
+    ]
+  },
+  {
+    "genericTypeKey": "sterile-saline-wound-wash-gently-cleanses-minor",
+    "genericTypeName": "Sterile Saline Wound Wash Gently Cleanses Minor",
+    "representativeSkus": [
+      "6556"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Sterile Saline Wound Wash 7.1 oz. Gently cleanses minor cuts, scrapes and burns."
+    ]
+  },
+  {
+    "genericTypeKey": "conforming-stretch-gauze-bandage-x-1-ply-rayon",
+    "genericTypeName": "Conforming Stretch Gauze Bandage X 1-ply Rayon First-aid",
+    "representativeSkus": [
+      "1929"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Conforming Stretch Gauze Bandage 4” x 75” 1-ply rayon and polyester blend gives the bandages one-way stretch."
+    ]
+  },
+  {
+    "genericTypeKey": "sterile-cotton-gauze-bandage-gently-stretches-conform",
+    "genericTypeName": "Sterile Cotton Gauze Bandage Gently Stretches Conform First-aid",
+    "representativeSkus": [
+      "1068"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Sterile Cotton Gauze Bandage Gently stretches to conform to contours. 4.5” x 4.1 yd. roll."
+    ]
+  },
+  {
+    "genericTypeKey": "woven-cotton-gauze-sponges-x-12-ply-gauze",
+    "genericTypeName": "Woven Cotton Gauze Sponges X 12-ply Gauze First-aid",
+    "representativeSkus": [
+      "4009"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Woven Cotton Gauze Sponges 4” x 4” 12-ply gauze squares. Individual 2-packs. Sterile."
+    ]
+  },
+  {
+    "genericTypeKey": "nonsterile-matrix-elastic-bandage-easy-wrap-x",
+    "genericTypeName": "Nonsterile Matrix Elastic Bandage Easy Wrap X First-aid",
+    "representativeSkus": [
+      "1446",
+      "2101"
+    ],
+    "skuCount": 2,
+    "sampleNames": [
+      "Medline Nonsterile Matrix Elastic Bandage Easy to wrap. 2” x 5 yd. roll (stretched).",
+      "14 15 Medline Nonsterile Matrix Elastic Bandage Easy to wrap. 3” x 5 yd. roll (stretched)."
+    ]
+  },
+  {
+    "genericTypeKey": "home-essentials-digital-hearing-amplifier-battery-powered-behind-the-ear",
+    "genericTypeName": "Home Essentials Digital Hearing Amplifier Battery-powered Behind-the-ear",
+    "representativeSkus": [
+      "3731"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Home Essentials Medline Digital Hearing Amplifier Battery-powered, behind-the-ear style with 4-level volume control."
+    ]
+  },
+  {
+    "genericTypeKey": "female-urinal-translucent-plastic",
+    "genericTypeName": "Female Urinal Translucent Plastic",
+    "representativeSkus": [
+      "1327"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Premium Female Urinal Translucent plastic."
+    ]
+  },
+  {
+    "genericTypeKey": "supreme-male-urinal-holds-/1",
+    "genericTypeName": "Supreme Male Urinal Holds /1",
+    "representativeSkus": [
+      "1328"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Supreme Male Urinal Holds 32 oz./1,000 mL."
+    ]
+  },
+  {
+    "genericTypeKey": "digital-blood-pressure-monitor-stores-measurements-users",
+    "genericTypeName": "Digital Blood Pressure Monitor Stores Measurements Users Device",
+    "representativeSkus": [
+      "1099"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Digital Blood Pressure Monitor Stores 90 measurements for 2 users. Universal cuff (8.7”- 16.5” arm circumference) AC power adapter and batteries."
+    ]
+  },
+  {
+    "genericTypeKey": "oximeters-touch-fingertip-pulse-oximeter-quickly-reads",
+    "genericTypeName": "Oximeters Touch Fingertip Pulse Oximeter Quickly Reads Device",
+    "representativeSkus": [
+      "6252"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Oximeters Medline Soft Touch Fingertip Pulse Oximeter Quickly reads SpO2 and heart rate. Large LCD display."
+    ]
+  },
+  {
+    "genericTypeKey": "infrared-talking-ear/forehead-thermometer-reading-just-second",
+    "genericTypeName": "Infrared Talking Ear/forehead Thermometer Reading Just Second Device",
+    "representativeSkus": [
+      "1100"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Infrared Talking Ear/Forehead Thermometer Reading in just 1 second. Results in your choice of 6 languages."
+    ]
+  },
+  {
+    "genericTypeKey": "infrared-no-touch-forehead-thermometer-takes-body-surface",
+    "genericTypeName": "Infrared No-touch Forehead Thermometer Takes Body Surface Device",
+    "representativeSkus": [
+      "1094"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Infrared No-Touch Forehead Thermometer Takes body and surface temps from 1-inch away."
+    ]
+  },
+  {
+    "genericTypeKey": "oral-digital-thermometer-results-seconds-one-piece-snap-on",
+    "genericTypeName": "Oral Digital Thermometer Results Seconds One-piece Snap-on Device",
+    "representativeSkus": [
+      "1089"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Oral Digital Thermometer Results in 30 seconds. One-piece, snap-on protective cover."
+    ]
+  },
+  {
+    "genericTypeKey": "bladder-pads-fitright-activedge-guards-men-protection",
+    "genericTypeName": "Bladder Pads Fitright Activedge Guards Men Protection Incontinence",
+    "representativeSkus": [
+      "1411"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Bladder Pads Medline FitRight ActivEdge Guards for Men Extra protection where a man needs it. Max absorbency. 5.9” x 12.6”."
+    ]
+  },
+  {
+    "genericTypeKey": "underpads-fitright-underpads-fluff/polymer-core-waterproof-backing",
+    "genericTypeName": "Underpads Fitright Underpads Fluff/polymer Core Waterproof Backing Incontinence",
+    "representativeSkus": [
+      "1615"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Underpads Medline FitRight Underpads Fluff/polymer core plus waterproof backing. Moderate absorbency. 23” x 36”."
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-ultra-underpads-fluff/polymer-core-absorbency-odor",
+    "genericTypeName": "Fitright Ultra Underpads Fluff/polymer Core Absorbency Odor Incontinence",
+    "representativeSkus": [
+      "1619"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline FitRight Ultra Underpads Fluff/polymer core for absorbency and odor control. Heavy absorbency. 30” x 36”."
+    ]
+  },
+  {
+    "genericTypeKey": "pro-best-polymer-underpads-disposable-all-purpose-pad",
+    "genericTypeName": "Pro Best Polymer Underpads Disposable All-purpose Pad Incontinence",
+    "representativeSkus": [
+      "4053"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Pro Plus Best Polymer Underpads Disposable, all-purpose pad with absorbent SAP polymer core. 23” x 36”."
+    ]
+  },
+  {
+    "genericTypeKey": "disposable-deluxe-fluff-underpads-36x36-disposable-all-purpose",
+    "genericTypeName": "Disposable Deluxe Fluff Underpads 36x36 Disposable All-purpose Incontinence",
+    "representativeSkus": [
+      "3633"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Disposable Deluxe Fluff Underpads 36x36 Disposable, all-purpose pad provides coverage and protection for chairs, wheelchairs, beds and more"
+    ]
+  },
+  {
+    "genericTypeKey": "sofnit-reusable-twill-underpad-absorbent-55%-cotton/45%",
+    "genericTypeName": "Sofnit Reusable Twill Underpad Absorbent 55% Cotton/45% Incontinence",
+    "representativeSkus": [
+      "1614"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Sofnit 300 Reusable Twill Underpad Absorbent 55% cotton/45% poly with vinyl back. Machine wash. Pink. 34” x 36”."
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-activedge-underwear-women-odor-leak-protection",
+    "genericTypeName": "Fitright Activedge Underwear Women Odor Leak Protection Incontinence",
+    "representativeSkus": [
+      "6836"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline FitRight ActivEdge Underwear for Women Odor & leak protection. Max absorbency. Ensure Original Nutrition Shake 8 oz. 220 calories, 9 g protein. Milk chocolate."
+    ]
+  },
+  {
+    "genericTypeKey": "allergy-sinus-cetirizine-allergy-relief-tablets-24-hour",
+    "genericTypeName": "Allergy Sinus Cetirizine Allergy Relief Tablets 24-hour Tablet/capsule",
+    "representativeSkus": [
+      "1866"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Allergy & Sinus Medline Cetirizine Allergy Relief Tablets 10 mg 24-hour relief. Compare to the active ingredient in Zyrtec."
+    ]
+  },
+  {
+    "genericTypeKey": "cetirizine-allergy-relief-tablets-24-hour-relief-compare",
+    "genericTypeName": "Cetirizine Allergy Relief Tablets 24-hour Relief Compare Tablet/capsule",
+    "representativeSkus": [
+      "1012"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Cetirizine Allergy Relief Tablets 10 mg 24-hour relief. Compare to the active ingredient in Zyrtec."
+    ]
+  },
+  {
+    "genericTypeKey": "remedy-clinical-antifungal-ointment-2%-miconazole-nitrate",
+    "genericTypeName": "Remedy Clinical Antifungal Ointment 2% Miconazole Nitrate Topical",
+    "representativeSkus": [
+      "3707"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Remedy Clinical Antifungal Ointment 2.5 oz. 2% miconazole nitrate for treatment of athlete’s foot, jock itch. Unscented."
+    ]
+  },
+  {
+    "genericTypeKey": "acetaminophen-tablets-pain-reliever-fever-reducer",
+    "genericTypeName": "Acetaminophen Tablets Pain Reliever Fever Reducer Tablet/capsule",
+    "representativeSkus": [
+      "7424",
+      "7425"
+    ],
+    "skuCount": 2,
+    "sampleNames": [
+      "Medline Acetaminophen Tablets 325 mg Pain reliever and fever reducer.",
+      "Medline Acetaminophen Tablets 500 mg Pain reliever and fever reducer."
+    ]
+  },
+  {
+    "genericTypeKey": "low-dose-chewable-aspirin-tablets-compare-active-ingredient",
+    "genericTypeName": "Low-dose Chewable Aspirin Tablets Compare Active Ingredient Tablet/capsule",
+    "representativeSkus": [
+      "1715"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Low-Dose Chewable Aspirin Tablets 81 mg Compare to the active ingredient in Bayer Low Dose. Orange flavor."
+    ]
+  },
+  {
+    "genericTypeKey": "strength-pain-relief-tablets-acetaminophen-aspirin-caffeine",
+    "genericTypeName": "Strength Pain Relief Tablets Acetaminophen Aspirin Caffeine Tablet/capsule",
+    "representativeSkus": [
+      "1207"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Extra Strength Pain Relief Tablets 250 mg acetaminophen, 250 mg aspirin plus 65 mg caffeine."
+    ]
+  },
+  {
+    "genericTypeKey": "low-dose-enteric-aspirin-tablets-coated-easier-swallowing",
+    "genericTypeName": "Low-dose Enteric Aspirin Tablets Coated Easier Swallowing Tablet/capsule",
+    "representativeSkus": [
+      "1190"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Low-Dose Enteric Aspirin Tablets 81 mg Coated for easier swallowing. Compare to the active ingredient in Bayer Low Dose."
+    ]
+  },
+  {
+    "genericTypeKey": "burn-spray-aloe-vera-no-sting-pain-relieving",
+    "genericTypeName": "Burn Spray Aloe Vera No-sting Pain Relieving Spray",
+    "representativeSkus": [
+      "6008"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Burn Spray with Aloe Vera 4 oz. No-sting, pain relieving formula for sunburn and itch relief."
+    ]
+  },
+  {
+    "genericTypeKey": "ibuprofen-tablets-nsaid-pain-reliever-fever-reducer",
+    "genericTypeName": "Ibuprofen Tablets Nsaid Pain Reliever Fever Reducer Tablet/capsule",
+    "representativeSkus": [
+      "4201"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Ibuprofen Tablets 200 mg NSAID pain reliever and fever reducer. Coated for easier swallowing."
+    ]
+  },
+  {
+    "genericTypeKey": "activice-topical-pain-reliever-roll-on-3oz-fast-acting",
+    "genericTypeName": "Activice Topical Pain Reliever Roll-on 3oz Fast-acting",
+    "representativeSkus": [
+      "2033"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline ActivICE Topical Pain Reliever Roll-On 3oz. Fast-acting muscle ache relief. Compare to the active ingredients in Biofreeze."
+    ]
+  },
+  {
+    "genericTypeKey": "activice-topical-pain-reliever-gel-fast-acting-muscle",
+    "genericTypeName": "Activice Topical Pain Reliever Gel Fast-acting Muscle Topical",
+    "representativeSkus": [
+      "2221"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline ActivICE Topical Pain Reliever Gel 4 oz. Fast-acting muscle ache relief. Compare to the active ingredients in Biofreeze."
+    ]
+  },
+  {
+    "genericTypeKey": "activice-topical-pain-reliever-spray-fast-acting-muscle",
+    "genericTypeName": "Activice Topical Pain Reliever Spray Fast-acting Muscle Spray",
+    "representativeSkus": [
+      "2034"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline ActivICE Topical Pain Reliever Spray 4 oz. Fast-acting muscle ache relief. Compare to the active ingredients in Biofreeze."
+    ]
+  },
+  {
+    "genericTypeKey": "naproxen-sodium-tablets-relief-up-hours-compare",
+    "genericTypeName": "Naproxen Sodium Tablets Relief Up Hours Compare Tablet/capsule",
+    "representativeSkus": [
+      "1205"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Naproxen Sodium Tablets 220 mg Relief for up to 12 hours. Compare to the active ingredient in Aleve."
+    ]
+  },
+  {
+    "genericTypeKey": "pure-gentle-saline-enema-laxative-ready-to-use-squeeze",
+    "genericTypeName": "Pure Gentle Saline Enema Laxative Ready-to-use Squeeze",
+    "representativeSkus": [
+      "1237"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Pure & Gentle Saline Enema Laxative 4.5 oz. Ready-to-use, soft squeeze bottle with lubricated comfort tip. Single use."
+    ]
+  },
+  {
+    "genericTypeKey": "senna-natural-laxative-tablets-compare-active-ingredients",
+    "genericTypeName": "Senna Natural Laxative Tablets Compare Active Ingredients Tablet/capsule",
+    "representativeSkus": [
+      "1234"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "28 29 Medline Senna Natural Laxative Tablets 8.6 mg Compare to the active ingredients in Senokot."
+    ]
+  },
+  {
+    "genericTypeKey": "walkers-rollators-folding-t-handle-aluminum-cane-compact",
+    "genericTypeName": "Walkers Rollators Folding T-handle Aluminum Cane Compact",
+    "representativeSkus": [
+      "5013"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Walkers & Rollators Medline Folding T-Handle Aluminum Cane Compact folding design fits into a purse, suitcase. Weighs only 1 lb. yet supports 250 lbs."
+    ]
+  },
+  {
+    "genericTypeKey": "basic-steel-rollator-padded-backrest-x-seat",
+    "genericTypeName": "Basic Steel Rollator Padded Backrest X Seat Incontinence",
+    "representativeSkus": [
+      "6044"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Basic Steel Rollator Padded backrest and 12” x 12” seat. 6” wheels. Burgundy."
+    ]
+  },
+  {
+    "genericTypeKey": "spectrum-hand-sanitizer-gel-moisturizing-70%-ethyl",
+    "genericTypeName": "Spectrum Hand Sanitizer Gel Moisturizing 70% Ethyl Topical",
+    "representativeSkus": [
+      "8466",
+      "4170"
+    ],
+    "skuCount": 2,
+    "sampleNames": [
+      "Medline Spectrum Advanced Hand Sanitizer Gel 2 oz. Moisturizing formula with 70% ethyl alcohol.",
+      "Medline Spectrum Advanced Hand Sanitizer Gel 8 oz. Moisturizing formula with 70% ethyl alcohol."
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-aloe-personal-wipes-gentle-aloe-based-standard",
+    "genericTypeName": "Fitright Aloe Personal Wipes Gentle Aloe-based Standard",
+    "representativeSkus": [
+      "1103",
+      "1858"
+    ],
+    "skuCount": 2,
+    "sampleNames": [
+      "Medline FitRight Aloe Personal Wipes Gentle aloe-based formula. Standard weight. 8” x 10”. Scented.",
+      "Medline FitRight Aloe Personal Wipes Gentle aloe-based formula. Standard weight. 8” x 10”. Unscented."
+    ]
+  },
+  {
+    "genericTypeKey": "remedy-clinical-barrier-cream-cloths-botanical-6%",
+    "genericTypeName": "Remedy Clinical Barrier Cream Cloths Botanical 6% Topical",
+    "representativeSkus": [
+      "1466"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Remedy Clinical Barrier Cream Cloths Botanical formula with 3.6% dimethicone skin protectant. 8” x 12”. Scented."
+    ]
+  },
+  {
+    "genericTypeKey": "fitright-panty-liners-very-light-absorbency-individually",
+    "genericTypeName": "Fitright Panty Liners Very Light Absorbency Individually",
+    "representativeSkus": [
+      "6157"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline FitRight Panty Liners Very light absorbency. Individually wrapped. 7” long."
+    ]
+  },
+  {
+    "genericTypeKey": "gel-hallux-bunion-guard-washable-reusable-hypoallergenic",
+    "genericTypeName": "Gel Hallux Bunion Guard Washable Reusable Hypoallergenic Topical",
+    "representativeSkus": [
+      "1440"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Gel Hallux Bunion Guard Washable, reusable and hypoallergenic."
+    ]
+  },
+  {
+    "genericTypeKey": "adjustable-heel-lift-layers-foam-fits-right",
+    "genericTypeName": "Adjustable Heel Lift Layers Foam Fits Right",
+    "representativeSkus": [
+      "6883"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Adjustable Heel Lift 3 layers of foam. Fits right or left foot. Size medium."
+    ]
+  },
+  {
+    "genericTypeKey": "sparklefresh-denture-adhesive-cream-compare-fixodent",
+    "genericTypeName": "Sparklefresh Denture Adhesive Cream Compare Fixodent Topical",
+    "representativeSkus": [
+      "2227"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline SparkleFresh Denture Adhesive Cream 2.4 oz. Compare to Fixodent."
+    ]
+  },
+  {
+    "genericTypeKey": "2-sided-denture-brush-large-brush-head-removes",
+    "genericTypeName": "2-sided Denture Brush Large Brush Head Removes",
+    "representativeSkus": [
+      "6919"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline 2-Sided Denture Brush Large brush head removes food and stains. Small, angle- trimmed brush head for hard-to-reach areas."
+    ]
+  },
+  {
+    "genericTypeKey": "denture-container-lid-aqua-clear-lid",
+    "genericTypeName": "Denture Container Lid Aqua Clear Lid",
+    "representativeSkus": [
+      "2098"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Denture Container with Lid Aqua with clear lid. 8 oz."
+    ]
+  },
+  {
+    "genericTypeKey": "super-adult-toothbrush-bristles-are-gentle-teeth",
+    "genericTypeName": "Super Adult Toothbrush Bristles Are Gentle Teeth Oral-care",
+    "representativeSkus": [
+      "1163"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Super Soft Adult Toothbrush Soft bristles are gentle on teeth and gums. Contoured handle. Wrapped."
+    ]
+  },
+  {
+    "genericTypeKey": "adult-toothbrush-bristles-are-gentle-teeth-gums",
+    "genericTypeName": "Adult Toothbrush Bristles Are Gentle Teeth Gums Oral-care",
+    "representativeSkus": [
+      "1883"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Adult Toothbrush Soft bristles are gentle on teeth and gums. Contoured handle. Wrapped."
+    ]
+  },
+  {
+    "genericTypeKey": "sparklefresh-toothpaste-fluoride-help-protect-against-cavities",
+    "genericTypeName": "Sparklefresh Toothpaste Fluoride Help Protect Against Cavities Oral-care",
+    "representativeSkus": [
+      "4110"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline SparkleFresh Toothpaste 2.75 oz. Fluoride to help protect against cavities. Travel-size. Mint flavor."
+    ]
+  },
+  {
+    "genericTypeKey": "remedy-clinical-lip-balm-soothes-protects-shea",
+    "genericTypeName": "Remedy Clinical Lip Balm Soothes Protects Shea",
+    "representativeSkus": [
+      "3436"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Remedy Clinical Lip Balm Soothes and protects with shea butter, aloe, botanicals and jojoba oil. Citrus flavor."
+    ]
+  },
+  {
+    "genericTypeKey": "remedy-specialized-skin-cream-all-over-body-cream",
+    "genericTypeName": "Remedy Specialized Skin Cream All-over Body Cream Topical",
+    "representativeSkus": [
+      "1247"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Remedy Specialized Skin Cream 4 oz. All-over body cream with 1.5% dimethicone. Scented."
+    ]
+  },
+  {
+    "genericTypeKey": "face-covering-braces-supports-astm-level-3-ply",
+    "genericTypeName": "Face Covering Braces Supports Astm Level 3-ply",
+    "representativeSkus": [
+      "3605"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Face Covering Braces & Supports Medline ASTM Level 1 3-Ply Face Mask Lightweight, medical-grade mask with ear loops. Blue."
+    ]
+  },
+  {
+    "genericTypeKey": "wraparound-wrist-support-fits-right-or-left",
+    "genericTypeName": "Wraparound Wrist Support Fits Right Or Left",
+    "representativeSkus": [
+      "1536"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Wraparound Wrist Support Fits right or left wrist. One size fits most."
+    ]
+  },
+  {
+    "genericTypeKey": "80%-cotton-15%-polyester-5%-spandex-white",
+    "genericTypeName": "80% Cotton 15% Polyester 5% Spandex White",
+    "representativeSkus": [
+      "7179"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "80% cotton, 15% polyester, 5% spandex. White. Hot & Cold Therapies Medline Accu-Therm Instant Heavyweight Jr. Cold Pack Fold and shake to active. 6” x 10”."
+    ]
+  },
+  {
+    "genericTypeKey": "compressed-memory-foam-cpap-pillow-helps-keep",
+    "genericTypeName": "Compressed Memory Foam Cpap Pillow Helps Keep",
+    "representativeSkus": [
+      "3384"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Compressed Memory Foam CPAP Pillow Helps keep mask on straight. Contoured for side sleepers. 24”L x 14”W x 5”H."
+    ]
+  },
+  {
+    "genericTypeKey": "accu-therm-reusable-hot/cold-gel-microwave-hot-therapy",
+    "genericTypeName": "Accu-therm Reusable Hot/cold Gel Microwave Hot Therapy Topical",
+    "representativeSkus": [
+      "1041"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Accu-Therm Reusable Hot/Cold Gel Pack Microwave for hot therapy, freeze for cold therapy. Stays pliable and soft. 5” x 10”."
+    ]
+  },
+  {
+    "genericTypeKey": "instant-hot-pop-knead-apply-targeted-heat",
+    "genericTypeName": "Instant Hot Pop Knead Apply Targeted Heat",
+    "representativeSkus": [
+      "7192"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Instant Hot Pack Pop, knead and apply for targeted heat therapy. Medium (6” x 6”)."
+    ]
+  },
+  {
+    "genericTypeKey": "reusable-english-style-ice-bag-blue-cloth-covering",
+    "genericTypeName": "Reusable English-style Ice Bag Blue Cloth Covering",
+    "representativeSkus": [
+      "1915"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Reusable English-Style Ice Bag Blue cloth covering stays dry during use. 7” long."
+    ]
+  },
+  {
+    "genericTypeKey": "digestive-health-letter-vitamins-coenzyme-q10-softgels",
+    "genericTypeName": "Digestive Health Letter Vitamins Coenzyme Q10 Softgels Topical",
+    "representativeSkus": [
+      "1265"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Digestive Health Letter Vitamins Medline Coenzyme Q10 Softgels 100 mg Contains soy."
+    ]
+  },
+  {
+    "genericTypeKey": "fish-oil-softgels-rich-essential-omega-3-fatty",
+    "genericTypeName": "Fish Oil Softgels Rich Essential Omega-3 Fatty Topical",
+    "representativeSkus": [
+      "3378"
+    ],
+    "skuCount": 1,
+    "sampleNames": [
+      "Medline Fish Oil Softgels 1000 mg Rich in essential Omega-3 fatty acids (EPA & DHA). 234 mg of Omega-3."
+    ]
+  }
+]
