@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { BundleEditor } from "./BundleEditor";
 import { formatPrice } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 function extractVariantOptionLabel(description: string | null | undefined): string | null {
   const text = (description ?? "").trim();
   if (!text) return null;
