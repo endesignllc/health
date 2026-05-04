@@ -10,7 +10,11 @@ type SiteLogoProps = {
 const LOGO_W = 641;
 const LOGO_H = 85;
 
-export function SiteLogo({ className = "h-11 w-auto sm:h-12", priority }: SiteLogoProps) {
+/** ~75% of former h-11 / sm:h-12 (~25% smaller overall). */
+export function SiteLogo({
+  className = "h-[2.0625rem] w-auto sm:h-9",
+  priority,
+}: SiteLogoProps) {
   return (
     <img
       src="/branding/logo.svg"

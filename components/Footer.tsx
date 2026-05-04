@@ -14,7 +14,7 @@ export default function Footer() {
               href="/"
               className="inline-flex rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-muted hover:opacity-95 transition-opacity"
             >
-              <SiteLogo className="h-10 w-auto max-w-[min(100%,560px)]" />
+              <SiteLogo className="h-[1.875rem] w-auto max-w-[min(100%,420px)]" />
             </Link>
             <p className="mt-5 text-base text-muted-foreground leading-relaxed max-w-sm">
               Build a budget-fitting bundle of health and wellness products. Shop by need—never by diagnosis.

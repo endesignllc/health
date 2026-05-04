@@ -26,7 +26,7 @@ export default async function SignInPage({
       <div className="w-full max-w-md space-y-8 text-center rounded-xl border-2 border-border bg-card p-8 sm:p-10 shadow-sm">
         <h1 className="sr-only">Sign in to Health Benefits Shop</h1>
         <div className="flex justify-center">
-          <SiteLogo className="h-14 sm:h-16 w-auto max-w-full" priority />
+          <SiteLogo className="h-[2.625rem] sm:h-12 w-auto max-w-full" priority />
         </div>
         <div className="space-y-2 pt-2">
           <p className="text-base font-semibold text-foreground">Private preview</p>
