@@ -1,5 +1,8 @@
 import Link from "next/link";
 
+/** Admin is session-gated and DB-backed; never prerender at build time. */
+export const dynamic = "force-dynamic";
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-muted/30">
