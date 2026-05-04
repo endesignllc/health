@@ -1,19 +1,19 @@
 import { cn } from "@/lib/utils";
 
 type SiteLogoProps = {
-  /** Tailwind height (`h-*`); width follows intrinsic ratio via width/height + object-contain. */
+  /** Tailwind height (`h-*`); width follows intrinsic aspect via SVG viewBox. */
   className?: string;
   priority?: boolean;
 };
 
-/** Raster wordmark (`public/branding/logo.png`, 1024×135). */
-const LOGO_W = 1024;
-const LOGO_H = 135;
+/** Vector wordmark from `public/branding/logo.svg` (viewBox 0 0 641 85). */
+const LOGO_W = 641;
+const LOGO_H = 85;
 
 export function SiteLogo({ className = "h-11 w-auto sm:h-12", priority }: SiteLogoProps) {
   return (
     <img
-      src="/branding/logo.png"
+      src="/branding/logo.svg"
       width={LOGO_W}
       height={LOGO_H}
       alt="HealthBenefits.shop"
