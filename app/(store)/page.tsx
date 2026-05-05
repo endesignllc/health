@@ -37,7 +37,7 @@ export default function HomePage() {
           How it works
         </h2>
         <p className="text-center text-muted-foreground text-lg mb-14 max-w-2xl mx-auto">
-          Three simple steps—large type and clear labels throughout the shop.
+          Three simple steps.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
           <div className="text-center p-8 rounded-xl border-2 border-border bg-card shadow-sm">
