@@ -18,7 +18,7 @@ import {
   bundles,
   carts,
 } from "../db/schema";
-import { eq, inArray, ne } from "drizzle-orm";
+import { and, eq, inArray, ne } from "drizzle-orm";
 import { computeAndPersistProductClassStats } from "../lib/product-class-stats";
 import { z } from "zod";
 
@@ -33,6 +33,86 @@ const QualifierRuleSeedSchema = z
   .refine((v) => Boolean(v.matchTag || v.matchProductId), {
     message: "Qualifier rule requires matchTag or matchProductId",
   });
+
+/** Mobility SKUs matching these rules are re-tagged to product_categories.slug = 'incontinence' (seed idempotent). */
+const INCONTINENCE_DENYLIST_SUBSTRINGS = [
+  "wart",
+  "heating pad",
+  "gauze pad",
+  "eye pad",
+  "cotton pad",
+  "cosmetic",
+] as const;
+
+function matchesIncontinenceBrand(lower: string): boolean {
+  if (lower.includes("fitright") || lower.includes("fit right")) return true;
+  if (lower.includes("poise")) return true;
+  if (lower.includes("contourplus") || lower.includes("contour plus")) return true;
+  if (lower.includes("ultrasorb")) return true;
+  if (/\btena\b/i.test(lower)) return true;
+  if (/\bdepend\b/i.test(lower)) return true;
+  if (lower.includes("always discreet")) return true;
+  if (/\bprevail\b/i.test(lower)) return true;
+  if (/\battends\b/i.test(lower)) return true;
+  return false;
+}
+
+function matchesIncontinenceGeneric(lower: string): boolean {
+  if (lower.includes("incontinence")) return true;
+  if (lower.includes("bladder")) return true;
+  if (lower.includes("underpad") || lower.includes("under pad")) return true;
+  if (lower.includes("bed pad")) return true;
+  if (lower.includes("protective underwear")) return true;
+  if (lower.includes("bladder control")) return true;
+  if ((lower.includes("pull-on") || lower.includes("pull on")) && lower.includes("underwear")) return true;
+  return false;
+}
+
+function matchesIncontinencePadNarrow(lower: string): boolean {
+  if (!/\bpads?\b/i.test(lower)) return false;
+  return (
+    lower.includes("bladder") ||
+    lower.includes("incontinence") ||
+    lower.includes("underwear") ||
+    /\b(women|woman|men|man)\b/i.test(lower) ||
+    /\bovernight\b/i.test(lower) ||
+    /\bmaximum\b/i.test(lower) ||
+    /\blight\b/i.test(lower) ||
+    /\bmoderate\b/i.test(lower) ||
+    /\bheavy\b/i.test(lower) ||
+    lower.includes("poise") ||
+    lower.includes("always discreet") ||
+    matchesIncontinenceBrand(lower)
+  );
+}
+
+function matchesIncontinenceBriefNarrow(lower: string): boolean {
+  if (!/\bbriefs?\b/i.test(lower)) return false;
+  return (
+    matchesIncontinenceBrand(lower) ||
+    lower.includes("incontinence") ||
+    lower.includes("protective")
+  );
+}
+
+function matchesIncontinenceLinerNarrow(lower: string): boolean {
+  if (!/\bliners?\b/i.test(lower)) return false;
+  return matchesIncontinenceBrand(lower) || lower.includes("incontinence") || /\blight\b/i.test(lower);
+}
+
+function shouldRetagMobilityProductToIncontinence(name: string): boolean {
+  const lower = name.toLowerCase();
+  for (const d of INCONTINENCE_DENYLIST_SUBSTRINGS) {
+    if (lower.includes(d)) return false;
+  }
+  if (/\btens\b/i.test(lower)) return false;
+  if (matchesIncontinenceBrand(lower)) return true;
+  if (matchesIncontinenceGeneric(lower)) return true;
+  if (matchesIncontinencePadNarrow(lower)) return true;
+  if (matchesIncontinenceBriefNarrow(lower)) return true;
+  if (matchesIncontinenceLinerNarrow(lower)) return true;
+  return false;
+}
 
 /** When canonical slug row exists from INSERT … onConflictDoNothing and legacy row still exists, merge FKs then drop legacy */
 async function mergeOrRenameNeedSlug(
@@ -84,6 +164,7 @@ async function seed() {
       { slug: "sleep-mood", name: "Sleep & Mood" },
       { slug: "cognitive", name: "Cognitive Support" },
       { slug: "mobility", name: "Mobility & Safety" },
+      { slug: "incontinence", name: "Incontinence Care" },
     ])
     .onConflictDoNothing({ target: productCategories.slug })
     .returning();
@@ -833,6 +914,28 @@ async function seed() {
 
   await computeAndPersistProductClassStats();
 
+  const mobilityCategoryId = catMap["mobility"];
+  const incontinenceCategoryId = catMap["incontinence"];
+  if (mobilityCategoryId && incontinenceCategoryId) {
+    const mobilityActiveProducts = await db
+      .select({ id: products.id, name: products.name })
+      .from(products)
+      .where(and(eq(products.categoryId, mobilityCategoryId), eq(products.active, true)));
+
+    const retagIds = mobilityActiveProducts
+      .filter((row) => shouldRetagMobilityProductToIncontinence(row.name))
+      .map((row) => row.id);
+
+    const chunkSize = 500;
+    let retaggedCount = 0;
+    for (let i = 0; i < retagIds.length; i += chunkSize) {
+      const chunk = retagIds.slice(i, i + chunkSize);
+      await db.update(products).set({ categoryId: incontinenceCategoryId }).where(inArray(products.id, chunk));
+      retaggedCount += chunk.length;
+    }
+    console.log("re-tagged", retaggedCount, "products into incontinence");
+  }
+
   const existingRules = await db.select().from(needProductRules).limit(1);
   const hasRules = existingRules.length > 0;
 
@@ -884,12 +987,6 @@ async function seed() {
           { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
           { needId: need.id, requiredCategoryId: catMap["mobility"]!, minItems: 0, maxItems: 2, priorityWeight: 2 },
         ]);
-      } else if (slug === "bladder-support") {
-        await db.insert(needProductRules).values([
-          { needId: need.id, requiredCategoryId: catMap["supplements"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
-          { needId: need.id, requiredCategoryId: catMap["vitamins"]!, minItems: 0, maxItems: 2, priorityWeight: 2 },
-          { needId: need.id, requiredCategoryId: catMap["mobility"]!, minItems: 0, maxItems: 1, priorityWeight: 1 },
-        ]);
       }
     }
   } else {
@@ -906,19 +1003,26 @@ async function seed() {
   }
 
   const bladderNeedRow = needsData.find((n) => n.slug === "bladder-support");
-  if (bladderNeedRow) {
-    const bladderRulesExisting = await db
-      .select({ id: needProductRules.id })
-      .from(needProductRules)
-      .where(eq(needProductRules.needId, bladderNeedRow.id))
-      .limit(1);
-    if (bladderRulesExisting.length === 0) {
-      await db.insert(needProductRules).values([
-        { needId: bladderNeedRow.id, requiredCategoryId: catMap["supplements"]!, minItems: 1, maxItems: 2, priorityWeight: 3 },
-        { needId: bladderNeedRow.id, requiredCategoryId: catMap["vitamins"]!, minItems: 0, maxItems: 2, priorityWeight: 2 },
-        { needId: bladderNeedRow.id, requiredCategoryId: catMap["mobility"]!, minItems: 0, maxItems: 1, priorityWeight: 1 },
-      ]);
-    }
+  const bladderIncontinenceCat = catMap["incontinence"];
+  const bladderVitaminsCat = catMap["vitamins"];
+  if (bladderNeedRow && bladderIncontinenceCat && bladderVitaminsCat) {
+    await db.delete(needProductRules).where(eq(needProductRules.needId, bladderNeedRow.id));
+    await db.insert(needProductRules).values([
+      {
+        needId: bladderNeedRow.id,
+        requiredCategoryId: bladderIncontinenceCat,
+        minItems: 2,
+        maxItems: 4,
+        priorityWeight: 5,
+      },
+      {
+        needId: bladderNeedRow.id,
+        requiredCategoryId: bladderVitaminsCat,
+        minItems: 0,
+        maxItems: 1,
+        priorityWeight: 1,
+      },
+    ]);
   }
 
   console.log("Seed complete.");
