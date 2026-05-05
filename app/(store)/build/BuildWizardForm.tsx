@@ -7,6 +7,30 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { normalizeNeedSlugsFromUrl } from "@/lib/legacy-need-slugs";
+import { Input } from "@/components/ui/input";
+
+/** Matches POST /api/bundles/generate so custom wizard budgets stay valid when BundlesList refetches. */
+const DEMO_CUSTOM_BUDGET_MIN_CENTS = 2500;
+const DEMO_CUSTOM_BUDGET_MAX_CENTS = 500_000;
+
+function parseDemoCustomBudgetCents(raw: string): number | null {
+  const trimmed = raw.trim().replace(/,/g, "");
+  if (trimmed === "") return null;
+  const n = Number.parseFloat(trimmed);
+  if (!Number.isFinite(n)) return null;
+  const cents = Math.round(n * 100);
+  if (!Number.isSafeInteger(cents)) return null;
+  return cents;
+}
+
+function formatUsdWholeFromCents(cents: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(cents / 100);
+}
 
 interface BuildWizardFormProps {
   budgetOptions: { value: number; label: string }[];
@@ -16,6 +40,8 @@ interface BuildWizardFormProps {
 export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) {
   const router = useRouter();
   const [budgetCents, setBudgetCents] = useState(10000);
+  const [budgetSource, setBudgetSource] = useState<"preset" | "custom">("preset");
+  const [customDollarsText, setCustomDollarsText] = useState("");
   const [cadence, setCadence] = useState<"monthly" | "quarterly">("monthly");
   const [needSlugs, setNeedSlugs] = useState<string[]>([]);
   const [includeEveryday, setIncludeEveryday] = useState(true);
@@ -29,11 +55,41 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
 
   const submitDisabled = needSlugs.length === 0 && !includeEveryday;
 
+  const resolvedBudget =
+    budgetSource === "preset"
+      ? ({ ok: true as const, cents: budgetCents })
+      : (() => {
+          const cents = parseDemoCustomBudgetCents(customDollarsText);
+          if (cents === null) return { ok: false as const };
+          if (cents < DEMO_CUSTOM_BUDGET_MIN_CENTS || cents > DEMO_CUSTOM_BUDGET_MAX_CENTS) {
+            return { ok: false as const };
+          }
+          return { ok: true as const, cents };
+        })();
+
+  const customBudgetInvalid = budgetSource === "custom" && !resolvedBudget.ok;
+  const submitBudgetBlocked = customBudgetInvalid;
+
+  const customBudgetHint = `${formatUsdWholeFromCents(DEMO_CUSTOM_BUDGET_MIN_CENTS)}–${formatUsdWholeFromCents(DEMO_CUSTOM_BUDGET_MAX_CENTS)}`;
+
+  const customBudgetErrorMessage = (): string | null => {
+    if (budgetSource !== "custom") return null;
+    const trimmed = customDollarsText.trim();
+    if (trimmed === "") return "Enter a dollar amount.";
+    const cents = parseDemoCustomBudgetCents(customDollarsText);
+    if (cents === null) return "Enter a valid dollar amount.";
+    if (cents < DEMO_CUSTOM_BUDGET_MIN_CENTS || cents > DEMO_CUSTOM_BUDGET_MAX_CENTS) {
+      return `Enter between ${customBudgetHint} for this demo.`;
+    }
+    return null;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!resolvedBudget.ok) return;
     const canonical = normalizeNeedSlugsFromUrl(needSlugs);
     const params = new URLSearchParams({
-      budgetCents: String(budgetCents),
+      budgetCents: String(resolvedBudget.cents),
       cadence,
       shopper,
       includeEveryday: String(includeEveryday),
@@ -58,9 +114,12 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
                 <button
                   key={opt.value}
                   type="button"
-                  onClick={() => setBudgetCents(opt.value)}
+                  onClick={() => {
+                    setBudgetSource("preset");
+                    setBudgetCents(opt.value);
+                  }}
                   className={`min-h-[48px] px-4 py-3 rounded-lg border-2 text-sm font-medium transition-colors ${
-                    budgetCents === opt.value
+                    budgetSource === "preset" && budgetCents === opt.value
                       ? "border-primary bg-primary/10 text-primary"
                       : "border-muted hover:border-primary/50"
                   }`}
@@ -68,7 +127,56 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
                   {opt.label}
                 </button>
               ))}
+              <button
+                type="button"
+                onClick={() => {
+                  setBudgetSource("custom");
+                  setCustomDollarsText((prev) =>
+                    prev.trim() === "" ? String(budgetCents / 100) : prev
+                  );
+                }}
+                className={`min-h-[48px] px-4 py-3 rounded-lg border-2 text-sm font-medium transition-colors ${
+                  budgetSource === "custom"
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-muted hover:border-primary/50"
+                }`}
+              >
+                Custom amount
+              </button>
             </div>
+            {budgetSource === "custom" ? (
+              <div className="mt-3 space-y-2">
+                <Label htmlFor="custom-budget-dollars" className="text-sm text-muted-foreground">
+                  Enter budget (USD)
+                </Label>
+                <div className="relative">
+                  <span
+                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm"
+                    aria-hidden
+                  >
+                    $
+                  </span>
+                  <Input
+                    id="custom-budget-dollars"
+                    type="text"
+                    inputMode="decimal"
+                    autoComplete="off"
+                    placeholder="e.g. 175"
+                    value={customDollarsText}
+                    onChange={(e) => setCustomDollarsText(e.target.value)}
+                    className="pl-7 min-h-[48px] text-base md:text-sm"
+                    aria-invalid={customBudgetInvalid}
+                    aria-describedby="custom-budget-help"
+                  />
+                </div>
+                <p id="custom-budget-help" className="text-xs text-muted-foreground">
+                  Demo range: {customBudgetHint}.
+                </p>
+                {customBudgetInvalid ? (
+                  <p className="text-sm text-destructive">{customBudgetErrorMessage()}</p>
+                ) : null}
+              </div>
+            ) : null}
           </div>
           <div>
             <Label className="text-base">Cadence</Label>
@@ -208,7 +316,7 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
         type="submit"
         size="lg"
         className="w-full min-h-[56px] text-lg"
-        disabled={submitDisabled}
+        disabled={submitDisabled || submitBudgetBlocked}
       >
         See my optimized bundle
       </Button>

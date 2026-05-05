@@ -18,9 +18,15 @@ interface PageProps {
   }>;
 }
 
+const BUNDLE_PAGE_BUDGET_MIN_CENTS = 2500;
+const BUNDLE_PAGE_BUDGET_MAX_CENTS = 500_000;
+
 export default async function BundlesPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const budgetCents = parseInt(params.budgetCents ?? "10000", 10);
+  const parsedBudget = parseInt(params.budgetCents ?? "10000", 10);
+  const budgetCents = Number.isFinite(parsedBudget)
+    ? Math.min(BUNDLE_PAGE_BUDGET_MAX_CENTS, Math.max(BUNDLE_PAGE_BUDGET_MIN_CENTS, parsedBudget))
+    : 10000;
   const cadence = (params.cadence ?? "monthly") as "monthly" | "quarterly";
 
   const fromListParam = params.needSlugs

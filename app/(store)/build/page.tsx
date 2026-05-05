@@ -7,6 +7,7 @@ const BUDGET_OPTIONS = [
   { value: 2500, label: "$25" },
   { value: 5000, label: "$50" },
   { value: 10000, label: "$100" },
+  { value: 15000, label: "$150" },
   { value: 30000, label: "$300" },
 ];
 
