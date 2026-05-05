@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatPrice } from "@/lib/utils";
+import { extractVariantOptionDetail } from "@/lib/variant-label";
 
 interface BundleItem {
   id: string;
@@ -25,6 +26,7 @@ interface BundleItem {
     sku: string;
     label: string;
     priceCents: number;
+    description: string | null;
   }[];
 }
 
@@ -62,6 +64,9 @@ export function BundleEditor({
   );
   const totalOptionRequiredCount = items.filter((i) => i.requiresOptionSelection).length;
   const currentOptionItem = unresolvedOptionItems[0] ?? null;
+  const currentOptionDetail = currentOptionItem
+    ? extractVariantOptionDetail(currentOptionItem.productDescription)
+    : null;
   const [selectedByItemId, setSelectedByItemId] = useState<Record<string, string>>({});
 
   const handleSave = async () => {
@@ -121,6 +126,8 @@ export function BundleEditor({
               ...item,
               productId: selected.productId,
               productSku: selected.sku,
+              productName: item.productName,
+              productDescription: selected.description ?? item.productDescription,
               priceCents: selected.priceCents,
               lineTotalCents: selected.priceCents * item.quantity,
               optionSelectionConfirmed: true,
@@ -141,7 +148,10 @@ export function BundleEditor({
               Selections completed: {totalOptionRequiredCount - unresolvedOptionItems.length} of{" "}
               {totalOptionRequiredCount}
             </p>
-            <p className="font-medium mb-3">{currentOptionItem.productName}</p>
+            <p className="font-medium mb-1">{currentOptionItem.productName}</p>
+            {currentOptionDetail ? (
+              <p className="text-xs text-muted-foreground mb-3">{currentOptionDetail}</p>
+            ) : null}
             <div className="flex flex-wrap gap-2 mb-3">
               {currentOptionItem.familyOptions.map((option) => {
                 const selectedProductId =
@@ -173,12 +183,17 @@ export function BundleEditor({
         </Card>
       )}
 
-      {items.map((item) => (
+      {items.map((item) => {
+        const itemVariantDetail = extractVariantOptionDetail(item.productDescription);
+        return (
         <Card key={item.id}>
           <CardContent className="pt-6">
             <div className="flex justify-between items-start gap-4">
               <div>
                 <p className="font-medium">{item.productName}</p>
+                {itemVariantDetail ? (
+                  <p className="text-xs text-muted-foreground mt-0.5">{itemVariantDetail}</p>
+                ) : null}
                 <p className="text-sm text-muted-foreground">
                   {item.quantity} × {formatPrice(item.priceCents)} = {formatPrice(item.lineTotalCents)}
                 </p>
@@ -212,6 +227,7 @@ export function BundleEditor({
                             productId: newProduct.id,
                             productSku: newProduct.sku,
                             productName: newProduct.name,
+                            productDescription: newProduct.description ?? null,
                             priceCents: newProduct.priceCents,
                             lineTotalCents: newProduct.priceCents * p.quantity,
                           }
@@ -225,7 +241,8 @@ export function BundleEditor({
             )}
           </CardContent>
         </Card>
-      ))}
+        );
+      })}
 
       <div className="flex flex-col gap-4">
         <div className="text-lg font-semibold">
@@ -253,6 +270,14 @@ export function BundleEditor({
   );
 }
 
+type SwapProductPick = {
+  id: string;
+  sku: string;
+  name: string;
+  priceCents: number;
+  description: string | null;
+};
+
 function SwapProductForm({
   categoryId,
   currentProductId,
@@ -263,10 +288,10 @@ function SwapProductForm({
   categoryId: string;
   currentProductId: string;
   budgetRemaining: number;
-  onSelect: (p: { id: string; sku: string; name: string; priceCents: number }) => void;
+  onSelect: (p: SwapProductPick) => void;
   onCancel: () => void;
 }) {
-  const [products, setProducts] = useState<{ id: string; sku: string; name: string; priceCents: number }[]>([]);
+  const [products, setProducts] = useState<SwapProductPick[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

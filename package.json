@@ -31,6 +31,7 @@
     "db:drop": "drizzle-kit drop",
     "test:qualifiers": "npx tsx scripts/test-qualifiers.ts",
     "test:wizard": "npx tsx scripts/test-wizard.ts",
+    "test:variant-label": "npx tsx scripts/test-variant-label.ts",
     "test:optimizer-baseline": "npx tsx scripts/test-optimizer-baseline.ts",
     "test:optimizer-policy": "npx tsx scripts/test-optimizer-policy.ts"
   },

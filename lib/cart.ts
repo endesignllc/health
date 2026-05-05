@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { db } from "./db";
 import { carts, cartItems, products } from "@/db/schema";
 import { eq, and, inArray } from "drizzle-orm";
+import { extractVariantOptionLabel, variantFamilyKey } from "./variant-label";
 
 const CART_COOKIE = "cart_token";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30;
@@ -71,18 +72,6 @@ export interface CartWithItems {
   subtotalCents: number;
   unresolvedOptionCount: number;
   totalOptionRequiredCount: number;
-}
-
-function extractVariantOptionLabel(description: string | null | undefined): string | null {
-  const text = (description ?? "").trim();
-  if (!text) return null;
-  const size = text.match(/\b(XXXL|XXL|XL|L|M|S)\b\s*\(/i);
-  if (size) return size[1]!.toUpperCase();
-  return null;
-}
-
-function variantFamilyKey(name: string): string {
-  return name.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
 export async function getCart(): Promise<CartWithItems | null> {

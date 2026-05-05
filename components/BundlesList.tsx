@@ -9,6 +9,7 @@ import type { QualifierAnswer } from "@/lib/qualifiers";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { QualifierPanel } from "@/components/QualifierPanel";
+import { extractVariantOptionDetail } from "@/lib/variant-label";
 
 type BundleItemSection = "core" | "support" | "maintenance";
 
@@ -16,6 +17,7 @@ type BundleLine = {
   productId: string;
   productSku: string;
   productName: string;
+  productDescription: string | null;
   productImageUrl: string | null;
   productClassId: string | null;
   categoryId: string;
@@ -255,6 +257,7 @@ export function BundlesList({
                     <ul className="space-y-2">
                       {sectionItems.map((item) => {
                         const classId = item.productClassId;
+                        const variantDetail = extractVariantOptionDetail(item.productDescription);
                         const shouldRenderPanel =
                           Boolean(classId) && !seenClassIds.has(classId as string);
                         if (classId) seenClassIds.add(classId);
@@ -267,6 +270,11 @@ export function BundlesList({
                               <span>
                                 {item.productName}{" "}
                                 {item.quantity > 1 && `×${item.quantity}`}
+                                {variantDetail && (
+                                  <span className="block text-xs text-muted-foreground font-normal mt-0.5">
+                                    {variantDetail}
+                                  </span>
+                                )}
                                 {item.sufficiency && (
                                   <span className="block text-xs text-muted-foreground mt-0.5">
                                     {lineSupplyHint(

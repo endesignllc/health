@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
       eq(products.active, true),
       eq(products.eligible, true)
     ),
-    columns: { id: true, sku: true, name: true, priceCents: true },
+    columns: { id: true, sku: true, name: true, priceCents: true, description: true },
   });
 
   return NextResponse.json(list);

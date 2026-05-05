@@ -45,6 +45,8 @@ export interface BundleItem {
   productId: string;
   productSku: string;
   productName: string;
+  /** Raw listing copy — used for variant display until Phase 1.5 structured variants */
+  productDescription: string | null;
   productImageUrl: string | null;
   productClassId: string | null;
   categoryId: string;
@@ -103,6 +105,7 @@ type EligibleProduct = {
   id: string;
   sku: string;
   name: string;
+  description: string | null;
   imageUrl: string | null;
   productClassId: string | null;
   categoryId: string;
@@ -220,6 +223,7 @@ function addOrMergeLine(
       productId: product.id,
       productSku: product.sku,
       productName: product.name,
+      productDescription: product.description,
       productImageUrl: product.imageUrl,
       productClassId: product.productClassId,
       categoryId: product.categoryId,
@@ -645,6 +649,7 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
     id: p.id,
     sku: p.sku,
     name: p.name,
+    description: p.description ?? null,
     imageUrl: p.imageUrl,
     productClassId: p.productClassId,
     categoryId: p.categoryId,

@@ -4,20 +4,9 @@ import { eq, inArray } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { BundleEditor } from "./BundleEditor";
 import { formatPrice } from "@/lib/utils";
+import { extractVariantOptionLabel, variantFamilyKey } from "@/lib/variant-label";
 
 export const dynamic = "force-dynamic";
-
-function extractVariantOptionLabel(description: string | null | undefined): string | null {
-  const text = (description ?? "").trim();
-  if (!text) return null;
-  const size = text.match(/\b(XXXL|XXL|XL|L|M|S)\b\s*\(/i);
-  if (size) return size[1]!.toUpperCase();
-  return null;
-}
-
-function variantFamilyKey(name: string): string {
-  return name.trim().toLowerCase().replace(/\s+/g, " ");
-}
 
 export default async function BundleEditorPage({
   params,
@@ -78,7 +67,13 @@ export default async function BundleEditorPage({
 
   const familyMap = new Map<
     string,
-    { productId: string; sku: string; label: string; priceCents: number }[]
+    {
+      productId: string;
+      sku: string;
+      label: string;
+      priceCents: number;
+      description: string | null;
+    }[]
   >();
   for (const c of familyCandidates) {
     if (!c.active || !c.eligible) continue;
@@ -91,6 +86,7 @@ export default async function BundleEditorPage({
       sku: c.sku,
       label,
       priceCents: c.priceCents,
+      description: c.description ?? null,
     });
     familyMap.set(key, list);
   }
