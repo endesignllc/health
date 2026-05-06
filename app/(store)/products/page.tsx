@@ -4,7 +4,7 @@ import { formatPrice } from "@/lib/utils";
 import { ProductsSearchForm } from "./ProductsSearchForm";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { extractVariantOptionDetail } from "@/lib/variant-label";
+import { extractVariantListingAttribute } from "@/lib/variant-label";
 
 interface PageProps {
   searchParams: Promise<{ q?: string; category?: string; page?: string }>;
@@ -58,7 +58,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {productList.map((product) => {
-              const variantDetail = extractVariantOptionDetail(product.description);
+              const variantDetail = extractVariantListingAttribute(product.name, product.description);
               return (
               <Link key={product.id} href={`/products/${product.id}`}>
                 <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">

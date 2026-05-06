@@ -104,7 +104,7 @@ export async function getCart(): Promise<CartWithItems | null> {
       groupKey: i.groupKey,
       optionSelectionConfirmed: i.optionSelectionConfirmed,
       optionSelectionLabel:
-        i.optionSelectionLabel ?? extractVariantOptionLabel(i.product!.description),
+        i.optionSelectionLabel ?? extractVariantOptionLabel(i.product!.description, i.product!.name),
       requiresOptionSelection: false,
       familyKey: null,
       familyOptions: [],
@@ -133,7 +133,7 @@ export async function getCart(): Promise<CartWithItems | null> {
   >();
   for (const c of familyCandidates) {
     if (!c.active || !c.eligible) continue;
-    const optionLabel = extractVariantOptionLabel(c.description);
+    const optionLabel = extractVariantOptionLabel(c.description, c.name);
     if (!optionLabel) continue;
     const key = variantFamilyKey(c.name);
     const list = familyMap.get(key) ?? [];
@@ -200,7 +200,7 @@ export async function addProductToCart(
     lineTotalCents,
     groupKey: null,
     optionSelectionConfirmed: true,
-    optionSelectionLabel: extractVariantOptionLabel(product.description),
+    optionSelectionLabel: extractVariantOptionLabel(product.description, product.name),
   });
 
   return { success: true };
@@ -233,12 +233,18 @@ export async function addBundleToCart(
       product?.name &&
         (
           await db
-            .select({ id: products.id, description: products.description, active: products.active, eligible: products.eligible })
+            .select({
+              id: products.id,
+              name: products.name,
+              description: products.description,
+              active: products.active,
+              eligible: products.eligible,
+            })
             .from(products)
             .where(eq(products.name, product.name))
         )
           .filter((p) => p.active && p.eligible)
-          .map((p) => extractVariantOptionLabel(p.description))
+          .map((p) => extractVariantOptionLabel(p.description, p.name))
           .filter(Boolean).length > 1
     );
     await db.insert(cartItems).values({
@@ -250,7 +256,7 @@ export async function addBundleToCart(
       optionSelectionConfirmed:
         item.optionSelectionConfirmed ?? !familyHasVariants,
       optionSelectionLabel:
-        item.optionSelectionLabel ?? extractVariantOptionLabel(product?.description),
+        item.optionSelectionLabel ?? extractVariantOptionLabel(product?.description, product?.name),
     });
   }
 
@@ -356,7 +362,7 @@ export async function updateCartItemOptionSelection(
       productId: selected.id,
       lineTotalCents,
       optionSelectionConfirmed: true,
-      optionSelectionLabel: extractVariantOptionLabel(selected.description),
+      optionSelectionLabel: extractVariantOptionLabel(selected.description, selected.name),
     })
     .where(eq(cartItems.id, item.id));
 

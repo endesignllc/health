@@ -2,7 +2,12 @@
  * Fixture tests for lib/variant-label.ts (no test runner dependency).
  * Run: npx tsx scripts/test-variant-label.ts
  */
-import { extractVariantOptionLabel, extractVariantOptionDetail } from "../lib/variant-label";
+import {
+  extractVariantOptionLabel,
+  extractVariantOptionDetail,
+  extractVariantListingAttribute,
+  variantListingParseSource,
+} from "../lib/variant-label";
 
 const CASES: { desc: string; label: string | null; detail: string | null }[] = [
   {
@@ -55,6 +60,11 @@ const CASES: { desc: string; label: string | null; detail: string | null }[] = [
     label: "XXXL",
     detail: 'XXXL · 48"–52" waist',
   },
+  {
+    desc: "For arthritis, carpal tunnel, tendonitis. Breathable cotton/spandex. Gray. S.",
+    label: "S",
+    detail: "S",
+  },
 ];
 
 let failed = 0;
@@ -72,8 +82,61 @@ for (let i = 0; i < CASES.length; i++) {
 }
 
 if (failed === 0) {
-  console.log("test-variant-label: all", CASES.length, "cases passed");
+  console.log("test-variant-label: all", CASES.length, "description cases passed");
 } else {
   console.error("test-variant-label:", failed, "case(s) failed");
   process.exit(1);
 }
+
+const LISTING_CASES: {
+  name: string;
+  desc: string | null;
+  listing: string | null;
+  source: "description" | "name" | "none";
+}[] = [
+  {
+    name: "CURAD Knee High Compression Hosiery 8-15 mmHg",
+    desc: "Sheer support.",
+    listing: "8–15 mmHg",
+    source: "name",
+  },
+  {
+    name: "CURAD Infrared Elastic Pull-Over Ankle Support",
+    desc: "L/XL wrap. Fits most.",
+    listing: "L/XL",
+    source: "description",
+  },
+  {
+    name: "CURAD Arthritis Relief Compression Gloves",
+    desc: "For arthritis, carpal tunnel, tendonitis. Breathable cotton/spandex. Gray. M.",
+    listing: "M",
+    source: "description",
+  },
+  {
+    name: "Plain retail title with no tokens",
+    desc: null,
+    listing: null,
+    source: "none",
+  },
+];
+
+let failedListing = 0;
+for (let i = 0; i < LISTING_CASES.length; i++) {
+  const c = LISTING_CASES[i]!;
+  const listing = extractVariantListingAttribute(c.name, c.desc);
+  const source = variantListingParseSource(c.name, c.desc);
+  if (listing !== c.listing || source !== c.source) {
+    failedListing++;
+    console.error(`FAIL listing case ${i + 1}`);
+    console.error("  name:", c.name);
+    console.error("  expected listing:", c.listing, "got:", listing);
+    console.error("  expected source:", c.source, "got:", source);
+  }
+}
+
+if (failedListing > 0) {
+  console.error("test-variant-label:", failedListing, "listing case(s) failed");
+  process.exit(1);
+}
+
+console.log("test-variant-label: all", LISTING_CASES.length, "listing cases passed");

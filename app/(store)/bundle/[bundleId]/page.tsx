@@ -77,7 +77,7 @@ export default async function BundleEditorPage({
   >();
   for (const c of familyCandidates) {
     if (!c.active || !c.eligible) continue;
-    const label = extractVariantOptionLabel(c.description);
+    const label = extractVariantOptionLabel(c.description, c.name);
     if (!label) continue;
     const key = variantFamilyKey(c.name);
     const list = familyMap.get(key) ?? [];
@@ -100,7 +100,10 @@ export default async function BundleEditorPage({
       ...item,
       requiresOptionSelection,
       optionSelectionConfirmed: !requiresOptionSelection,
-      optionSelectionLabel: extractVariantOptionLabel(item.productDescription),
+      optionSelectionLabel: extractVariantOptionLabel(
+        item.productDescription,
+        item.productName
+      ),
       familyOptions: requiresOptionSelection ? familyOptions : [],
     };
   });

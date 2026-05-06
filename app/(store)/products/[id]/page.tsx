@@ -5,7 +5,7 @@ import { formatPrice } from "@/lib/utils";
 import { AddToCartButton } from "./AddToCartButton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { extractVariantOptionDetail } from "@/lib/variant-label";
+import { extractVariantListingAttribute } from "@/lib/variant-label";
 
 export default async function ProductDetailPage({
   params,
@@ -24,7 +24,7 @@ export default async function ProductDetailPage({
 
   const relatedProducts = related.products.filter((p) => p.id !== product.id);
 
-  const heroVariantDetail = extractVariantOptionDetail(product.description);
+  const heroVariantDetail = extractVariantListingAttribute(product.name, product.description);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
@@ -110,7 +110,7 @@ export default async function ProductDetailPage({
           <h2 className="text-xl font-semibold mb-6">You may also like</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.map((p) => {
-              const variantDetail = extractVariantOptionDetail(p.description);
+              const variantDetail = extractVariantListingAttribute(p.name, p.description);
               return (
               <Link key={p.id} href={`/products/${p.id}`}>
                 <div className="border rounded-lg overflow-hidden hover:shadow-md transition-shadow">

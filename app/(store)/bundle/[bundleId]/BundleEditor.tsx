@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatPrice } from "@/lib/utils";
-import { extractVariantOptionDetail } from "@/lib/variant-label";
+import { extractVariantListingAttribute } from "@/lib/variant-label";
 
 interface BundleItem {
   id: string;
@@ -65,7 +65,10 @@ export function BundleEditor({
   const totalOptionRequiredCount = items.filter((i) => i.requiresOptionSelection).length;
   const currentOptionItem = unresolvedOptionItems[0] ?? null;
   const currentOptionDetail = currentOptionItem
-    ? extractVariantOptionDetail(currentOptionItem.productDescription)
+    ? extractVariantListingAttribute(
+        currentOptionItem.productName,
+        currentOptionItem.productDescription
+      )
     : null;
   const [selectedByItemId, setSelectedByItemId] = useState<Record<string, string>>({});
 
@@ -184,7 +187,10 @@ export function BundleEditor({
       )}
 
       {items.map((item) => {
-        const itemVariantDetail = extractVariantOptionDetail(item.productDescription);
+        const itemVariantDetail = extractVariantListingAttribute(
+          item.productName,
+          item.productDescription
+        );
         return (
         <Card key={item.id}>
           <CardContent className="pt-6">
