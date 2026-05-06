@@ -75,6 +75,26 @@ const CASES: { desc: string; label: string | null; detail: string | null }[] = [
     label: "XL",
     detail: "XL",
   },
+  {
+    desc: 'Breathable & contoured with leg gathers. Moderate absorbency. 5.5" x 10.5".',
+    label: "Moderate absorbency",
+    detail: 'Moderate absorbency · 5.5" × 10.5"',
+  },
+  {
+    desc: 'Breathable & contoured with leg gathers. Maximum absorbency. 6.5" x 13.5".',
+    label: "Maximum absorbency",
+    detail: 'Maximum absorbency · 6.5" × 13.5"',
+  },
+  {
+    desc: 'Breathable & contoured with leg gathers. Ultimate absorbency. 8" x 17".',
+    label: "Ultimate absorbency",
+    detail: 'Ultimate absorbency · 8" × 17"',
+  },
+  {
+    desc: 'Breathable & contoured with leg gathers. Ultimate absorbency. 8"" x 17"".',
+    label: "Ultimate absorbency",
+    detail: 'Ultimate absorbency · 8" × 17"',
+  },
 ];
 
 let failed = 0;
@@ -120,6 +140,18 @@ const LISTING_CASES: {
     name: "CURAD Arthritis Relief Compression Gloves",
     desc: "For arthritis, carpal tunnel, tendonitis. Breathable cotton/spandex. Gray. M.",
     listing: "M",
+    source: "description",
+  },
+  {
+    name: "Medline ContourPlus Bladder Pads",
+    desc: 'Breathable & contoured with leg gathers. Maximum absorbency. 6.5" x 13.5".',
+    listing: 'Maximum absorbency · 6.5" × 13.5"',
+    source: "description",
+  },
+  {
+    name: "Medline ContourPlus Bladder Pads",
+    desc: 'Breathable & contoured with leg gathers. Ultimate absorbency. 8" x 17".',
+    listing: 'Ultimate absorbency · 8" × 17"',
     source: "description",
   },
   {

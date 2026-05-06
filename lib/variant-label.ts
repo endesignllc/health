@@ -1,5 +1,6 @@
 /**
- * Parse apparel / brace / compression style variant hints from vendor copy.
+ * Parse apparel / brace / compression style variant hints from vendor copy,
+ * plus pad absorbency lines (e.g. Moderate absorbency · 5.5" × 10.5").
  * Size tokens (parens, slash pairs, terminal letters, spelled sizes) win over mmHg ranges
  * when both appear — mmHg stays available in the product title for compression garments.
  * Checks description first, then product name for listing/cart helpers below.
@@ -14,6 +15,9 @@ const MMHG_RANGE = /\b(\d{1,3})\s*[-–/]\s*(\d{1,3})\s*mmHg\b/i;
 /** e.g. S/M, L/XL — repeat segments for L/M/S triples rare */
 const SLASH_SIZE =
   /\b(XS|XXL|XXXL|XL|L|M|S)(?:\s*\/\s*(XS|XXL|XXXL|XL|L|M|S))+\b/i;
+/** e.g. Moderate absorbency. 5.5" x 10.5" (bladder pads / liners). */
+const ABSORBENCY_INCH_DIMS =
+  /\b(Light|Moderate|Medium|Heavy|Maximum|Ultimate|Super|Extra)(\s+absorbency)\s*\.\s*(\d+(?:\.\d+)?)\s*(?:"+|[\u2033\u201d])\s*[x×]\s*(\d+(?:\.\d+)?)\s*(?:"+|[\u2033\u201d])/i;
 /** e.g. "... Gray. S." — isolated letter size only at end (after slash combo check). */
 const TERMINAL_LETTER_SIZE =
   /\b(XS|XXL|XXXL|XL|L|M|S)\s*\.?\s*$/i;
@@ -59,6 +63,16 @@ export function parseAttributeFromFreeText(text: string): string | null {
   if (slash) {
     const raw = slash[0]!.replace(/\s*/g, "").toUpperCase();
     return raw.includes("/") ? raw : null;
+  }
+
+  const padAbsorb = t.match(ABSORBENCY_INCH_DIMS);
+  if (padAbsorb) {
+    const lvlRaw = padAbsorb[1]!;
+    const phrase =
+      lvlRaw.charAt(0).toUpperCase() + lvlRaw.slice(1).toLowerCase() + padAbsorb[2];
+    const w = padAbsorb[3]!;
+    const h = padAbsorb[4]!;
+    return `${phrase} · ${w}" × ${h}"`;
   }
 
   const tailLetter = t.match(TERMINAL_LETTER_SIZE);
