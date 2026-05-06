@@ -45,7 +45,6 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
   const [cadence, setCadence] = useState<"monthly" | "quarterly">("monthly");
   const [needSlugs, setNeedSlugs] = useState<string[]>([]);
   const [includeEveryday, setIncludeEveryday] = useState(true);
-  const [shopper, setShopper] = useState<"self" | "caregiver">("self");
 
   const toggleNeed = (slug: string) => {
     setNeedSlugs((prev) =>
@@ -91,7 +90,6 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
     const params = new URLSearchParams({
       budgetCents: String(resolvedBudget.cents),
       cadence,
-      shopper,
       includeEveryday: String(includeEveryday),
       ...(canonical.length ? { needSlugs: canonical.join(",") } : {}),
     });
@@ -272,43 +270,6 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
               Pick at least one need or include everyday essentials.
             </p>
           )}
-        </CardContent>
-      </Card>
-
-      {/* Step 3: Shopping for */}
-      <Card>
-        <CardHeader>
-          <h2 className="text-lg font-semibold">Step 3: Shopping for</h2>
-          <p className="text-sm text-muted-foreground">
-            Tell us who you're shopping for.
-          </p>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div>
-            <Label className="text-base">Shopping for</Label>
-            <div className="flex flex-wrap gap-4 mt-2">
-              <label className="flex items-center gap-2 min-h-[48px] cursor-pointer">
-                <input
-                  type="radio"
-                  name="shopper"
-                  checked={shopper === "self"}
-                  onChange={() => setShopper("self")}
-                  className="w-5 h-5"
-                />
-                <span>Myself</span>
-              </label>
-              <label className="flex items-center gap-2 min-h-[48px] cursor-pointer">
-                <input
-                  type="radio"
-                  name="shopper"
-                  checked={shopper === "caregiver"}
-                  onChange={() => setShopper("caregiver")}
-                  className="w-5 h-5"
-                />
-                <span>Someone I care for</span>
-              </label>
-            </div>
-          </div>
         </CardContent>
       </Card>
 

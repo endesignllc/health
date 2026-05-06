@@ -13,7 +13,6 @@ interface PageProps {
     needSlugs?: string;
     goals?: string;
     usageIntensity?: string;
-    shopper?: string;
     includeEveryday?: string;
   }>;
 }
