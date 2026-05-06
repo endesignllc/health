@@ -1,6 +1,7 @@
 /**
  * Parse apparel / brace / compression style variant hints from vendor copy,
- * plus pad absorbency lines (e.g. Moderate absorbency · 5.5" × 10.5").
+ * plus pad absorbency lines (e.g. Moderate absorbency · 5.5" × 10.5") and
+ * scented / unscented when stated at end of copy (e.g. FitRight wipes).
  * Size tokens (parens, slash pairs, terminal letters, spelled sizes) win over mmHg ranges
  * when both appear — mmHg stays available in the product title for compression garments.
  * Checks description first, then product name for listing/cart helpers below.
@@ -18,6 +19,8 @@ const SLASH_SIZE =
 /** e.g. Moderate absorbency. 5.5" x 10.5" (bladder pads / liners). */
 const ABSORBENCY_INCH_DIMS =
   /\b(Light|Moderate|Medium|Heavy|Maximum|Ultimate|Super|Extra)(\s+absorbency)\s*\.\s*(\d+(?:\.\d+)?)\s*(?:"+|[\u2033\u201d])\s*[x×]\s*(\d+(?:\.\d+)?)\s*(?:"+|[\u2033\u201d])/i;
+/** e.g. wipe/personal care copy ending in Scented. or Unscented. */
+const SCENT_VARIANT = /\b(Unscented|Scented)\s*\.?\s*$/i;
 /** e.g. "... Gray. S." — isolated letter size only at end (after slash combo check). */
 const TERMINAL_LETTER_SIZE =
   /\b(XS|XXL|XXXL|XL|L|M|S)\s*\.?\s*$/i;
@@ -73,6 +76,12 @@ export function parseAttributeFromFreeText(text: string): string | null {
     const w = padAbsorb[3]!;
     const h = padAbsorb[4]!;
     return `${phrase} · ${w}" × ${h}"`;
+  }
+
+  const scent = t.match(SCENT_VARIANT);
+  if (scent) {
+    const s = scent[1]!;
+    return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
   }
 
   const tailLetter = t.match(TERMINAL_LETTER_SIZE);

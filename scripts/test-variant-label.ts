@@ -95,6 +95,16 @@ const CASES: { desc: string; label: string | null; detail: string | null }[] = [
     label: "Ultimate absorbency",
     detail: 'Ultimate absorbency · 8" × 17"',
   },
+  {
+    desc: 'Gentle aloe-based formula. Standard weight. 8" x 10". Unscented.',
+    label: "Unscented",
+    detail: "Unscented",
+  },
+  {
+    desc: 'Gentle aloe-based formula. Standard weight. 8" x 10". Scented.',
+    label: "Scented",
+    detail: "Scented",
+  },
 ];
 
 let failed = 0;
@@ -158,6 +168,12 @@ const LISTING_CASES: {
     name: "CURAD Knee High Compression Hosiery 8-15 mmHg",
     desc: "Light compression for tired legs. Black. XL Regular.",
     listing: "XL",
+    source: "description",
+  },
+  {
+    name: "Medline FitRight Aloe Personal Wipes",
+    desc: 'Gentle aloe-based formula. Standard weight. 8" x 10". Scented.',
+    listing: "Scented",
     source: "description",
   },
   {
