@@ -200,10 +200,7 @@ export function BundlesList({
   return (
     <Card className={`flex flex-col transition-opacity ${loading ? "opacity-70" : "opacity-100"}`}>
       <CardHeader className="pb-2">
-        <div className="flex items-center justify-between gap-2 flex-wrap">
-          <h2 className="text-xl font-semibold">Optimized for your needs & budget</h2>
-          <Badge variant="secondary">{bundle.needName}</Badge>
-        </div>
+        <h2 className="text-xl font-semibold">Optimized for your needs & budget</h2>
         <p className="text-2xl font-bold text-primary mt-2">
           {formatPrice(bundle.subtotalCents)}
         </p>
