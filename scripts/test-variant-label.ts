@@ -65,6 +65,16 @@ const CASES: { desc: string; label: string | null; detail: string | null }[] = [
     label: "S",
     detail: "S",
   },
+  {
+    desc: "Light compression for tired legs. Black. XL Regular.",
+    label: "XL",
+    detail: "XL",
+  },
+  {
+    desc: "Sheer. 8-15 mmHg. Black. XL.",
+    label: "XL",
+    detail: "XL",
+  },
 ];
 
 let failed = 0;
@@ -110,6 +120,12 @@ const LISTING_CASES: {
     name: "CURAD Arthritis Relief Compression Gloves",
     desc: "For arthritis, carpal tunnel, tendonitis. Breathable cotton/spandex. Gray. M.",
     listing: "M",
+    source: "description",
+  },
+  {
+    name: "CURAD Knee High Compression Hosiery 8-15 mmHg",
+    desc: "Light compression for tired legs. Black. XL Regular.",
+    listing: "XL",
     source: "description",
   },
   {

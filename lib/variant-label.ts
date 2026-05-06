@@ -1,6 +1,8 @@
 /**
  * Parse apparel / brace / compression style variant hints from vendor copy.
- * Checks description first, then product name (duplicate titles often encode mmHg / S/M in the name).
+ * Size tokens (parens, slash pairs, terminal letters, spelled sizes) win over mmHg ranges
+ * when both appear — mmHg stays available in the product title for compression garments.
+ * Checks description first, then product name for listing/cart helpers below.
  * Phase 1.5 variants will replace runtime parsing with structured columns.
  */
 
@@ -15,9 +17,12 @@ const SLASH_SIZE =
 /** e.g. "... Gray. S." — isolated letter size only at end (after slash combo check). */
 const TERMINAL_LETTER_SIZE =
   /\b(XS|XXL|XXXL|XL|L|M|S)\s*\.?\s*$/i;
-/** Small, Medium, Large, X-Large (avoid `\bMed\b` — hits "Medical") */
+/**
+ * Spelled-out / letter sizes (avoid `\bMed\b` — hits "Medical").
+ * Put `X-?Large` / `XLarge` before `Large` so "X-Large" is not captured as "Large".
+ */
 const WORD_SIZE =
-  /\b(Small|Medium|Large|X-?Large|XLarge|Petite|One\s*Size)\b/i;
+  /\b(Small|Medium|Petite|One\s*Size|XL|X-?Large|XLarge|Large)\b/i;
 
 function normalizeWhitespace(text: string): string {
   return text.trim().replace(/\s+/g, " ");
@@ -50,9 +55,6 @@ export function parseAttributeFromFreeText(text: string): string | null {
     return `${letter} · ${inner}`;
   }
 
-  const mm = t.match(MMHG_RANGE);
-  if (mm) return `${mm[1]}–${mm[2]} mmHg`;
-
   const slash = t.match(SLASH_SIZE);
   if (slash) {
     const raw = slash[0]!.replace(/\s*/g, "").toUpperCase();
@@ -66,13 +68,16 @@ export function parseAttributeFromFreeText(text: string): string | null {
   if (word) {
     const wRaw = word[1]!.toLowerCase().replace(/\s+/g, " ");
     const w = wRaw.replace(/\./g, "");
-    if (w === "x-large" || w === "xlarge") return "XL";
+    if (w === "xl" || w === "x-large" || w === "xlarge") return "XL";
     if (w === "one size") return "One size";
     return w.charAt(0).toUpperCase() + w.slice(1);
   }
 
   const loose = t.match(SIZE_OPEN_PAREN);
   if (loose) return loose[1]!.toUpperCase();
+
+  const mm = t.match(MMHG_RANGE);
+  if (mm) return `${mm[1]}–${mm[2]} mmHg`;
 
   return null;
 }
