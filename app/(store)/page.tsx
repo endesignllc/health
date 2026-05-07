@@ -10,7 +10,7 @@ export default function HomePage() {
             Build a Budget-Fitting Bundle in Under a Minute
           </h1>
           <p className="text-lg sm:text-xl md:text-[1.35rem] leading-relaxed opacity-95 max-w-2xl mx-auto mb-10">
-            Choose your allowance and need—we optimize one bundle per benefit period to fit your budget. No diagnosis required—just functional support for your wellness goals.
+            Choose your allowance and need—we optimize one bundle per benefit period to fit your budget. No diagnosis required—just streamlined support for your wellness goals.
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center items-stretch sm:items-center">
             <Button
