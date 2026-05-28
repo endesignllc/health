@@ -7,7 +7,6 @@ import { formatPrice } from "@/lib/utils";
 import type { BundleSufficiencySummary } from "@/lib/sufficiency";
 import type { QualifierAnswer } from "@/lib/qualifiers";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { QualifierPanel } from "@/components/QualifierPanel";
 import { extractVariantListingAttribute } from "@/lib/variant-label";
 
@@ -123,18 +122,6 @@ function sectionHeading(bundle: BuiltBundle, slug: string): string {
   return `Your ${titled}`;
 }
 
-function tierPillLabel(tier: number): string {
-  if (tier === 1) return "Essential";
-  if (tier === 2) return "Beneficial";
-  return "Comfort";
-}
-
-function tierPillClass(tier: number): string {
-  if (tier === 1) return "bg-emerald-600 hover:bg-emerald-600 text-white border-transparent";
-  if (tier === 2) return "bg-sky-600 hover:bg-sky-600 text-white border-transparent";
-  return "bg-muted text-muted-foreground border-border";
-}
-
 export function BundlesList({
   initialBundles,
   params,
@@ -238,22 +225,11 @@ export function BundlesList({
         )}
       </CardHeader>
       <CardContent className="flex-1 flex flex-col gap-10">
-        {orderedBundleSections(bundle).map((bundleSectionSlug) => {
-          const tierHead =
-            bundle.items.find((i) => i.bundleSection === bundleSectionSlug)?.priorityTier ?? null;
-
-          return (
+        {orderedBundleSections(bundle).map((bundleSectionSlug) => (
             <section key={bundleSectionSlug} className="space-y-4">
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-base font-semibold text-foreground">
-                  {sectionHeading(bundle, bundleSectionSlug)}
-                </h3>
-                {tierHead !== null && (
-                  <Badge className={tierPillClass(tierHead)} variant="outline">
-                    {tierPillLabel(tierHead)}
-                  </Badge>
-                )}
-              </div>
+              <h3 className="text-base font-semibold text-foreground">
+                {sectionHeading(bundle, bundleSectionSlug)}
+              </h3>
 
               {SECTION_ORDER.map((section) => {
                 const sectionItems = bundle.items.filter(
@@ -323,8 +299,7 @@ export function BundlesList({
                 );
               })}
             </section>
-          );
-        })}
+        ))}
         <div className="flex flex-col gap-2 pt-2 border-t">
           <AddBundleButton
             bundleSku={bundle.bundleSku}
