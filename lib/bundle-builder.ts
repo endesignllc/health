@@ -402,6 +402,146 @@ async function allocateEverydayEssentials(params: {
   }
 }
 
+/**
+ * Fill remaining budget pass — maximizes benefit utilization.
+ * Called after all need-based and everyday allocations to add more products
+ * until the budget is nearly exhausted.
+ */
+function fillRemainingBudget(params: {
+  eligibleProducts: EligibleProduct[];
+  qualifierAdjustments: Map<string, ProductAdjustment>;
+  classQualifierBonus: (productClassId: string | null) => number;
+  items: BundleItem[];
+  qtyByProduct: Map<string, number>;
+  globalSpent: { cents: number };
+  capCents: number;
+  cadence: Cadence;
+  urlOrder: string[];
+  resolvedNeeds: NeedRow[];
+}): void {
+  const {
+    eligibleProducts,
+    qualifierAdjustments,
+    classQualifierBonus,
+    items,
+    qtyByProduct,
+    globalSpent,
+    capCents,
+    cadence,
+    urlOrder,
+    resolvedNeeds,
+  } = params;
+
+  const MIN_REMAINING_CENTS = 100; // stop when $1 or less remains
+
+  const room = () => capCents - globalSpent.cents;
+  if (room() <= MIN_REMAINING_CENTS) return;
+
+  // Gather affinity tags from all selected needs
+  const allAffinityTags = new Set<string>();
+  for (const need of resolvedNeeds) {
+    for (const tag of affinityTagsForNeedSlug(need.slug)) {
+      allAffinityTags.add(tag.toLowerCase());
+    }
+  }
+
+  // Score products: affinity boost + value considerations
+  const scored = eligibleProducts.map((p) => {
+    let score = 100;
+    const tags = (p.tags ?? []).map((t) => t.toLowerCase());
+
+    // Affinity boost for need-relevant products
+    if (tags.some((t) => allAffinityTags.has(t))) score += 50;
+
+    // Prefer products already in bundle (fill up quantities)
+    if (qtyByProduct.has(p.id)) score += 20;
+
+    // Prefer value tags
+    if (tags.includes("core") || tags.includes("preferred")) score += 10;
+    if (tags.includes("value")) score += 5;
+
+    // Qualifier bonus
+    score += classQualifierBonus(p.productClassId);
+
+    return { product: p, score };
+  });
+
+  // Apply qualifier adjustments and sort
+  const ranked = rankClassCandidates({
+    ranked: scored,
+    adjustments: qualifierAdjustments,
+  });
+
+  // First pass: add more quantity to existing items
+  for (const { product } of ranked) {
+    if (room() <= MIN_REMAINING_CENTS) break;
+    const currentQty = qtyByProduct.get(product.id) ?? 0;
+    if (currentQty === 0) continue; // only existing items in this pass
+
+    const supplyDays = product.supplyDays ?? 30;
+    const maxQty = maxQtyForCadence(cadence, supplyDays);
+    if (currentQty >= maxQty) continue;
+
+    const canAdd = Math.min(
+      maxQty - currentQty,
+      Math.floor(room() / product.priceCents)
+    );
+    if (canAdd < 1) continue;
+
+    const lineTotal = product.priceCents * canAdd;
+    globalSpent.cents += lineTotal;
+
+    // Find the need this product belongs to (for bundleSection)
+    const existingItem = items.find((i) => i.productId === product.id);
+    const bundleSection = existingItem?.bundleSection ?? "everyday";
+    const tierNum = existingItem?.priorityTier ?? null;
+
+    addOrMergeLine(
+      items,
+      qtyByProduct,
+      product,
+      canAdd,
+      "support",
+      bundleSection,
+      tierNum,
+      urlOrder
+    );
+  }
+
+  // Second pass: add new products
+  for (const { product } of ranked) {
+    if (room() <= MIN_REMAINING_CENTS) break;
+    const currentQty = qtyByProduct.get(product.id) ?? 0;
+    if (currentQty > 0) continue; // already in bundle
+
+    const supplyDays = product.supplyDays ?? 30;
+    const maxQty = maxQtyForCadence(cadence, supplyDays);
+    const canAdd = Math.min(maxQty, Math.floor(room() / product.priceCents));
+    if (canAdd < 1) continue;
+
+    const lineTotal = product.priceCents * canAdd;
+    globalSpent.cents += lineTotal;
+
+    // Tag products with affinity as belonging to the primary need
+    const tags = (product.tags ?? []).map((t) => t.toLowerCase());
+    const hasAffinity = tags.some((t) => allAffinityTags.has(t));
+    const primaryNeed = resolvedNeeds[0];
+    const bundleSection = hasAffinity && primaryNeed ? primaryNeed.slug : "everyday";
+    const tierNum = hasAffinity && primaryNeed ? (primaryNeed.priorityTier as BundleNeedTier) : null;
+
+    addOrMergeLine(
+      items,
+      qtyByProduct,
+      product,
+      canAdd,
+      "support",
+      bundleSection,
+      tierNum,
+      urlOrder
+    );
+  }
+}
+
 async function allocateSingleNeed(params: {
   need: NeedRow;
   subNeedCap: number;
@@ -738,6 +878,20 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
         urlOrder,
       });
     }
+
+    // Fill remaining budget pass — maximize utilization
+    fillRemainingBudget({
+      eligibleProducts,
+      qualifierAdjustments,
+      classQualifierBonus,
+      items,
+      qtyByProduct,
+      globalSpent,
+      capCents,
+      cadence: input.cadence,
+      urlOrder,
+      resolvedNeeds,
+    });
   }
 
   const subtotalCents = globalSpent.cents;

@@ -177,8 +177,8 @@ async function seed() {
     .values([
       {
         slug: "blood-sugar-support",
-        name: "Blood Sugar Support",
-        description: "Products to support healthy blood sugar levels",
+        name: "Diabetes Support",
+        description: "Products for diabetes management and blood sugar support",
         priorityTier: 1,
       },
       {
@@ -234,7 +234,7 @@ async function seed() {
 
   // Legacy slug migrations — preserve ids / FKs; bidirectional swaps need a __tmp__ slug step (brief).
   await mergeOrRenameNeedSlug("blood-sugar", "blood-sugar-support", {
-    name: "Blood Sugar Support",
+    name: "Diabetes Support",
     priorityTier: 1,
   });
 
@@ -382,11 +382,11 @@ async function seed() {
       unitsPerPackage: 30,
       estimatedDailyUse: 1,
     },
-    { sku: "VIT-B12-500", name: "Vitamin B12 500mcg", categorySlug: "vitamins", priceCents: 699, tags: ["core"], supplyDays: 30 },
+    { sku: "VIT-B12-500", name: "Vitamin B12 500mcg", categorySlug: "vitamins", priceCents: 699, tags: ["core", "blood-sugar", "diabetes"], supplyDays: 30 },
     { sku: "VIT-C-1000", name: "Vitamin C 1000mg", categorySlug: "vitamins", priceCents: 799, tags: ["core", "value", "maintenance"], supplyDays: 30 },
     { sku: "VIT-MULTI-SR", name: "Senior Multivitamin", categorySlug: "vitamins", priceCents: 1999, tags: ["preferred", "core", "maintenance", "staple"], supplyDays: 30 },
-    { sku: "VIT-OMEGA3", name: "Omega-3 Fish Oil", categorySlug: "supplements", priceCents: 1499, tags: ["heart", "core"], supplyDays: 30 },
-    { sku: "SUP-MAGNESIUM", name: "Magnesium 400mg", categorySlug: "supplements", priceCents: 999, tags: ["sleep", "value"], supplyDays: 30 },
+    { sku: "VIT-OMEGA3", name: "Omega-3 Fish Oil", categorySlug: "supplements", priceCents: 1499, tags: ["heart", "core", "blood-sugar", "diabetes"], supplyDays: 30 },
+    { sku: "SUP-MAGNESIUM", name: "Magnesium 400mg", categorySlug: "supplements", priceCents: 999, tags: ["sleep", "value", "blood-sugar", "diabetes"], supplyDays: 30 },
     { sku: "SUP-CINNAMON", name: "Cinnamon Extract", categorySlug: "supplements", priceCents: 1299, tags: ["blood-sugar"], supplyDays: 30 },
     { sku: "SUP-COQ10", name: "CoQ10 100mg", categorySlug: "supplements", priceCents: 2499, tags: ["heart", "preferred"], supplyDays: 30 },
     { sku: "SUP-TURMERIC", name: "Turmeric Curcumin", categorySlug: "supplements", priceCents: 1599, tags: ["pain", "inflammation"], supplyDays: 30 },
@@ -428,7 +428,7 @@ async function seed() {
     { sku: "MED-REMINDER", name: "Medication Reminder", categorySlug: "monitoring", priceCents: 2499, tags: ["adherence"], supplyDays: 365 },
     { sku: "VIT-LUTEIN", name: "Lutein & Zeaxanthin", categorySlug: "vitamins", priceCents: 1599, tags: ["vision"], supplyDays: 30 },
     { sku: "MOB-BATTERY", name: "Hearing Aid Batteries 8pk", categorySlug: "mobility", priceCents: 599, tags: ["hearing", "consumable"], supplyDays: 30 },
-    { sku: "VIT-D3-2000", name: "Vitamin D3 2000 IU", categorySlug: "vitamins", priceCents: 1299, tags: ["preferred"], supplyDays: 30 },
+    { sku: "VIT-D3-2000", name: "Vitamin D3 2000 IU", categorySlug: "vitamins", priceCents: 1299, tags: ["preferred", "blood-sugar", "diabetes"], supplyDays: 30 },
     { sku: "SUP-PROBIOTIC", name: "Probiotic 50B CFU", categorySlug: "supplements", priceCents: 2299, tags: ["digestive"], supplyDays: 30 },
     { sku: "PAIN-ASPIRIN", name: "Low Dose Aspirin 81mg", categorySlug: "pain-relief", priceCents: 699, tags: ["heart", "value"], supplyDays: 30 },
     { sku: "RESP-VAPOR", name: "Vapor Rub", categorySlug: "respiratory", priceCents: 599, tags: ["respiratory", "value", "maintenance", "staple"], supplyDays: 30 },
@@ -463,6 +463,10 @@ async function seed() {
     { sku: "VIT-B6", name: "Vitamin B6 100mg", categorySlug: "vitamins", priceCents: 599, tags: ["value"], supplyDays: 30 },
     { sku: "SUP-GARLIC", name: "Garlic Extract", categorySlug: "supplements", priceCents: 999, tags: ["heart", "value"], supplyDays: 30 },
     { sku: "MED-LABELS", name: "Medication Labels", categorySlug: "mobility", priceCents: 499, tags: ["adherence", "value"], supplyDays: 365, isEverydayEssential: true },
+    // Diabetic foot care products
+    { sku: "DIAB-SOCKS-3", name: "Diabetic Socks 3-Pack", categorySlug: "mobility", priceCents: 1499, tags: ["blood-sugar", "diabetes", "foot-care"], supplyDays: 90 },
+    { sku: "DIAB-CREAM", name: "Diabetic Foot Cream", categorySlug: "pain-relief", priceCents: 1299, tags: ["blood-sugar", "diabetes", "foot-care", "topical"], supplyDays: 30 },
+    { sku: "DIAB-INSPECT", name: "Foot Inspection Mirror", categorySlug: "monitoring", priceCents: 999, tags: ["blood-sugar", "diabetes", "foot-care", "monitoring"], supplyDays: 365 },
     {
       sku: "HEAR-AMP-A",
       name: "Medline ClearTone In-Ear Hearing Amplifier Rechargeable",
