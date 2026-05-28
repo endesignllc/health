@@ -197,6 +197,12 @@ export function BundlesList({
 
   const supplyNote = bundleSupplyNote(bundle.sufficiency);
 
+  // Detect needs that were requested but yielded no items
+  const sectionsWithItems = new Set(bundle.items.map((i) => i.bundleSection));
+  const emptyNeeds = bundle.needSlugs
+    .map((slug, idx) => ({ slug, name: bundle.needNames[idx] ?? slug }))
+    .filter(({ slug }) => !sectionsWithItems.has(slug));
+
   return (
     <Card className={`flex flex-col transition-opacity ${loading ? "opacity-70" : "opacity-100"}`}>
       <CardHeader className="pb-2">
@@ -207,7 +213,7 @@ export function BundlesList({
         <p className="text-sm text-muted-foreground">
           {formatPrice(bundle.remainingCents)} left in your benefit ·{" "}
           <span className="font-medium text-foreground">
-            {bundle.budgetUtilizationPercent}% of your benefit used efficiently
+            {bundle.budgetUtilizationPercent}% of your benefit used
           </span>
           {bundle.coreSubtotalCents > 0 && <> · core {formatPrice(bundle.coreSubtotalCents)}</>}
           {bundle.supportSubtotalCents > 0 && (
@@ -217,6 +223,15 @@ export function BundlesList({
             <> · everyday {formatPrice(bundle.maintenanceSubtotalCents)}</>
           )}
         </p>
+        {emptyNeeds.length > 0 && (
+          <p className="text-sm mt-2 text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
+            We couldn&apos;t find products for{" "}
+            <span className="font-medium">
+              {emptyNeeds.map((n) => n.name).join(", ")}
+            </span>{" "}
+            in the current catalog. Try a different need or check back later as we add more products.
+          </p>
+        )}
         {supplyNote && <p className="text-sm mt-2 text-muted-foreground">{supplyNote}</p>}
         {loading && (
           <p className="text-xs text-muted-foreground mt-2">Updating recommendations…</p>

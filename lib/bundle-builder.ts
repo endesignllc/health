@@ -13,6 +13,7 @@ import {
   type LineSufficiency,
   type UsageIntensity,
 } from "@/lib/sufficiency";
+import { affinityTagsForNeedSlug, needAffinityBonus } from "@/lib/need-affinity";
 export type { Cadence } from "@/lib/sufficiency";
 
 const DEFAULT_BUFFER_CENTS = 500; // $5
@@ -432,6 +433,7 @@ async function allocateSingleNeed(params: {
 
   const tierNum = need.priorityTier as BundleNeedTier;
   const bundleSection = need.slug;
+  const affinityTags = affinityTagsForNeedSlug(need.slug);
 
   const rules = await db.query.needProductRules.findMany({
     where: eq(needProductRules.needId, need.id),
@@ -470,6 +472,7 @@ async function allocateSingleNeed(params: {
         const tags = p.tags ?? [];
         if (tags.includes("core") || tags.includes("preferred")) score += 3;
         if (tags.includes("value")) score += 2;
+        score += needAffinityBonus(tags, affinityTags);
         score += classQualifierBonus(p.productClassId);
         return { product: p, score };
       }),
@@ -511,6 +514,7 @@ async function allocateSingleNeed(params: {
       const tags = p.tags ?? [];
       if (tags.includes("core") || tags.includes("preferred")) score += 3;
       if (tags.includes("value")) score += 2;
+      score += needAffinityBonus(tags, affinityTags);
       score += classQualifierBonus(p.productClassId);
       return { product: p, score };
     }),

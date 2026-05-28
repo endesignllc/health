@@ -62,9 +62,6 @@ export default async function Header() {
             <Link href="/build" className={navLinkClass}>
               Build my bundle
             </Link>
-            <Link href="/privacy" className={navLinkClass}>
-              Privacy
-            </Link>
           </nav>
 
           <Link
