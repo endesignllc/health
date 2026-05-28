@@ -18,7 +18,7 @@ import {
   bundles,
   carts,
 } from "../db/schema";
-import { and, eq, inArray, ne } from "drizzle-orm";
+import { and, eq, inArray, ne, sql } from "drizzle-orm";
 import { computeAndPersistProductClassStats } from "../lib/product-class-stats";
 import { z } from "zod";
 
@@ -230,7 +230,14 @@ async function seed() {
         priorityTier: 1,
       },
     ])
-    .onConflictDoNothing({ target: needs.slug });
+    .onConflictDoUpdate({
+      target: needs.slug,
+      set: {
+        name: sql`excluded.name`,
+        description: sql`excluded.description`,
+        priorityTier: sql`excluded.priority_tier`,
+      },
+    });
 
   // Legacy slug migrations — preserve ids / FKs; bidirectional swaps need a __tmp__ slug step (brief).
   await mergeOrRenameNeedSlug("blood-sugar", "blood-sugar-support", {
