@@ -870,6 +870,34 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
   const qtyByProduct = new Map<string, number>();
   const globalSpent = { cents: 0 };
 
+  // Pre-pass: Add force-include products FIRST (from need qualifier answers)
+  if (forceIncludeProductIds.size > 0 && resolvedNeeds.length > 0) {
+    const primaryNeed = resolvedNeeds[0];
+    for (const productId of forceIncludeProductIds) {
+      const product = eligibleProducts.find((p) => p.id === productId);
+      if (!product) continue;
+      
+      const supplyDays = product.supplyDays ?? 30;
+      const maxQty = maxQtyForCadence(input.cadence, supplyDays);
+      const qty = Math.min(maxQty, 1); // Start with 1 for durables
+      const lineTotal = product.priceCents * qty;
+      
+      if (globalSpent.cents + lineTotal <= capCents) {
+        globalSpent.cents += lineTotal;
+        addOrMergeLine(
+          items,
+          qtyByProduct,
+          product,
+          qty,
+          "core",
+          primaryNeed.slug,
+          primaryNeed.priorityTier as BundleNeedTier,
+          urlOrder
+        );
+      }
+    }
+  }
+
   const includeSlot = input.includeEveryday;
 
   if (resolvedNeeds.length === 0 && includeSlot) {
