@@ -1071,57 +1071,57 @@ async function seed() {
       await db.delete(needQualifierQuestions).where(eq(needQualifierQuestions.id, q.id));
     }
 
-    // Question 1: Type 1 or Type 2
-    const [typeQuestion] = await db
+    // Question 1: Treatment method (insulin vs non-insulin)
+    const [treatmentQuestion] = await db
       .insert(needQualifierQuestions)
       .values({
         needId: diabetesNeed.id,
-        slug: "diabetes-type",
-        prompt: "Which type of diabetes are you managing?",
+        slug: "treatment-method",
+        prompt: "How do you manage your diabetes?",
         sortOrder: 1,
       })
       .returning();
 
-    const [type1Option] = await db
+    const [insulinOption] = await db
       .insert(needQualifierOptions)
       .values({
-        questionId: typeQuestion.id,
-        slug: "type-1",
-        label: "Type 1 (insulin-dependent)",
+        questionId: treatmentQuestion.id,
+        slug: "insulin",
+        label: "I use insulin (injections or pump)",
         sortOrder: 1,
       })
       .returning();
 
-    const [type2Option] = await db
+    const [nonInsulinOption] = await db
       .insert(needQualifierOptions)
       .values({
-        questionId: typeQuestion.id,
-        slug: "type-2",
-        label: "Type 2 (lifestyle/oral medication)",
+        questionId: treatmentQuestion.id,
+        slug: "non-insulin",
+        label: "Oral medications or diet only",
         sortOrder: 2,
       })
       .returning();
 
-    // Type 1 boosts insulin-related products
+    // Insulin users get boosted injection supplies
     await db.insert(needQualifierRules).values([
       {
-        optionId: type1Option.id,
+        optionId: insulinOption.id,
         effect: "boost",
         matchTag: "insulin",
         weight: 20,
       },
       {
-        optionId: type1Option.id,
+        optionId: insulinOption.id,
         effect: "boost",
         matchTag: "lancets",
         weight: 15,
       },
     ]);
 
-    // Type 2 boosts oral supplements
+    // Non-insulin users get boosted supplements
     await db.insert(needQualifierRules).values([
       {
-        optionId: type2Option.id,
+        optionId: nonInsulinOption.id,
         effect: "boost",
         matchTag: "blood-sugar",
         weight: 10,
