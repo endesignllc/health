@@ -134,6 +134,7 @@ export function BundlesList({
     includeEveryday: boolean;
     goals: string[];
     usageIntensity: "daily" | "occasional";
+    needQualifierAnswers: string[];
   };
 }) {
   const [bundles, setBundles] = useState<BuiltBundle[]>(initialBundles);
@@ -160,6 +161,7 @@ export function BundlesList({
           includeEveryday: params.includeEveryday,
           goals: params.goals,
           usageIntensity: params.usageIntensity,
+          needQualifierAnswers: params.needQualifierAnswers,
           qualifierAnswers: flatQualifierAnswers,
         }),
       });

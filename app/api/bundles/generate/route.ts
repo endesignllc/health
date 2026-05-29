@@ -22,6 +22,7 @@ const GenerateSchema = z.object({
   bufferCents: z.number().int().min(0).optional(),
   includeAlternateSummaries: z.boolean().optional().default(false),
   qualifierAnswers: z.array(QualifierAnswerSchema).optional().default([]),
+  needQualifierAnswers: z.array(z.string().uuid()).optional().default([]),
 });
 
 export async function POST(req: NextRequest) {
@@ -64,6 +65,7 @@ export async function POST(req: NextRequest) {
       usageIntensity: d.usageIntensity,
       bufferCents: d.bufferCents,
       qualifierAnswers: d.qualifierAnswers as QualifierAnswer[],
+      needQualifierAnswers: d.needQualifierAnswers,
     });
 
     let alternateMap: Record<

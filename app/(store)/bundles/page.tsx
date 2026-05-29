@@ -101,6 +101,7 @@ export default async function BundlesPage({ searchParams }: PageProps) {
           includeEveryday,
           goals,
           usageIntensity,
+          needQualifierAnswers,
         }}
       />
     </div>
