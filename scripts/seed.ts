@@ -644,8 +644,37 @@ async function seed() {
         description: "Step-on weight scale.",
         needId: null,
       },
+      {
+        slug: "cinnamon-extract-supplement",
+        canonicalName: "Cinnamon extract supplement",
+        description: "OTC cinnamon extract for blood sugar support.",
+        needId: needMap["blood-sugar-support"] ?? null,
+        interactionFlags: ["affects_blood_glucose"],
+      },
+      {
+        slug: "berberine-supplement",
+        canonicalName: "Berberine supplement",
+        description: "OTC berberine for blood sugar support.",
+        needId: needMap["blood-sugar-support"] ?? null,
+        interactionFlags: ["affects_blood_glucose"],
+      },
+      {
+        slug: "alpha-lipoic-acid-supplement",
+        canonicalName: "Alpha-lipoic acid supplement",
+        description: "OTC alpha-lipoic acid (ALA) supplement.",
+        needId: needMap["blood-sugar-support"] ?? null,
+        interactionFlags: ["affects_blood_glucose"],
+      },
     ])
-    .onConflictDoNothing({ target: productClasses.slug });
+    .onConflictDoUpdate({
+      target: productClasses.slug,
+      set: {
+        canonicalName: sql`excluded.canonical_name`,
+        description: sql`excluded.description`,
+        needId: sql`excluded.need_id`,
+        interactionFlags: sql`excluded.interaction_flags`,
+      },
+    });
 
   const classRows = await db.select().from(productClasses);
   const classMap = Object.fromEntries(classRows.map((c) => [c.slug, c.id])) as Record<
@@ -692,6 +721,9 @@ async function seed() {
     "MON-OXYGEN": "pulse-oximeter",
     "MON-THERM": "digital-thermometer",
     "MON-SCALE": "digital-body-scale",
+    "SUP-CINNAMON": "cinnamon-extract-supplement",
+    "SUP-BERBERINE": "berberine-supplement",
+    "SUP-ALA": "alpha-lipoic-acid-supplement",
   };
 
   for (const [sku, slug] of Object.entries(skuToClassSlug)) {

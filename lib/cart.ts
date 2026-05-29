@@ -50,6 +50,7 @@ export interface CartItemWithProduct {
   productPriceCents: number;
   quantity: number;
   lineTotalCents: number;
+  interactionFlags: string[];
   groupKey: string | null;
   optionSelectionConfirmed: boolean;
   optionSelectionLabel: string | null;
@@ -82,7 +83,11 @@ export async function getCart(): Promise<CartWithItems | null> {
     where: eq(carts.cartToken, token),
     with: {
       items: {
-        with: { product: true },
+        with: {
+          product: {
+            with: { productClass: true },
+          },
+        },
       },
     },
   });
@@ -101,6 +106,7 @@ export async function getCart(): Promise<CartWithItems | null> {
       productPriceCents: i.product!.priceCents,
       quantity: i.quantity,
       lineTotalCents: i.lineTotalCents,
+      interactionFlags: i.product!.productClass?.interactionFlags ?? [],
       groupKey: i.groupKey,
       optionSelectionConfirmed: i.optionSelectionConfirmed,
       optionSelectionLabel:

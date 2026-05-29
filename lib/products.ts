@@ -40,7 +40,7 @@ export async function getProductBySku(sku: string) {
 export async function getProductById(id: string) {
   return db.query.products.findFirst({
     where: eq(products.id, id),
-    with: { category: true },
+    with: { category: true, productClass: true },
   });
 }
 

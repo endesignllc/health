@@ -6,6 +6,7 @@ import { AddToCartButton } from "./AddToCartButton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { extractVariantListingAttribute } from "@/lib/variant-label";
+import { InteractionFlagNotice } from "@/components/InteractionFlagNotice";
 
 export default async function ProductDetailPage({
   params,
@@ -89,6 +90,11 @@ export default async function ProductDetailPage({
               <p className="whitespace-pre-wrap">{product.description}</p>
             </div>
           )}
+
+          <InteractionFlagNotice
+            flags={product.productClass?.interactionFlags}
+            className="mb-6 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900"
+          />
 
           <div className="flex flex-wrap gap-4">
             <AddToCartButton productId={product.id} />

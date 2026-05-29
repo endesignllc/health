@@ -4,6 +4,7 @@ import { formatPrice } from "@/lib/utils";
 import { CartItemActions } from "./CartItemActions";
 import { CheckoutSection } from "./CheckoutSection";
 import { CartOptionFlow } from "./CartOptionFlow";
+import { InteractionFlagNotice } from "@/components/InteractionFlagNotice";
 
 export default async function CartPage() {
   const cart = await getCart();
@@ -93,6 +94,7 @@ export default async function CartPage() {
                             : "Select options"}
                         </p>
                       )}
+                      <InteractionFlagNotice flags={item.interactionFlags} />
                       <CartItemActions
                         cartItemId={item.id}
                         quantity={item.quantity}

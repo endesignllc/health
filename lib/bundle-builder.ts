@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { needs, products, needProductRules, qualifierQuestions } from "@/db/schema";
+import { needs, products, needProductRules, qualifierQuestions, productClasses } from "@/db/schema";
 import { eq, and, inArray } from "drizzle-orm";
 import {
   evaluateQualifiers,
@@ -19,6 +19,7 @@ import {
   applyNeedQualifierEffects,
   type NeedQualifierAdjustment,
 } from "@/lib/need-qualifiers";
+import { isExcludedFromRecommendations } from "@/lib/interaction-flags";
 export type { Cadence } from "@/lib/sufficiency";
 
 const DEFAULT_BUFFER_CENTS = 500; // $5
@@ -813,20 +814,36 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
     with: { category: true },
   });
 
-  const eligibleProductsRawMapped: EligibleProduct[] = eligibleProductsRaw.map((p) => ({
-    id: p.id,
-    sku: p.sku,
-    name: p.name,
-    description: p.description ?? null,
-    imageUrl: p.imageUrl,
-    productClassId: p.productClassId,
-    categoryId: p.categoryId,
-    category: p.category,
-    priceCents: p.priceCents,
-    supplyDays: p.supplyDays,
-    tags: p.tags,
-    isEverydayEssential: p.isEverydayEssential,
-  }));
+  const classFlagRows = await db
+    .select({
+      id: productClasses.id,
+      interactionFlags: productClasses.interactionFlags,
+    })
+    .from(productClasses);
+  const flagsByClassId = new Map(
+    classFlagRows.map((r) => [r.id, r.interactionFlags])
+  );
+
+  const eligibleProductsRawMapped: EligibleProduct[] = eligibleProductsRaw
+    .map((p) => ({
+      id: p.id,
+      sku: p.sku,
+      name: p.name,
+      description: p.description ?? null,
+      imageUrl: p.imageUrl,
+      productClassId: p.productClassId,
+      categoryId: p.categoryId,
+      category: p.category,
+      priceCents: p.priceCents,
+      supplyDays: p.supplyDays,
+      tags: p.tags,
+      isEverydayEssential: p.isEverydayEssential,
+    }))
+    .filter((p) => {
+      if (!p.productClassId) return true;
+      const flags = flagsByClassId.get(p.productClassId);
+      return !isExcludedFromRecommendations(flags);
+    });
 
   // Process need qualifier answers
   const needQualifierOptionIds = input.needQualifierAnswers ?? [];

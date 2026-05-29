@@ -35,6 +35,8 @@ export const productClasses = pgTable("product_classes", {
   canonicalName: text("canonical_name").notNull(),
   description: text("description"),
   needId: uuid("need_id").references(() => needs.id, { onDelete: "set null" }),
+  /** Clinical interaction flags — non-empty means exclude from auto-recommendations */
+  interactionFlags: text("interaction_flags").array(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
