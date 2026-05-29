@@ -118,7 +118,7 @@ export default async function BundleEditorPage({
           <span className="font-medium">Budget</span>
           <span>{formatPrice(budgetCents)}</span>
         </div>
-        <div className="w-full bg-muted h-3 rounded-full overflow-hidden">
+        <div className="w-full bg-white h-3 rounded-full overflow-hidden border border-border/60">
           <div
             className="h-full bg-primary transition-all"
             style={{

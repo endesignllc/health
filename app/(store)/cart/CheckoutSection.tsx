@@ -58,7 +58,7 @@ export function CheckoutSection({
             <span>Budget</span>
             <span>{formatPrice(budgetCents)}</span>
           </div>
-          <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
+          <div className="w-full bg-white h-2 rounded-full overflow-hidden border border-border/60">
             <div
               className="h-full bg-primary transition-all"
               style={{
