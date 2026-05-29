@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
+import { BudgetMeter } from "@/components/BudgetMeter";
 
 interface CartWithItems {
   subtotalCents: number;
@@ -53,24 +54,13 @@ export function CheckoutSection({
       <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
 
       {budgetCents != null && (
-        <div className="mb-4 p-3 rounded-lg bg-muted/50">
-          <div className="flex justify-between text-sm mb-1">
-            <span>Budget</span>
-            <span>{formatPrice(budgetCents)}</span>
-          </div>
-          <div className="w-full bg-white h-2 rounded-full overflow-hidden border border-border/60">
-            <div
-              className="h-full bg-primary transition-all"
-              style={{
-                width: `${Math.min(100, (cart.subtotalCents / budgetCents) * 100)}%`,
-              }}
-            />
-          </div>
-          <div className="flex justify-between text-xs text-muted-foreground mt-1">
-            <span>Used: {formatPrice(cart.subtotalCents)}</span>
-            <span>Remaining: {formatPrice(Math.max(0, budgetCents - cart.subtotalCents))}</span>
-          </div>
-        </div>
+        <BudgetMeter
+          className="mb-4"
+          budgetCents={budgetCents}
+          usedCents={cart.subtotalCents}
+          cadence={cadence}
+          compact
+        />
       )}
 
       <div className="space-y-2 text-sm mb-4">

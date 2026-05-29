@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AddBundleButton } from "@/app/(store)/bundles/AddBundleButton";
 import { CustomizeButton } from "@/app/(store)/bundles/CustomizeButton";
 import { formatPrice } from "@/lib/utils";
+import { BudgetMeter } from "@/components/BudgetMeter";
 import type { BundleSufficiencySummary } from "@/lib/sufficiency";
 import type { QualifierAnswer } from "@/lib/qualifiers";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -235,22 +236,32 @@ export function BundlesList({
     <Card className={`flex flex-col transition-opacity ${loading ? "opacity-70" : "opacity-100"}`}>
       <CardHeader className="pb-2">
         <h2 className="text-xl font-semibold">Optimized for your needs & budget</h2>
-        <p className="text-2xl font-bold text-primary mt-2">
-          {formatPrice(bundle.subtotalCents)}
-        </p>
-        <p className="text-sm text-muted-foreground">
-          {formatPrice(bundle.remainingCents)} left in your benefit ·{" "}
-          <span className="font-medium text-foreground">
-            {bundle.budgetUtilizationPercent}% of your benefit used
-          </span>
-          {bundle.coreSubtotalCents > 0 && <> · core {formatPrice(bundle.coreSubtotalCents)}</>}
-          {bundle.supportSubtotalCents > 0 && (
-            <> · support {formatPrice(bundle.supportSubtotalCents)}</>
-          )}
-          {bundle.maintenanceSubtotalCents > 0 && (
-            <> · everyday {formatPrice(bundle.maintenanceSubtotalCents)}</>
-          )}
-        </p>
+        <BudgetMeter
+          className="mt-4"
+          budgetCents={bundle.budgetCents}
+          usedCents={bundle.subtotalCents}
+          cadence={bundle.cadence}
+          compact
+        />
+        {(bundle.coreSubtotalCents > 0 ||
+          bundle.supportSubtotalCents > 0 ||
+          bundle.maintenanceSubtotalCents > 0) && (
+          <p className="text-sm text-muted-foreground mt-3">
+            {bundle.coreSubtotalCents > 0 && <>Core {formatPrice(bundle.coreSubtotalCents)}</>}
+            {bundle.supportSubtotalCents > 0 && (
+              <>
+                {bundle.coreSubtotalCents > 0 && " · "}
+                Support {formatPrice(bundle.supportSubtotalCents)}
+              </>
+            )}
+            {bundle.maintenanceSubtotalCents > 0 && (
+              <>
+                {(bundle.coreSubtotalCents > 0 || bundle.supportSubtotalCents > 0) && " · "}
+                Everyday {formatPrice(bundle.maintenanceSubtotalCents)}
+              </>
+            )}
+          </p>
+        )}
         {emptyNeeds.length > 0 && (
           <p className="text-sm mt-2 text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
             We couldn&apos;t find products for{" "}

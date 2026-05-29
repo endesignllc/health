@@ -3,7 +3,7 @@ import { bundles, bundleItems, products } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { BundleEditor } from "./BundleEditor";
-import { formatPrice } from "@/lib/utils";
+import { BudgetMeter } from "@/components/BudgetMeter";
 import { extractVariantOptionLabel, variantFamilyKey } from "@/lib/variant-label";
 
 export const dynamic = "force-dynamic";
@@ -29,7 +29,6 @@ export default async function BundleEditorPage({
 
   const budgetCents = bundle.budgetCents ?? 0;
   const subtotalCents = bundle.items.reduce((s, i) => s + i.lineTotalCents, 0);
-  const remainingCents = budgetCents - subtotalCents;
 
   const items = bundle.items
     .filter((i) => i.product && i.product.category)
@@ -113,24 +112,12 @@ export default async function BundleEditorPage({
         Select options for configurable items and swap products within the same category.
       </p>
 
-      <div className="mb-6 p-4 rounded-lg border bg-muted/50">
-        <div className="flex justify-between items-center mb-2">
-          <span className="font-medium">Budget</span>
-          <span>{formatPrice(budgetCents)}</span>
-        </div>
-        <div className="w-full bg-white h-3 rounded-full overflow-hidden border border-border/60">
-          <div
-            className="h-full bg-primary transition-all"
-            style={{
-              width: `${Math.min(100, budgetCents > 0 ? (subtotalCents / budgetCents) * 100 : 0)}%`,
-            }}
-          />
-        </div>
-        <div className="flex justify-between text-sm text-muted-foreground mt-2">
-          <span>Used: {formatPrice(subtotalCents)}</span>
-          <span>Remaining: {formatPrice(remainingCents)}</span>
-        </div>
-      </div>
+      <BudgetMeter
+        className="mb-6"
+        budgetCents={budgetCents}
+        usedCents={subtotalCents}
+        cadence={bundle.cadence as "monthly" | "quarterly"}
+      />
 
       <BundleEditor
         bundleId={bundleId}
