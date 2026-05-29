@@ -14,6 +14,11 @@ import {
   type UsageIntensity,
 } from "@/lib/sufficiency";
 import { affinityTagsForNeedSlug, needAffinityBonus } from "@/lib/need-affinity";
+import {
+  evaluateNeedQualifiers,
+  applyNeedQualifierEffects,
+  type NeedQualifierAdjustment,
+} from "@/lib/need-qualifiers";
 export type { Cadence } from "@/lib/sufficiency";
 
 const DEFAULT_BUFFER_CENTS = 500; // $5
@@ -100,6 +105,8 @@ export interface BundleBuilderInput {
   bufferCents?: number;
   usageIntensity?: UsageIntensity;
   qualifierAnswers?: QualifierAnswer[];
+  /** Need-level qualifier option IDs selected by the user */
+  needQualifierAnswers?: string[];
 }
 
 type EligibleProduct = {
@@ -411,6 +418,8 @@ function fillRemainingBudget(params: {
   eligibleProducts: EligibleProduct[];
   qualifierAdjustments: Map<string, ProductAdjustment>;
   classQualifierBonus: (productClassId: string | null) => number;
+  needQualifierBonus: (productId: string) => number;
+  forceIncludeProductIds: Set<string>;
   items: BundleItem[];
   qtyByProduct: Map<string, number>;
   globalSpent: { cents: number };
@@ -423,6 +432,8 @@ function fillRemainingBudget(params: {
     eligibleProducts,
     qualifierAdjustments,
     classQualifierBonus,
+    needQualifierBonus,
+    forceIncludeProductIds,
     items,
     qtyByProduct,
     globalSpent,
@@ -460,8 +471,12 @@ function fillRemainingBudget(params: {
     if (tags.includes("core") || tags.includes("preferred")) score += 10;
     if (tags.includes("value")) score += 5;
 
-    // Qualifier bonus
+    // Qualifier bonuses
     score += classQualifierBonus(p.productClassId);
+    score += needQualifierBonus(p.id);
+
+    // Force-include products get priority
+    if (forceIncludeProductIds.has(p.id)) score += 1000;
 
     return { product: p, score };
   });
@@ -549,6 +564,8 @@ async function allocateSingleNeed(params: {
   eligibleProducts: EligibleProduct[];
   qualifierAdjustments: Map<string, ProductAdjustment>;
   classQualifierBonus: (productClassId: string | null) => number;
+  needQualifierBonus: (productId: string) => number;
+  forceIncludeProductIds: Set<string>;
   items: BundleItem[];
   qtyByProduct: Map<string, number>;
   globalSpent: { cents: number };
@@ -563,6 +580,8 @@ async function allocateSingleNeed(params: {
     eligibleProducts,
     qualifierAdjustments,
     classQualifierBonus,
+    needQualifierBonus,
+    forceIncludeProductIds,
     items,
     qtyByProduct,
     globalSpent,
@@ -614,6 +633,9 @@ async function allocateSingleNeed(params: {
         if (tags.includes("value")) score += 2;
         score += needAffinityBonus(tags, affinityTags);
         score += classQualifierBonus(p.productClassId);
+        score += needQualifierBonus(p.id);
+        // Force-include products get a massive boost
+        if (forceIncludeProductIds.has(p.id)) score += 1000;
         return { product: p, score };
       }),
       adjustments: qualifierAdjustments,
@@ -656,6 +678,8 @@ async function allocateSingleNeed(params: {
       if (tags.includes("value")) score += 2;
       score += needAffinityBonus(tags, affinityTags);
       score += classQualifierBonus(p.productClassId);
+      score += needQualifierBonus(p.id);
+      if (forceIncludeProductIds.has(p.id)) score += 1000;
       return { product: p, score };
     }),
     adjustments: qualifierAdjustments,
@@ -789,7 +813,7 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
     with: { category: true },
   });
 
-  const eligibleProducts: EligibleProduct[] = eligibleProductsRaw.map((p) => ({
+  const eligibleProductsRawMapped: EligibleProduct[] = eligibleProductsRaw.map((p) => ({
     id: p.id,
     sku: p.sku,
     name: p.name,
@@ -804,11 +828,43 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
     isEverydayEssential: p.isEverydayEssential,
   }));
 
+  // Process need qualifier answers
+  const needQualifierOptionIds = input.needQualifierAnswers ?? [];
+  const needQualifierEffects = await evaluateNeedQualifiers(needQualifierOptionIds);
+  const needQualifierAdjustments = applyNeedQualifierEffects(
+    needQualifierEffects,
+    eligibleProductsRawMapped.map((p) => ({
+      id: p.id,
+      tags: p.tags,
+      productClassId: p.productClassId,
+    }))
+  );
+
+  // Filter out products that should be skipped based on need qualifiers
+  const eligibleProducts = eligibleProductsRawMapped.filter((p) => {
+    const adj = needQualifierAdjustments.get(p.id);
+    return !adj?.forceSkip;
+  });
+
+  // Collect products that should be force-included
+  const forceIncludeProductIds = new Set<string>();
+  for (const [productId, adj] of needQualifierAdjustments) {
+    if (adj.forceInclude) {
+      forceIncludeProductIds.add(productId);
+    }
+  }
+
   const qualifierAnswers = input.qualifierAnswers ?? [];
   const { qualifierAdjustments, classQualifierBonus } = await buildQualifierContext(
     eligibleProducts,
     qualifierAnswers
   );
+
+  // Create a combined score bonus function that includes need qualifier boosts
+  const needQualifierBonus = (productId: string): number => {
+    const adj = needQualifierAdjustments.get(productId);
+    return adj?.scoreDelta ?? 0;
+  };
 
   const items: BundleItem[] = [];
   const qtyByProduct = new Map<string, number>();
@@ -853,6 +909,8 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
           eligibleProducts,
           qualifierAdjustments,
           classQualifierBonus,
+          needQualifierBonus,
+          forceIncludeProductIds,
           items,
           qtyByProduct,
           globalSpent,
@@ -884,6 +942,8 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
       eligibleProducts,
       qualifierAdjustments,
       classQualifierBonus,
+      needQualifierBonus,
+      forceIncludeProductIds,
       items,
       qtyByProduct,
       globalSpent,

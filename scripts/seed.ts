@@ -12,6 +12,9 @@ import {
   qualifierQuestions,
   qualifierOptions,
   qualifierRules,
+  needQualifierQuestions,
+  needQualifierOptions,
+  needQualifierRules,
   optimizerPolicies,
   partnerPromotionRules,
   optimizerPolicyAuditLog,
@@ -1052,6 +1055,187 @@ async function seed() {
     }
   }
   console.log("need_product_rules seeded for", needRulesDefs.length, "needs");
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Need Qualifier Questions — Diabetes Support
+  // ─────────────────────────────────────────────────────────────────────────────
+  const diabetesNeed = needsData.find((n) => n.slug === "blood-sugar-support");
+  if (diabetesNeed) {
+    // Clear existing need qualifiers for diabetes
+    const existingQuestions = await db
+      .select({ id: needQualifierQuestions.id })
+      .from(needQualifierQuestions)
+      .where(eq(needQualifierQuestions.needId, diabetesNeed.id));
+    
+    for (const q of existingQuestions) {
+      await db.delete(needQualifierQuestions).where(eq(needQualifierQuestions.id, q.id));
+    }
+
+    // Question 1: Type 1 or Type 2
+    const [typeQuestion] = await db
+      .insert(needQualifierQuestions)
+      .values({
+        needId: diabetesNeed.id,
+        slug: "diabetes-type",
+        prompt: "Which type of diabetes are you managing?",
+        sortOrder: 1,
+      })
+      .returning();
+
+    const [type1Option] = await db
+      .insert(needQualifierOptions)
+      .values({
+        questionId: typeQuestion.id,
+        slug: "type-1",
+        label: "Type 1 (insulin-dependent)",
+        sortOrder: 1,
+      })
+      .returning();
+
+    const [type2Option] = await db
+      .insert(needQualifierOptions)
+      .values({
+        questionId: typeQuestion.id,
+        slug: "type-2",
+        label: "Type 2 (lifestyle/oral medication)",
+        sortOrder: 2,
+      })
+      .returning();
+
+    // Type 1 boosts insulin-related products
+    await db.insert(needQualifierRules).values([
+      {
+        optionId: type1Option.id,
+        effect: "boost",
+        matchTag: "insulin",
+        weight: 20,
+      },
+      {
+        optionId: type1Option.id,
+        effect: "boost",
+        matchTag: "lancets",
+        weight: 15,
+      },
+    ]);
+
+    // Type 2 boosts oral supplements
+    await db.insert(needQualifierRules).values([
+      {
+        optionId: type2Option.id,
+        effect: "boost",
+        matchTag: "blood-sugar",
+        weight: 10,
+      },
+    ]);
+
+    // Question 2: Glucose meter
+    const [glucoseQuestion] = await db
+      .insert(needQualifierQuestions)
+      .values({
+        needId: diabetesNeed.id,
+        slug: "has-glucose-meter",
+        prompt: "Do you already have a blood glucose meter?",
+        sortOrder: 2,
+      })
+      .returning();
+
+    const [glucoseYes] = await db
+      .insert(needQualifierOptions)
+      .values({
+        questionId: glucoseQuestion.id,
+        slug: "yes",
+        label: "Yes, I have one",
+        sortOrder: 1,
+      })
+      .returning();
+
+    const [glucoseNo] = await db
+      .insert(needQualifierOptions)
+      .values({
+        questionId: glucoseQuestion.id,
+        slug: "no",
+        label: "No, I need one",
+        sortOrder: 2,
+      })
+      .returning();
+
+    // Find the glucose meter product
+    const [glucoseMeter] = await db
+      .select({ id: products.id, sku: products.sku })
+      .from(products)
+      .where(eq(products.sku, "MON-GLUCOSE"));
+    if (glucoseMeter) {
+      // "No" includes the glucose meter
+      await db.insert(needQualifierRules).values({
+        optionId: glucoseNo.id,
+        effect: "include",
+        matchProductId: glucoseMeter.id,
+        weight: 50,
+      });
+      // "Yes" skips the glucose meter
+      await db.insert(needQualifierRules).values({
+        optionId: glucoseYes.id,
+        effect: "skip",
+        matchProductId: glucoseMeter.id,
+        weight: 0,
+      });
+    }
+
+    // Question 3: Blood pressure monitor
+    const [bpQuestion] = await db
+      .insert(needQualifierQuestions)
+      .values({
+        needId: diabetesNeed.id,
+        slug: "has-bp-monitor",
+        prompt: "Do you already have a blood pressure monitor?",
+        sortOrder: 3,
+      })
+      .returning();
+
+    const [bpYes] = await db
+      .insert(needQualifierOptions)
+      .values({
+        questionId: bpQuestion.id,
+        slug: "yes",
+        label: "Yes, I have one",
+        sortOrder: 1,
+      })
+      .returning();
+
+    const [bpNo] = await db
+      .insert(needQualifierOptions)
+      .values({
+        questionId: bpQuestion.id,
+        slug: "no",
+        label: "No, I need one",
+        sortOrder: 2,
+      })
+      .returning();
+
+    // Find the BP monitor product
+    const [bpMonitor] = await db
+      .select({ id: products.id, sku: products.sku })
+      .from(products)
+      .where(eq(products.sku, "MON-BP-CUFF"));
+    if (bpMonitor) {
+      // "No" includes the BP monitor
+      await db.insert(needQualifierRules).values({
+        optionId: bpNo.id,
+        effect: "include",
+        matchProductId: bpMonitor.id,
+        weight: 50,
+      });
+      // "Yes" skips the BP monitor
+      await db.insert(needQualifierRules).values({
+        optionId: bpYes.id,
+        effect: "skip",
+        matchProductId: bpMonitor.id,
+        weight: 0,
+      });
+    }
+
+    console.log("need_qualifier_questions seeded for diabetes-support");
+  }
 
   console.log("Seed complete.");
 }

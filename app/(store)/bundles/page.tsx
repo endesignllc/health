@@ -14,6 +14,7 @@ interface PageProps {
     goals?: string;
     usageIntensity?: string;
     includeEveryday?: string;
+    needQualifierAnswers?: string;
   }>;
 }
 
@@ -41,6 +42,11 @@ export default async function BundlesPage({ searchParams }: PageProps) {
   const usageIntensity =
     params.usageIntensity === "occasional" ? "occasional" : "daily";
 
+  // Parse need qualifier answers (comma-separated option IDs)
+  const needQualifierAnswers = params.needQualifierAnswers
+    ? params.needQualifierAnswers.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+
   if (needSlugs.length === 0 && !includeEveryday) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-12 text-center">
@@ -62,6 +68,7 @@ export default async function BundlesPage({ searchParams }: PageProps) {
     includeEveryday,
     goals,
     usageIntensity,
+    needQualifierAnswers,
   });
 
   return (

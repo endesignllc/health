@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -8,6 +8,23 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { normalizeNeedSlugsFromUrl } from "@/lib/legacy-need-slugs";
 import { Input } from "@/components/ui/input";
+
+interface NeedQualifierQuestion {
+  id: string;
+  needId: string;
+  needSlug: string;
+  slug: string;
+  prompt: string;
+  sortOrder: number;
+}
+
+interface NeedQualifierOption {
+  id: string;
+  questionId: string;
+  slug: string;
+  label: string;
+  sortOrder: number;
+}
 
 /** Matches POST /api/bundles/generate so custom wizard budgets stay valid when BundlesList refetches. */
 const DEMO_CUSTOM_BUDGET_MIN_CENTS = 2500;
@@ -46,10 +63,48 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
   const [needSlugs, setNeedSlugs] = useState<string[]>([]);
   const [includeEveryday, setIncludeEveryday] = useState(true);
 
+  // Need qualifier state
+  const [qualifierQuestions, setQualifierQuestions] = useState<NeedQualifierQuestion[]>([]);
+  const [qualifierOptions, setQualifierOptions] = useState<NeedQualifierOption[]>([]);
+  const [qualifierAnswers, setQualifierAnswers] = useState<Record<string, string>>({});
+  const [loadingQualifiers, setLoadingQualifiers] = useState(false);
+
+  // Fetch need qualifiers when selected needs change
+  useEffect(() => {
+    if (needSlugs.length === 0) {
+      setQualifierQuestions([]);
+      setQualifierOptions([]);
+      setQualifierAnswers({});
+      return;
+    }
+
+    const fetchQualifiers = async () => {
+      setLoadingQualifiers(true);
+      try {
+        const res = await fetch(`/api/need-qualifiers?needSlugs=${needSlugs.join(",")}`);
+        if (res.ok) {
+          const data = await res.json();
+          setQualifierQuestions(data.questions || []);
+          setQualifierOptions(data.options || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch need qualifiers:", err);
+      } finally {
+        setLoadingQualifiers(false);
+      }
+    };
+
+    fetchQualifiers();
+  }, [needSlugs]);
+
   const toggleNeed = (slug: string) => {
     setNeedSlugs((prev) =>
       prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
     );
+  };
+
+  const handleQualifierAnswer = (questionId: string, optionId: string) => {
+    setQualifierAnswers((prev) => ({ ...prev, [questionId]: optionId }));
   };
 
   const submitDisabled = needSlugs.length === 0 && !includeEveryday;
@@ -93,6 +148,11 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
       includeEveryday: String(includeEveryday),
       ...(canonical.length ? { needSlugs: canonical.join(",") } : {}),
     });
+    // Add qualifier answers as comma-separated optionIds
+    const answerIds = Object.values(qualifierAnswers).filter(Boolean);
+    if (answerIds.length > 0) {
+      params.set("needQualifierAnswers", answerIds.join(","));
+    }
     router.push(`/bundles?${params.toString()}`);
   };
 
@@ -247,6 +307,49 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
               })
             )}
           </div>
+
+          {/* Need-specific qualifier questions */}
+          {qualifierQuestions.length > 0 && (
+            <div className="space-y-4 pt-2 border-t border-border">
+              <p className="text-sm font-medium text-foreground">
+                Help us personalize your bundle:
+              </p>
+              {loadingQualifiers ? (
+                <p className="text-sm text-muted-foreground">Loading questions...</p>
+              ) : (
+                qualifierQuestions.map((question) => {
+                  const options = qualifierOptions.filter(
+                    (opt) => opt.questionId === question.id
+                  );
+                  const selectedOptionId = qualifierAnswers[question.id];
+                  return (
+                    <div key={question.id} className="space-y-2">
+                      <Label className="text-sm">{question.prompt}</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {options.map((option) => {
+                          const isSelected = selectedOptionId === option.id;
+                          return (
+                            <button
+                              key={option.id}
+                              type="button"
+                              onClick={() => handleQualifierAnswer(question.id, option.id)}
+                              className={`min-h-[40px] px-4 py-2 rounded-lg border-2 text-sm font-medium transition-colors ${
+                                isSelected
+                                  ? "border-primary bg-primary/10 text-primary"
+                                  : "border-muted hover:border-primary/50"
+                              }`}
+                            >
+                              {option.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          )}
 
           <label className="flex items-start gap-3 cursor-pointer rounded-lg border border-border bg-muted/40 px-4 py-3">
             <input

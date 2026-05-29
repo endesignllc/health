@@ -136,6 +136,59 @@ export const qualifierRules = pgTable("qualifier_rules", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// need_qualifier_questions — need-scoped questions (e.g., "Type 1 or Type 2 diabetes?")
+export const needQualifierQuestions = pgTable(
+  "need_qualifier_questions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    needId: uuid("need_id")
+      .notNull()
+      .references(() => needs.id, { onDelete: "cascade" }),
+    slug: text("slug").notNull(),
+    prompt: text("prompt").notNull(),
+    sortOrder: integer("sort_order").default(0).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("need_qualifier_questions_need_slug_uq").on(t.needId, t.slug),
+  ]
+);
+
+// need_qualifier_options — options for need qualifier questions
+export const needQualifierOptions = pgTable(
+  "need_qualifier_options",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    questionId: uuid("question_id")
+      .notNull()
+      .references(() => needQualifierQuestions.id, { onDelete: "cascade" }),
+    slug: text("slug").notNull(),
+    label: text("label").notNull(),
+    sortOrder: integer("sort_order").default(0).notNull(),
+  },
+  (t) => [
+    uniqueIndex("need_qualifier_options_question_slug_uq").on(t.questionId, t.slug),
+  ]
+);
+
+// need_qualifier_rules — rules triggered by need qualifier answers
+export const needQualifierRules = pgTable("need_qualifier_rules", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  optionId: uuid("option_id")
+    .notNull()
+    .references(() => needQualifierOptions.id, { onDelete: "cascade" }),
+  effect: text("effect").notNull(), // include | skip | boost
+  matchTag: text("match_tag"),
+  matchProductId: uuid("match_product_id").references(() => products.id, {
+    onDelete: "cascade",
+  }),
+  matchProductClassId: uuid("match_product_class_id").references(() => productClasses.id, {
+    onDelete: "cascade",
+  }),
+  weight: integer("weight").default(10).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // products
 export const products = pgTable("products", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -342,6 +395,7 @@ export const needsRelations = relations(needs, ({ many }) => ({
   needProductRules: many(needProductRules),
   bundles: many(bundles),
   productClasses: many(productClasses),
+  needQualifierQuestions: many(needQualifierQuestions),
 }));
 
 export const productCategoriesRelations = relations(
@@ -440,6 +494,44 @@ export const qualifierRulesRelations = relations(qualifierRules, ({ one }) => ({
   matchProduct: one(products, {
     fields: [qualifierRules.matchProductId],
     references: [products.id],
+  }),
+}));
+
+// Need qualifier relations
+export const needQualifierQuestionsRelations = relations(
+  needQualifierQuestions,
+  ({ one, many }) => ({
+    need: one(needs, {
+      fields: [needQualifierQuestions.needId],
+      references: [needs.id],
+    }),
+    options: many(needQualifierOptions),
+  })
+);
+
+export const needQualifierOptionsRelations = relations(
+  needQualifierOptions,
+  ({ one, many }) => ({
+    question: one(needQualifierQuestions, {
+      fields: [needQualifierOptions.questionId],
+      references: [needQualifierQuestions.id],
+    }),
+    rules: many(needQualifierRules),
+  })
+);
+
+export const needQualifierRulesRelations = relations(needQualifierRules, ({ one }) => ({
+  option: one(needQualifierOptions, {
+    fields: [needQualifierRules.optionId],
+    references: [needQualifierOptions.id],
+  }),
+  matchProduct: one(products, {
+    fields: [needQualifierRules.matchProductId],
+    references: [products.id],
+  }),
+  matchProductClass: one(productClasses, {
+    fields: [needQualifierRules.matchProductClassId],
+    references: [productClasses.id],
   }),
 }));
 

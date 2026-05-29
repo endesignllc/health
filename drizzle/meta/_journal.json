@@ -36,6 +36,13 @@
       "when": 1777053013200,
       "tag": "0004_complex_zarek",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1780019646213,
+      "tag": "0005_orange_ghost_rider",
+      "breakpoints": true
     }
   ]
 }
