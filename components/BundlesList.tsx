@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AddBundleButton } from "@/app/(store)/bundles/AddBundleButton";
 import { CustomizeButton } from "@/app/(store)/bundles/CustomizeButton";
 import { formatPrice } from "@/lib/utils";
@@ -148,32 +148,71 @@ export function BundlesList({
     [qualifierAnswersByClass]
   );
 
+  const {
+    budgetCents,
+    cadence,
+    needSlugs,
+    includeEveryday,
+    goals,
+    usageIntensity,
+    needQualifierAnswers,
+  } = params;
+
+  const needSlugsKey = needSlugs.join(",");
+  const needQualifierAnswersKey = needQualifierAnswers.join(",");
+  const goalsKey = goals.join(",");
+
+  // Server render already reflects URL params + need qualifiers — skip mount refetch.
+  const skipInitialRefetch = useRef(true);
+
   useEffect(() => {
+    if (skipInitialRefetch.current) {
+      skipInitialRefetch.current = false;
+      if (flatQualifierAnswers.length === 0) return;
+    }
+
     const timeout = setTimeout(async () => {
       setLoading(true);
-      const res = await fetch("/api/bundles/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          budgetCents: params.budgetCents,
-          cadence: params.cadence,
-          needSlugs: params.needSlugs,
-          includeEveryday: params.includeEveryday,
-          goals: params.goals,
-          usageIntensity: params.usageIntensity,
-          needQualifierAnswers: params.needQualifierAnswers,
-          qualifierAnswers: flatQualifierAnswers,
-        }),
-      });
-      const payload = (await res.json()) as { bundles?: BuiltBundle[] };
-      if (res.ok && payload.bundles) {
-        setBundles(payload.bundles);
+      try {
+        const res = await fetch("/api/bundles/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            budgetCents,
+            cadence,
+            needSlugs,
+            includeEveryday,
+            goals,
+            usageIntensity,
+            needQualifierAnswers,
+            qualifierAnswers: flatQualifierAnswers,
+          }),
+        });
+        const payload = (await res.json()) as { bundles?: BuiltBundle[] };
+        if (res.ok && payload.bundles?.length) {
+          setBundles(payload.bundles);
+        }
+      } catch {
+        // Keep server-rendered bundle on network failure
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [flatQualifierAnswers, params]);
+  }, [
+    flatQualifierAnswers,
+    budgetCents,
+    cadence,
+    needSlugsKey,
+    includeEveryday,
+    goalsKey,
+    usageIntensity,
+    needQualifierAnswersKey,
+    needSlugs,
+    needQualifierAnswers,
+    goals,
+  ]);
 
   const bundle = bundles[0];
   if (!bundle) {
