@@ -1077,7 +1077,7 @@ async function seed() {
       .values({
         needId: diabetesNeed.id,
         slug: "treatment-method",
-        prompt: "How do you manage your diabetes?",
+        prompt: "Diabetes management:",
         sortOrder: 1,
       })
       .returning();
@@ -1087,7 +1087,7 @@ async function seed() {
       .values({
         questionId: treatmentQuestion.id,
         slug: "insulin",
-        label: "I use insulin (injections or pump)",
+        label: "Insulin (injections or pump)",
         sortOrder: 1,
       })
       .returning();
@@ -1097,7 +1097,7 @@ async function seed() {
       .values({
         questionId: treatmentQuestion.id,
         slug: "non-insulin",
-        label: "Oral medications or diet only",
+        label: "Oral medications or diet",
         sortOrder: 2,
       })
       .returning();
@@ -1134,7 +1134,7 @@ async function seed() {
       .values({
         needId: diabetesNeed.id,
         slug: "has-glucose-meter",
-        prompt: "Do you already have a blood glucose meter?",
+        prompt: "Glucose meter:",
         sortOrder: 2,
       })
       .returning();
@@ -1144,7 +1144,7 @@ async function seed() {
       .values({
         questionId: glucoseQuestion.id,
         slug: "yes",
-        label: "Yes, I have one",
+        label: "Already have one",
         sortOrder: 1,
       })
       .returning();
@@ -1154,7 +1154,7 @@ async function seed() {
       .values({
         questionId: glucoseQuestion.id,
         slug: "no",
-        label: "No, I need one",
+        label: "Need one",
         sortOrder: 2,
       })
       .returning();
@@ -1187,7 +1187,7 @@ async function seed() {
       .values({
         needId: diabetesNeed.id,
         slug: "has-bp-monitor",
-        prompt: "Do you already have a blood pressure monitor?",
+        prompt: "Blood pressure monitor:",
         sortOrder: 3,
       })
       .returning();
@@ -1197,7 +1197,7 @@ async function seed() {
       .values({
         questionId: bpQuestion.id,
         slug: "yes",
-        label: "Yes, I have one",
+        label: "Already have one",
         sortOrder: 1,
       })
       .returning();
@@ -1207,7 +1207,7 @@ async function seed() {
       .values({
         questionId: bpQuestion.id,
         slug: "no",
-        label: "No, I need one",
+        label: "Need one",
         sortOrder: 2,
       })
       .returning();
