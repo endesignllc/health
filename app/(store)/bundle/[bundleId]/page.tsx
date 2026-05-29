@@ -28,8 +28,6 @@ export default async function BundleEditorPage({
   if (!bundle) notFound();
 
   const budgetCents = bundle.budgetCents ?? 0;
-  const bufferCents = 500;
-  const capCents = budgetCents - bufferCents;
   const subtotalCents = bundle.items.reduce((s, i) => s + i.lineTotalCents, 0);
   const remainingCents = budgetCents - subtotalCents;
 
@@ -124,7 +122,7 @@ export default async function BundleEditorPage({
           <div
             className="h-full bg-primary transition-all"
             style={{
-              width: `${Math.min(100, (subtotalCents / capCents) * 100)}%`,
+              width: `${Math.min(100, budgetCents > 0 ? (subtotalCents / budgetCents) * 100 : 0)}%`,
             }}
           />
         </div>
