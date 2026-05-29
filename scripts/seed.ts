@@ -965,7 +965,7 @@ async function seed() {
       rules: [
         { categorySlug: "vitamins", minItems: 1, maxItems: 2, priorityWeight: 3 },
         { categorySlug: "supplements", minItems: 1, maxItems: 2, priorityWeight: 3 },
-        { categorySlug: "monitoring", minItems: 0, maxItems: 1, priorityWeight: 2 },
+        { categorySlug: "monitoring", minItems: 0, maxItems: 2, priorityWeight: 2 },
       ],
     },
     {
