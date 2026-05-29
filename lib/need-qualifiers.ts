@@ -17,6 +17,7 @@ export type NeedQualifierEffect = {
 export async function evaluateNeedQualifiers(
   optionIds: string[]
 ): Promise<NeedQualifierEffect[]> {
+  console.log("[need-qualifiers] evaluating optionIds:", optionIds);
   if (optionIds.length === 0) return [];
 
   // Verify the option IDs exist
@@ -42,13 +43,15 @@ export async function evaluateNeedQualifiers(
     .from(needQualifierRules)
     .where(inArray(needQualifierRules.optionId, validOptionIds));
 
-  return rules.map((r) => ({
+  const effects = rules.map((r) => ({
     productId: r.matchProductId,
     productClassId: r.matchProductClassId,
     matchTag: r.matchTag,
     effect: r.effect as "include" | "skip" | "boost",
     weight: r.weight,
   }));
+  console.log("[need-qualifiers] effects found:", effects);
+  return effects;
 }
 
 export type NeedQualifierAdjustment = {

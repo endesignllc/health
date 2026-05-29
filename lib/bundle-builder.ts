@@ -871,10 +871,13 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
   const globalSpent = { cents: 0 };
 
   // Pre-pass: Add force-include products FIRST (from need qualifier answers)
+  console.log("[bundle-builder] forceIncludeProductIds:", [...forceIncludeProductIds]);
+  console.log("[bundle-builder] needQualifierAnswers input:", input.needQualifierAnswers);
   if (forceIncludeProductIds.size > 0 && resolvedNeeds.length > 0) {
     const primaryNeed = resolvedNeeds[0];
     for (const productId of forceIncludeProductIds) {
       const product = eligibleProducts.find((p) => p.id === productId);
+      console.log("[bundle-builder] Looking for product:", productId, "found:", !!product);
       if (!product) continue;
       
       const supplyDays = product.supplyDays ?? 30;
