@@ -3,7 +3,9 @@ import { bundles, bundleItems, products } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { BundleEditor } from "./BundleEditor";
+import { BenefitWalletCard } from "@/components/BenefitWalletCard";
 import { BudgetMeter } from "@/components/BudgetMeter";
+import { resolveBenefitWallet } from "@/lib/benefit-wallet/resolve";
 import { extractVariantOptionLabel, variantFamilyKey } from "@/lib/variant-label";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +31,12 @@ export default async function BundleEditorPage({
 
   const budgetCents = bundle.budgetCents ?? 0;
   const subtotalCents = bundle.items.reduce((s, i) => s + i.lineTotalCents, 0);
+
+  const wallet = await resolveBenefitWallet({
+    sessionSpendCents: subtotalCents,
+    memberAllowanceCents: budgetCents,
+    memberCadence: bundle.cadence,
+  });
 
   const items = bundle.items
     .filter((i) => i.product && i.product.category)
@@ -112,12 +120,16 @@ export default async function BundleEditorPage({
         Select options for configurable items and swap products within the same category.
       </p>
 
-      <BudgetMeter
-        className="mb-6"
-        budgetCents={budgetCents}
-        usedCents={subtotalCents}
-        cadence={bundle.cadence as "monthly" | "quarterly"}
-      />
+      {wallet ? (
+        <BenefitWalletCard className="mb-6" wallet={wallet} />
+      ) : (
+        <BudgetMeter
+          className="mb-6"
+          budgetCents={budgetCents}
+          usedCents={subtotalCents}
+          cadence={bundle.cadence as "monthly" | "quarterly"}
+        />
+      )}
 
       <BundleEditor
         bundleId={bundleId}

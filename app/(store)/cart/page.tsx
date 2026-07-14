@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/utils";
+import { resolveBenefitWallet } from "@/lib/benefit-wallet/resolve";
 import { CartItemActions } from "./CartItemActions";
 import { CheckoutSection } from "./CheckoutSection";
 import { CartOptionFlow } from "./CartOptionFlow";
@@ -8,6 +9,9 @@ import { InteractionFlagNotice } from "@/components/InteractionFlagNotice";
 
 export default async function CartPage() {
   const cart = await getCart();
+  const wallet = cart
+    ? await resolveBenefitWallet({ sessionSpendCents: cart.subtotalCents })
+    : null;
   const isEmpty = !cart || cart.items.length === 0;
 
   if (isEmpty) {
@@ -117,6 +121,7 @@ export default async function CartPage() {
             budgetCents={cart.budgetCents}
             cadence={cart.cadence}
             unresolvedOptionCount={cart.unresolvedOptionCount}
+            wallet={wallet}
           />
         </div>
       </div>

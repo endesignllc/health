@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
 import { BudgetMeter } from "@/components/BudgetMeter";
+import { BenefitWalletCard } from "@/components/BenefitWalletCard";
+import type { BenefitWalletSnapshot } from "@/lib/benefit-wallet/types";
 
 interface CartWithItems {
   subtotalCents: number;
@@ -17,6 +19,7 @@ interface CheckoutSectionProps {
   budgetCents: number | null;
   cadence: string | null;
   unresolvedOptionCount: number;
+  wallet?: BenefitWalletSnapshot | null;
 }
 
 export function CheckoutSection({
@@ -24,6 +27,7 @@ export function CheckoutSection({
   budgetCents,
   cadence,
   unresolvedOptionCount,
+  wallet,
 }: CheckoutSectionProps) {
   const [subscribe, setSubscribe] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -53,14 +57,18 @@ export function CheckoutSection({
     <div className="border rounded-lg p-6 sticky top-24">
       <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
 
-      {budgetCents != null && (
-        <BudgetMeter
-          className="mb-4"
-          budgetCents={budgetCents}
-          usedCents={cart.subtotalCents}
-          cadence={cadence}
-          compact
-        />
+      {wallet ? (
+        <BenefitWalletCard className="mb-4" wallet={wallet} compact />
+      ) : (
+        budgetCents != null && (
+          <BudgetMeter
+            className="mb-4"
+            budgetCents={budgetCents}
+            usedCents={cart.subtotalCents}
+            cadence={cadence}
+            compact
+          />
+        )
       )}
 
       <div className="space-y-2 text-sm mb-4">

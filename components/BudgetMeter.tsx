@@ -1,11 +1,12 @@
 import { cn, formatPrice } from "@/lib/utils";
 
-type Cadence = "monthly" | "quarterly";
+type Cadence = "monthly" | "quarterly" | "yearly";
 
 interface BudgetMeterProps {
   budgetCents: number;
   usedCents: number;
   cadence?: Cadence | string | null;
+  walletLabel?: string;
   className?: string;
   /** Smaller layout for cart sidebar */
   compact?: boolean;
@@ -14,6 +15,7 @@ interface BudgetMeterProps {
 function cadenceLabel(cadence: Cadence | string | null | undefined): string | null {
   if (cadence === "quarterly") return "per quarter";
   if (cadence === "monthly") return "per month";
+  if (cadence === "yearly") return "per year";
   return null;
 }
 
@@ -21,6 +23,7 @@ export function BudgetMeter({
   budgetCents,
   usedCents,
   cadence,
+  walletLabel = "Your benefit",
   className,
   compact = false,
 }: BudgetMeterProps) {
@@ -44,7 +47,7 @@ export function BudgetMeter({
       <div className="flex justify-between items-start gap-4 mb-3">
         <div>
           <p className={cn("font-medium text-foreground", compact ? "text-sm" : "text-base")}>
-            Your benefit
+            {walletLabel}
           </p>
           {period && (
             <p className="text-xs text-muted-foreground mt-0.5">{period}</p>

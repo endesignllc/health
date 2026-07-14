@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { normalizeNeedSlugsFromUrl } from "@/lib/legacy-need-slugs";
 import { Input } from "@/components/ui/input";
+import type { BenefitCadence } from "@/lib/benefit-wallet/types";
 
 interface NeedQualifierQuestion {
   id: string;
@@ -52,14 +53,33 @@ function formatUsdWholeFromCents(cents: number): string {
 interface BuildWizardFormProps {
   budgetOptions: { value: number; label: string }[];
   needs: { id: string; slug: string; name: string }[];
+  /** When set (static wallet demo), allowance/cadence come from backend config */
+  walletLockedBudget?: {
+    allowanceCents: number;
+    cadence: BenefitCadence;
+    walletLabel: string;
+  };
 }
 
-export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) {
+function bundleCadenceFromWallet(cadence: BenefitCadence): "monthly" | "quarterly" {
+  if (cadence === "monthly") return "monthly";
+  return "quarterly";
+}
+
+export function BuildWizardForm({
+  budgetOptions,
+  needs,
+  walletLockedBudget,
+}: BuildWizardFormProps) {
   const router = useRouter();
-  const [budgetCents, setBudgetCents] = useState(10000);
+  const [budgetCents, setBudgetCents] = useState(
+    walletLockedBudget?.allowanceCents ?? 10000
+  );
   const [budgetSource, setBudgetSource] = useState<"preset" | "custom">("preset");
   const [customDollarsText, setCustomDollarsText] = useState("");
-  const [cadence, setCadence] = useState<"monthly" | "quarterly">("monthly");
+  const [cadence, setCadence] = useState<"monthly" | "quarterly">(
+    walletLockedBudget ? bundleCadenceFromWallet(walletLockedBudget.cadence) : "monthly"
+  );
   const [needSlugs, setNeedSlugs] = useState<string[]>([]);
   const [includeEveryday, setIncludeEveryday] = useState(true);
 
@@ -109,8 +129,9 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
 
   const submitDisabled = needSlugs.length === 0 && !includeEveryday;
 
-  const resolvedBudget =
-    budgetSource === "preset"
+  const resolvedBudget = walletLockedBudget
+    ? ({ ok: true as const, cents: walletLockedBudget.allowanceCents })
+    : budgetSource === "preset"
       ? ({ ok: true as const, cents: budgetCents })
       : (() => {
           const cents = parseDemoCustomBudgetCents(customDollarsText);
@@ -162,9 +183,26 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
       <Card>
         <CardHeader>
           <h2 className="text-lg font-semibold">Step 1: Your Allowance</h2>
-          <p className="text-sm text-muted-foreground">Choose your budget and how often you receive it.</p>
+          <p className="text-sm text-muted-foreground">
+            {walletLockedBudget
+              ? "Your benefit allowance is set from your account."
+              : "Choose your budget and how often you receive it."}
+          </p>
         </CardHeader>
         <CardContent className="space-y-6">
+          {walletLockedBudget ? (
+            <p className="text-sm rounded-lg border bg-muted/40 px-4 py-3">
+              <span className="font-medium text-foreground">{walletLockedBudget.walletLabel}</span>
+              {": "}
+              {formatUsdWholeFromCents(walletLockedBudget.allowanceCents)}
+              {walletLockedBudget.cadence === "monthly"
+                ? " per month"
+                : walletLockedBudget.cadence === "yearly"
+                  ? " per year"
+                  : " per quarter"}
+            </p>
+          ) : (
+            <>
           <div>
             <Label className="text-base">Budget amount</Label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
@@ -263,6 +301,8 @@ export function BuildWizardForm({ budgetOptions, needs }: BuildWizardFormProps) 
               </label>
             </div>
           </div>
+            </>
+          )}
         </CardContent>
       </Card>
 

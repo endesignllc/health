@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getCart } from "@/lib/cart";
 import { SiteLogo } from "@/components/SiteLogo";
+import { BenefitWalletChip } from "@/components/BenefitWalletChip";
+import { resolveBenefitWallet } from "@/lib/benefit-wallet/resolve";
 
 const navLinkClass =
   "inline-flex items-center min-h-[44px] px-3 rounded-md text-base font-semibold text-foreground hover:bg-accent hover:text-accent-foreground transition-colors underline-offset-4 hover:underline";
@@ -8,6 +10,7 @@ const navLinkClass =
 export default async function Header() {
   const cart = await getCart();
   const itemCount = cart?.items.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
+  const wallet = await resolveBenefitWallet();
 
   return (
     <header className="border-b-2 border-border bg-card shadow-sm sticky top-0 z-50">
@@ -64,11 +67,13 @@ export default async function Header() {
             </Link>
           </nav>
 
-          <Link
-            href="/cart"
-            className="hidden md:inline-flex relative items-center gap-2 min-h-[44px] px-4 rounded-md text-base font-semibold text-primary hover:bg-accent transition-colors"
-            aria-label={`Cart with ${itemCount} items`}
-          >
+          <div className="flex items-center gap-3 shrink-0">
+            {wallet && <BenefitWalletChip wallet={wallet} />}
+            <Link
+              href="/cart"
+              className="hidden md:inline-flex relative items-center gap-2 min-h-[44px] px-4 rounded-md text-base font-semibold text-primary hover:bg-accent transition-colors"
+              aria-label={`Cart with ${itemCount} items`}
+            >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -91,7 +96,8 @@ export default async function Header() {
                 {itemCount > 99 ? "99+" : itemCount}
               </span>
             )}
-          </Link>
+            </Link>
+          </div>
         </div>
       </div>
     </header>

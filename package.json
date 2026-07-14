@@ -34,7 +34,8 @@
     "test:variant-label": "npx tsx scripts/test-variant-label.ts",
     "audit:variant-label-coverage": "npx tsx scripts/audit-variant-label-coverage.ts",
     "test:optimizer-baseline": "npx tsx scripts/test-optimizer-baseline.ts",
-    "test:optimizer-policy": "npx tsx scripts/test-optimizer-policy.ts"
+    "test:optimizer-policy": "npx tsx scripts/test-optimizer-policy.ts",
+    "test:benefit-wallet": "npx tsx scripts/test-benefit-wallet.ts"
   },
   "keywords": [],
   "author": "",
