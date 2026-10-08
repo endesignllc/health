@@ -14,36 +14,37 @@ import { products, productClasses } from "../db/schema";
 const IMAGE_DIR = path.join(process.cwd(), "public", "images", "fieldtex");
 
 // Map product class slugs to fallback image item codes
-// These are related products that have images
+// VERIFIED against actual extracted images
 const CLASS_FALLBACK_IMAGES: Record<string, string> = {
-  "compression-stockings": "10800.jpeg", // Support stockings image
-  "bath-safety-aids": "10857.jpeg", // Bath-related item
-  "body-scales": "10832.jpeg", // Talking bath scale
-  "support-cushions": "10830.jpeg", // Cushion-related
-  "mobility-supports": "10804.jpeg", // Support item
+  "compression-stockings": "10609.jpeg", // Sock-on-leg photo (hosiery section has no photos, this is closest)
+  "bath-safety-aids": "10686.jpeg", // Sock aid with grips (daily living aid)
+  "body-scales": "10832.jpeg", // Talking bath scale ✓ correct
+  "support-cushions": "10830.jpeg", // Cushion (needs verification)
+  "mobility-supports": "90209.jpeg", // Mueller back brace
 };
 
-// Specific product fallbacks based on similar items
+// Specific product fallbacks based on similar items - VERIFIED
 const PRODUCT_FALLBACKS: Record<string, string> = {
-  // Compression stockings - use 10800 (support stockings)
-  "FTX-10809": "10800.jpeg",
-  "FTX-10810": "10800.jpeg", 
-  "FTX-10811": "10800.jpeg",
-  "FTX-10812": "10800.jpeg",
-  "FTX-00365": "10800.jpeg",
-  "FTX-10444": "10800.jpeg",
-  // Bath/hygiene
-  "FTX-10682": "10857.jpeg",
-  // Scales
+  // Compression stockings - use 10609 (sock-on-leg photo)
+  // Note: compression family with "$0" badge should use Walmart sync for true shot
+  "FTX-10809": "10609.jpeg", // Men's black light support
+  "FTX-10810": "10609.jpeg", // Unisex beige medium support
+  "FTX-10811": "10609.jpeg", // Unisex beige firm support
+  "FTX-10812": "10609.jpeg", // CoolMax knee high sock
+  "FTX-00365": "10609.jpeg", // Women's beige light support
+  "FTX-10444": "10609.jpeg", // Anti embolism stocking
+  // Bath/daily living aids
+  "FTX-10682": "10686.jpeg", // Bath sponge -> Sock aid w/ grips
+  // Scales - 10832 is correct
   "FTX-10833": "10832.jpeg", // Digital scale -> Talking scale
-  "FTX-10792": "10832.jpeg",
-  // Supports
-  "FTX-10007": "10804.jpeg",
-  "FTX-90626": "10804.jpeg",
-  "FTX-10888": "10804.jpeg",
-  "FTX-90625": "10804.jpeg",
-  "FTX-10889": "10804.jpeg",
-  "FTX-10903": "10830.jpeg",
+  "FTX-10792": "10832.jpeg", // Health-O-Meter scale
+  // Mobility supports - use 90209 (Mueller back brace)
+  "FTX-10007": "10921.jpeg", // Ankle support -> ankle support image
+  "FTX-90626": "90209.jpeg", // Elbow support -> back brace (general support)
+  "FTX-10888": "91095.jpeg", // Wrist support -> wrist support image
+  "FTX-90625": "90209.jpeg", // Knee support -> back brace (general support)
+  "FTX-10889": "90209.jpeg", // Hot/cold lumbar back brace -> Mueller back brace
+  "FTX-10903": "10830.jpeg", // Memory foam coccyx cushion -> cushion
 };
 
 async function main() {
