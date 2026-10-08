@@ -1,13 +1,78 @@
 {
-  "_note": "Products needing Walmart image sync - Fieldtex catalog lacks suitable photos",
-  "syncList": [
+  "_note": "Products needing Walmart image sync - Fieldtex catalog has wrong or missing photos",
+  "_rule": "Any imageUrl from fieldtex sourced on pages 30-45 (ointments/first-aid) is UNTRUSTED until visually confirmed",
+  "highPriority_bladderPath": [
+    {
+      "sku": "FTX-99161",
+      "name": "Prevail bladder control pads maximum 48ct",
+      "reason": "Wrong image (showed briefs package); 99163 pads image is count-specific",
+      "interimImage": null,
+      "searchTerms": ["Prevail bladder control pads", "incontinence pads maximum"]
+    },
+    {
+      "sku": "FTX-91088",
+      "name": "Balmex zinc oxide cream 2 oz.",
+      "reason": "No image in catalog; appears in bladder-support skin protection",
+      "interimImage": null,
+      "searchTerms": ["Balmex zinc oxide cream", "diaper rash cream zinc oxide"]
+    },
     {
       "sku": "FTX-10485",
       "name": "Incontinence A & D ointment 15 oz.",
-      "reason": "00049.jpeg is ointment box (wrong brand); may appear in bladder-support bundle under skin protection",
+      "reason": "00049.jpeg is ointment box (wrong brand); appears in bladder-support skin protection",
       "interimImage": "/images/fieldtex/00049.jpeg",
-      "searchTerms": ["A&D ointment", "A+D diaper rash ointment"]
+      "searchTerms": ["A&D ointment", "A+D diaper rash ointment 15 oz"]
+    }
+  ],
+  "highPriority_homeSafety": [
+    {
+      "sku": "FTX-10700",
+      "name": "Jar opener",
+      "reason": "Showed medical-ID necklace instead of jar opener",
+      "interimImage": null,
+      "searchTerms": ["jar opener grip", "easy grip jar opener"]
+    }
+  ],
+  "medium_compressionFamily": [
+    {
+      "sku": "FTX-10809",
+      "name": "Men's black light support - XXL 15-20 mmhg",
+      "reason": "Hosiery section has no photos; 10609 is closest sock image. Family has $0 badge.",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["compression stockings men", "support hose 15-20 mmhg"]
     },
+    {
+      "sku": "FTX-10810",
+      "name": "Unisex beige medium support - XXL 20-30 mmhg",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["compression stockings beige", "support hose 20-30 mmhg"]
+    },
+    {
+      "sku": "FTX-10811",
+      "name": "Unisex beige firm support - XXL 30-40 mmhg",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["compression stockings firm", "support hose 30-40 mmhg"]
+    },
+    {
+      "sku": "FTX-10812",
+      "name": "CoolMax Unisex white knee high sock XXL 8-15 mmhg",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["CoolMax compression socks", "knee high support socks"]
+    },
+    {
+      "sku": "FTX-00365",
+      "name": "Women's beige light support - extra large 15-20 mmhg",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["compression stockings women", "support hose women"]
+    },
+    {
+      "sku": "FTX-10444",
+      "name": "Anti embolism stocking inspection toe XL",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["anti embolism stockings", "TED hose"]
+    }
+  ],
+  "low_mobilitySupports": [
     {
       "sku": "FTX-90625",
       "name": "Procare knee support extra large 23 in. - 25.5 in.",
@@ -21,49 +86,34 @@
       "reason": "No elbow support photo in catalog; 90209.jpeg box says 'BACK'",
       "interimImage": "/images/fieldtex/90209.jpeg",
       "searchTerms": ["elbow support brace", "Procare elbow support"]
-    },
-    {
-      "sku": "FTX-10809",
-      "name": "Men's black light support - XXL 15-20 mmhg",
-      "reason": "Hosiery section has no photos; 10609 is closest sock image. Family has $0 badge.",
-      "interimImage": "/images/fieldtex/10609.jpeg",
-      "searchTerms": ["compression stockings men", "support hose 15-20 mmhg"],
-      "priority": "high"
-    },
-    {
-      "sku": "FTX-10810",
-      "name": "Unisex beige medium support - XXL 20-30 mmhg",
-      "reason": "Hosiery section has no photos; shares family with $0 badge products",
-      "interimImage": "/images/fieldtex/10609.jpeg",
-      "searchTerms": ["compression stockings beige", "support hose 20-30 mmhg"]
-    },
-    {
-      "sku": "FTX-10811",
-      "name": "Unisex beige firm support - XXL 30-40 mmhg",
-      "reason": "Hosiery section has no photos",
-      "interimImage": "/images/fieldtex/10609.jpeg",
-      "searchTerms": ["compression stockings firm", "support hose 30-40 mmhg"]
-    },
-    {
-      "sku": "FTX-10812",
-      "name": "CoolMax Unisex white knee high sock XXL 8-15 mmhg",
-      "reason": "Hosiery section has no photos",
-      "interimImage": "/images/fieldtex/10609.jpeg",
-      "searchTerms": ["CoolMax compression socks", "knee high support socks"]
-    },
-    {
-      "sku": "FTX-00365",
-      "name": "Women's beige light support - extra large 15-20 mmhg",
-      "reason": "Hosiery section has no photos",
-      "interimImage": "/images/fieldtex/10609.jpeg",
-      "searchTerms": ["compression stockings women", "support hose women"]
-    },
-    {
-      "sku": "FTX-10444",
-      "name": "Anti embolism stocking inspection toe XL",
-      "reason": "Hosiery section has no photos",
-      "interimImage": "/images/fieldtex/10609.jpeg",
-      "searchTerms": ["anti embolism stockings", "TED hose"]
     }
+  ],
+  "pendingVerification": [
+    {
+      "sku": "FTX-10686",
+      "name": "Sock aid",
+      "reason": "Ambiguous image (kit w/ bottle) - verify in-app before nulling",
+      "interimImage": "/images/fieldtex/10686.jpeg",
+      "searchTerms": ["sock aid", "stocking donner"]
+    }
+  ],
+  "nulledWrongImages": [
+    { "sku": "FTX-11561", "actualProduct": "Mucinex DM tablets 20 ct.", "showedImage": "Mucus Relief" },
+    { "sku": "FTX-11655", "actualProduct": "Swim-ear ear drops 1 fl. oz.", "showedImage": "ear supplement" },
+    { "sku": "FTX-91045", "actualProduct": "Clear eyes triple action relief 0.5 fl. oz.", "showedImage": "Clear Eyes" },
+    { "sku": "FTX-91091", "actualProduct": "Decolorized iodine 2 oz.", "showedImage": "Band-Aid antiseptic" },
+    { "sku": "FTX-99097", "actualProduct": "Advil liqui-gels 200mg 80 ct.", "showedImage": "Advil" }
+  ],
+  "nulledOffPath": [
+    { "sku": "FTX-10414", "reason": "Showed nicotine patch" },
+    { "sku": "FTX-10732", "reason": "Showed Biotène" },
+    { "sku": "FTX-10857", "reason": "Showed Balmex" },
+    { "sku": "FTX-10868", "reason": "Showed stool softener" }
+  ],
+  "verifiedCorrect": [
+    "10449", "10498", "10500", "10501", "10709", "10884", "10885", "99163",
+    "11089", "91068", "10433",
+    "10731", "10790", "90209", "90210", "90627", "90628", "10921", "91095",
+    "10819", "10832", "10744", "10853", "10521", "10609", "10632"
   ]
 }

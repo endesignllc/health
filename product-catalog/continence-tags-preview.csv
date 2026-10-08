@@ -1,0 +1,33 @@
+sku,productClassSlug,absorbency,sizes,gender,waistDisplay,tags,description
+1338,bladder-pads,moderate,,unisex,,class:bladder-pads|absorbency:moderate|gender:unisex,Medline FitRight Unisex Bladder Pads Leak-Stop Guards. Moderate absorbency. 4.5” x 12.5”.
+1339,bladder-pads,heavy,,unisex,,class:bladder-pads|absorbency:heavy|gender:unisex,Medline FitRight Unisex Bladder Pads Leak-Stop Guards. Maximum absorbency. 5” x 14.5”.
+1411,bladder-pads,heavy,,mens,,class:bladder-pads|absorbency:heavy|gender:mens,Medline FitRight ActivEdge Guards for Men Extra protection where a man needs it. Max absorbency. 5.9” x 12.6”.
+1412,bladder-pads,light,,,,class:bladder-pads|absorbency:light,Medline FitRight ActivEdge Bladder Pads Contoured shape with fabric-like backsheet. Light absorbency. 3.5” x 9”.
+1413,bladder-pads,moderate,,,,class:bladder-pads|absorbency:moderate,Medline FitRight ActivEdge Bladder Pads Contoured shape with fabric-like backsheet. Moderate absorbency. 4” x 11”.
+1414,bladder-pads,heavy,,,,class:bladder-pads|absorbency:heavy,Medline FitRight ActivEdge Bladder Pads Contoured shape with fabric-like backsheet. Maximum absorbency. 5” x 14”.
+1415,bladder-pads,maximum,,,,class:bladder-pads|absorbency:maximum,Medline FitRight ActivEdge Bladder Pads Contoured shape with fabric-like backsheet. Ultimate absorbency. 6” x 16”.
+8069,bladder-pads,light,,unisex,,class:bladder-pads|absorbency:light|gender:unisex,Medline FitRight Unisex Bladder Pads Leak-Stop Guards. Light absorbency. 4.5” x 11”.
+1112,protective-underwear,maximum,size:l,,44”-56” waist,class:protective-underwear|absorbency:maximum|size:l,Medline FitRight OptiFit Ultra Disposable Briefs Cloth-like adult diaper with soft anti-leak guards. Ultra absorbency. L (44”-56” waist).
+1113,protective-underwear,maximum,size:m,,32”-44” waist,class:protective-underwear|absorbency:maximum|size:m,Medline FitRight OptiFit Ultra Disposable Briefs Cloth-like adult diaper with soft anti-leak guards. Ultra absorbency. M (32”-44” waist).
+1114,protective-underwear,maximum,size:xl,,56”-64” waist,class:protective-underwear|absorbency:maximum|size:xl,Medline FitRight OptiFit Ultra Disposable Briefs Cloth-like adult diaper with soft anti-leak guards. Ultra absorbency. XL (56”-64” waist).
+1416,protective-underwear,heavy,size:s|size:m,mens,28”-40” waist,class:protective-underwear|absorbency:heavy|size:s|size:m|gender:mens,Medline FitRight ActivEdge Underwear for Men Extra protection where a man needs it. Max absorbency. S/M (28”-40” waist).
+1417,protective-underwear,heavy,size:xl,mens,40”-56” waist,class:protective-underwear|absorbency:heavy|size:xl|gender:mens,Medline FitRight ActivEdge Underwear for Men Extra protection where a man needs it. Max absorbency. L/ XL (40”-56” waist).
+1418,protective-underwear,heavy,size:s|size:m,womens,28”-40” waist,class:protective-underwear|absorbency:heavy|size:s|size:m|gender:womens,Medline FitRight ActivEdge Underwear for Women Odor & leak protection. Max absorbency. S/M (28”-40” waist).
+1419,protective-underwear,heavy,size:xl,womens,40”-56” waist,class:protective-underwear|absorbency:heavy|size:xl|gender:womens,Medline FitRight ActivEdge Underwear for Women Odor & leak protection. Max absorbency. L/XL (40”-56” waist).
+1423,protective-underwear,maximum,size:2xl,,60”-70” waist,class:protective-underwear|absorbency:maximum|size:2xl,Medline FitRight OptiFit Ultra Disposable Briefs Cloth-like adult diaper with soft anti-leak guards. Ultra absorbency. 2XL (60”-70” waist).
+1425,protective-underwear,maximum,size:s,,20”-32” waist,class:protective-underwear|absorbency:maximum|size:s,Medline FitRight OptiFit Ultra Disposable Briefs Cloth-like adult diaper with soft anti-leak guards. Ultra absorbency. S (20”-32” waist).
+1788,protective-underwear,heavy,size:l,,44”-56” waist,class:protective-underwear|absorbency:heavy|size:l,Medline FitRight OptiFit Extra Disposable Briefs Cloth-like adult diaper with skin-safe tabs. Extra absorbency. L (44”-56” waist).
+1789,protective-underwear,heavy,size:m,,32”-44” waist,class:protective-underwear|absorbency:heavy|size:m,Medline FitRight OptiFit Extra Disposable Briefs Cloth-like adult diaper with skin-safe tabs. Extra absorbency. M (32”-44” waist).
+1791,protective-underwear,heavy,size:s,,20”-32” waist,class:protective-underwear|absorbency:heavy|size:s,Medline FitRight OptiFit Extra Disposable Briefs Cloth-like adult diaper with skin-safe tabs. Extra absorbency. S (20”-32” waist).
+1792,protective-underwear,heavy,size:xl,,56”-64” waist,class:protective-underwear|absorbency:heavy|size:xl,Medline FitRight OptiFit Extra Disposable Briefs Cloth-like adult diaper with skin-safe tabs. Extra absorbency. XL (56”-64” waist).
+1793,protective-underwear,heavy,size:2xl,,60”-70” waist,class:protective-underwear|absorbency:heavy|size:2xl,Medline FitRight OptiFit Extra Disposable Briefs Cloth-like adult diaper with skin-safe tabs. Extra absorbency. 2XL (60”-70” waist).
+1850,protective-underwear,maximum,size:l,,40”-56” waist,class:protective-underwear|absorbency:maximum|size:l,Medline FitRight Ultra Disposable Underwear Pull-on fits & feels like real underwear. Ultra absorbency. L (40”-56” waist).
+1852,protective-underwear,maximum,size:m,,28”-40” waist,class:protective-underwear|absorbency:maximum|size:m,Medline FitRight Ultra Disposable Underwear Pull-on fits & feels like real underwear. Ultra absorbency. M (28”-40” waist).
+1854,protective-underwear,maximum,size:xl,,56”-68” waist,class:protective-underwear|absorbency:maximum|size:xl,Medline FitRight Ultra Disposable Underwear Pull-on fits & feels like real underwear. Ultra absorbency. XL (56”-68” waist).
+1119,underpads,,,,,class:underpads,"Medline Pro Plus Best Polymer Underpads Disposable, all-purpose pad with absorbent SAP polymer core. 23” x 36”."
+1427,underpads,,,,,class:underpads,"Medline Premium Disposable Polymer Underpads Premium protection for wheelchairs, beds, more. 30” x 30”."
+1614,underpads,,,,,class:underpads,Medline Sofnit 300 Reusable Twill Underpad Absorbent 55% cotton/45% poly with vinyl back. Machine wash. Pink. 34” x 36”.
+1615,underpads,moderate,,,,class:underpads|absorbency:moderate,Medline FitRight Underpads Fluff/polymer core plus waterproof backing. Moderate absorbency. 23” x 36”.
+1619,underpads,heavy,,,,class:underpads|absorbency:heavy,Medline FitRight Ultra Underpads Fluff/polymer core for absorbency and odor control. Heavy absorbency. 30” x 36”.
+3633,underpads,,,,,class:underpads,"Medline Disposable Deluxe Fluff Underpads 36x36 Disposable, all-purpose pad provides coverage and protection for chairs, wheelchairs, beds and more"
+4053,underpads,,,,,class:underpads,"Medline Pro Plus Best Polymer Underpads Disposable, all-purpose pad with absorbent SAP polymer core. 23” x 36”."

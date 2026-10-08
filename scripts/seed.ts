@@ -665,6 +665,38 @@ async function seed() {
         needId: needMap["blood-sugar-support"] ?? null,
         interactionFlags: ["affects_blood_glucose"],
       },
+      // Continence care classes (attached to existing `bladder-support` need).
+      // See QUALIFIER_SPEC.md §4.0 — display names kept plain / non-clinical.
+      {
+        slug: "bladder-pads",
+        canonicalName: "Bladder Control Pads & Liners",
+        description: "Absorbent bladder pads, liners, and guards.",
+        needId: needMap["bladder-support"] ?? null,
+      },
+      {
+        slug: "protective-underwear",
+        canonicalName: "Protective Underwear",
+        description: "Disposable protective underwear and briefs, sized by waist.",
+        needId: needMap["bladder-support"] ?? null,
+      },
+      {
+        slug: "underpads",
+        canonicalName: "Bed & Chair Pads",
+        description: "Disposable and reusable underpads for beds and chairs.",
+        needId: needMap["bladder-support"] ?? null,
+      },
+      {
+        slug: "skin-barrier-cream",
+        canonicalName: "Skin Barrier Cream",
+        description: "Protective barrier cream for skin exposed to moisture.",
+        needId: needMap["bladder-support"] ?? null,
+      },
+      {
+        slug: "cleansing-wipes",
+        canonicalName: "Cleansing Wipes",
+        description: "Pre-moistened cleansing wipes for personal care.",
+        needId: needMap["bladder-support"] ?? null,
+      },
     ])
     .onConflictDoUpdate({
       target: productClasses.slug,
@@ -1267,6 +1299,165 @@ async function seed() {
     }
 
     console.log("need_qualifier_questions seeded for diabetes-support");
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Continence Care qualifiers — attached to existing `bladder-support` need.
+  // Two-tier model (QUALIFIER_SPEC.md §2):
+  //   need-tier  → which product classes enter the cart (include / skip)
+  //   class-tier → which variant within a class (boost-ranked by absorbency / size)
+  // NOTE: class-tier uses BOOST, not hide. The rule engine matches on tag PRESENCE,
+  // so it cannot express "hide products lacking the selected size" without wrongly
+  // hiding combined-size items (an S/M brief carries both size:s and size:m).
+  // Strict size filtering is a tracked follow-up (QUALIFIER_SPEC.md §4.3).
+  // ─────────────────────────────────────────────────────────────────────────────
+  const bladderNeed = needsData.find((n) => n.slug === "bladder-support");
+  if (bladderNeed) {
+    // Idempotent reseed: clear existing need-tier questions (cascades to options/rules)
+    const existingBladderQs = await db
+      .select({ id: needQualifierQuestions.id })
+      .from(needQualifierQuestions)
+      .where(eq(needQualifierQuestions.needId, bladderNeed.id));
+    for (const q of existingBladderQs) {
+      await db.delete(needQualifierQuestions).where(eq(needQualifierQuestions.id, q.id));
+    }
+
+    const bladderPadsClassId = classMap["bladder-pads"] ?? null;
+    const protectiveClassId = classMap["protective-underwear"] ?? null;
+    const underpadsClassId = classMap["underpads"] ?? null;
+    const barrierClassId = classMap["skin-barrier-cream"] ?? null;
+    const wipesClassId = classMap["cleansing-wipes"] ?? null;
+
+    // ── Need-tier Q1: type of support → assemble the cart skeleton ──────────────
+    const [supportQ] = await db
+      .insert(needQualifierQuestions)
+      .values({
+        needId: bladderNeed.id,
+        slug: "support-type",
+        prompt: "What kind of support do you need?",
+        sortOrder: 1,
+      })
+      .returning();
+
+    const supportOptionSeeds = [
+      { slug: "bladder-light", label: "Bladder — light leaks", classId: bladderPadsClassId },
+      { slug: "bladder-heavy", label: "Bladder — moderate to heavy", classId: protectiveClassId },
+      { slug: "overnight", label: "Overnight protection", classId: underpadsClassId },
+    ];
+    for (let i = 0; i < supportOptionSeeds.length; i++) {
+      const o = supportOptionSeeds[i];
+      const [opt] = await db
+        .insert(needQualifierOptions)
+        .values({ questionId: supportQ.id, slug: o.slug, label: o.label, sortOrder: i + 1 })
+        .returning();
+      if (o.classId) {
+        await db.insert(needQualifierRules).values({
+          optionId: opt.id,
+          effect: "include",
+          matchProductClassId: o.classId,
+          weight: 50,
+        });
+      }
+    }
+
+    // ── Need-tier Q2: skin protection → include/skip skin-care classes ──────────
+    const [skinQ] = await db
+      .insert(needQualifierQuestions)
+      .values({
+        needId: bladderNeed.id,
+        slug: "skin-protection",
+        prompt: "Add skin protection?",
+        sortOrder: 2,
+      })
+      .returning();
+
+    const [skinYes] = await db
+      .insert(needQualifierOptions)
+      .values({ questionId: skinQ.id, slug: "yes", label: "Yes, add skin care", sortOrder: 1 })
+      .returning();
+    const [skinNo] = await db
+      .insert(needQualifierOptions)
+      .values({ questionId: skinQ.id, slug: "no", label: "No thanks", sortOrder: 2 })
+      .returning();
+
+    for (const classId of [barrierClassId, wipesClassId]) {
+      if (!classId) continue;
+      await db.insert(needQualifierRules).values({
+        optionId: skinYes.id,
+        effect: "include",
+        matchProductClassId: classId,
+        weight: 40,
+      });
+      await db.insert(needQualifierRules).values({
+        optionId: skinNo.id,
+        effect: "skip",
+        matchProductClassId: classId,
+        weight: 0,
+      });
+    }
+
+    // ── Class-tier qualifiers: absorbency (pads + underwear) and size (underwear) ─
+    // Idempotent: clear existing class-tier questions for these classes first.
+    const continenceClassIds = [bladderPadsClassId, protectiveClassId].filter(
+      (id): id is string => Boolean(id)
+    );
+    if (continenceClassIds.length) {
+      await db
+        .delete(qualifierQuestions)
+        .where(inArray(qualifierQuestions.productClassId, continenceClassIds));
+    }
+
+    const absorbencyOptions = [
+      { slug: "light", label: "Light", boostTag: "absorbency:light" },
+      { slug: "moderate", label: "Moderate", boostTag: "absorbency:moderate" },
+      { slug: "heavy", label: "Heavy", boostTag: "absorbency:heavy" },
+      { slug: "maximum", label: "Maximum / overnight", boostTag: "absorbency:maximum" },
+    ];
+    const sizeOptions = [
+      { slug: "s", label: "Small", boostTag: "size:s" },
+      { slug: "m", label: "Medium", boostTag: "size:m" },
+      { slug: "l", label: "Large", boostTag: "size:l" },
+      { slug: "xl", label: "X-Large", boostTag: "size:xl" },
+      { slug: "2xl", label: "2X-Large", boostTag: "size:2xl" },
+    ];
+
+    const classQuestionSeeds = [
+      { classId: bladderPadsClassId, slug: "absorbency", prompt: "How much absorbency do you need?", sortOrder: 1, options: absorbencyOptions },
+      { classId: protectiveClassId, slug: "absorbency", prompt: "How much absorbency do you need?", sortOrder: 1, options: absorbencyOptions },
+      { classId: protectiveClassId, slug: "size", prompt: "What size do you wear?", sortOrder: 2, options: sizeOptions },
+    ];
+
+    for (const cq of classQuestionSeeds) {
+      if (!cq.classId) continue;
+      const [q] = await db
+        .insert(qualifierQuestions)
+        .values({
+          productClassId: cq.classId,
+          slug: cq.slug,
+          prompt: cq.prompt,
+          helpText: null,
+          kind: "single_choice",
+          sortOrder: cq.sortOrder,
+          active: true,
+        })
+        .returning();
+      for (let i = 0; i < cq.options.length; i++) {
+        const o = cq.options[i];
+        const [opt] = await db
+          .insert(qualifierOptions)
+          .values({ questionId: q.id, slug: o.slug, label: o.label, sortOrder: i + 1 })
+          .returning();
+        await db.insert(qualifierRules).values({
+          optionId: opt.id,
+          effect: "boost",
+          matchTag: o.boostTag,
+          matchProductId: null,
+          weight: 30,
+        });
+      }
+    }
+
+    console.log("qualifiers seeded for continence care (bladder-support)");
   }
 
   console.log("Seed complete.");

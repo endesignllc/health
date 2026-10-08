@@ -1,0 +1,293 @@
+<title>Laurel Benefit Wallet</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap">
+<style>
+/* Layout: one calm member-home column; wallet is the hero, rationale annotated below. */
+:root{
+  --bg:#F4F6F3; --surface:#FFFFFF; --surface-tint:#EDF2EE;
+  --ink:#1E2A33; --muted:#53636C; --line:#DDE3DE;
+  --brand:#1C3D5F; --brand-soft:#E7EEF5; --on-brand:#FFFFFF;
+  --good:#1F7A4D; --good-tint:#E6F2EB;
+  --warn:#8F5600; --warn-tint:#FBF0DC;
+  --p-otc:#2B6CB0; --p-safety:#0D9470; --p-food:#A14FB5; --p-utility:#B45309;
+  --note:#8A6D3B;
+  --radius:14px;
+  --font-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-display:"Fraunces",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14181B; --surface:#1D2327; --surface-tint:#20282B;
+  --ink:#E8ECEA; --muted:#9FAFB3; --line:#323B40;
+  --brand:#8FB4D9; --brand-soft:#243444; --on-brand:#10202F;
+  --good:#5BBE8C; --good-tint:#1C2E25;
+  --warn:#E0A049; --warn-tint:#33271442; --warn-tint:#332714;
+  --note:#CDAE7A;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#14181B; --surface:#1D2327; --surface-tint:#20282B;
+  --ink:#E8ECEA; --muted:#9FAFB3; --line:#323B40;
+  --brand:#8FB4D9; --brand-soft:#243444; --on-brand:#10202F;
+  --good:#5BBE8C; --good-tint:#1C2E25;
+  --warn:#E0A049; --warn-tint:#332714;
+  --note:#CDAE7A;
+  color-scheme:dark;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.55;margin:0;padding-inline:16px;}
+.page{max-width:880px;margin:0 auto;padding-block:0 64px;}
+a{color:var(--brand);}
+h1,h2,h3{text-wrap:balance;margin:0;}
+.num{font-variant-numeric:tabular-nums;}
+
+/* ---------- header ---------- */
+header.app{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);display:flex;align-items:center;gap:14px;padding:12px 18px;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:.2px;}
+.logo svg{flex:none;}
+.logo small{display:block;font-weight:400;font-size:12px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;}
+nav.main{display:flex;gap:18px;font-size:16px;margin-left:6px;}
+nav.main a{text-decoration:none;color:var(--muted);}
+nav.main a[aria-current]{color:var(--ink);font-weight:700;border-bottom:3px solid var(--brand);padding-bottom:2px;}
+.spacer{flex:1;}
+.wallet-chip{display:flex;align-items:center;gap:9px;background:var(--brand);color:var(--on-brand);border-radius:999px;padding:8px 16px;font-weight:700;font-size:16px;cursor:pointer;border:none;}
+.wallet-chip svg{flex:none;}
+.wallet-chip .days{font-weight:400;opacity:.85;font-size:14px;}
+
+/* ---------- greeting ---------- */
+.greeting{padding:36px 4px 20px;}
+.greeting h1{font-family:var(--font-display);font-weight:500;font-size:clamp(28px,5vw,38px);}
+.greeting p{margin:10px 0 0;color:var(--muted);max-width:56ch;}
+.greeting p strong{color:var(--ink);}
+
+/* ---------- wallet card ---------- */
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px 26px 24px;}
+.wallet-top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;}
+.wallet-top .label{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:700;}
+.amount{font-family:var(--font-display);font-weight:600;font-size:clamp(44px,8vw,60px);line-height:1.05;font-variant-numeric:tabular-nums;}
+.amount small{font-family:var(--font-body);font-weight:400;font-size:18px;color:var(--muted);}
+.expiry{margin-left:auto;background:var(--warn-tint);color:var(--warn);border-radius:999px;padding:8px 14px;font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;align-self:center;}
+.totalbar{display:flex;height:14px;border-radius:7px;overflow:hidden;gap:2px;margin:18px 0 6px;background:transparent;}
+.totalbar span{display:block;height:100%;}
+.totalbar .spent{background:var(--line);flex-basis:38.6%;border-radius:7px 0 0 7px;}
+.barnote{font-size:14px;color:var(--muted);margin:0 0 18px;}
+.purses{display:grid;gap:0;margin:0;padding:0;list-style:none;border-top:1px solid var(--line);}
+.purse{display:grid;grid-template-columns:14px 1fr auto;gap:6px 14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);}
+.purse .dot{width:14px;height:14px;border-radius:4px;grid-row:1;}
+.purse .name{font-weight:700;}
+.purse .what{grid-column:2;font-size:14.5px;color:var(--muted);}
+.purse .left{font-weight:700;font-size:19px;text-align:right;font-variant-numeric:tabular-nums;}
+.purse .left small{display:block;font-weight:400;font-size:13px;color:var(--muted);}
+.mini{grid-column:1 / -1;height:7px;border-radius:4px;background:var(--surface-tint);overflow:hidden;}
+.mini i{display:block;height:100%;border-radius:4px;}
+.cta-row{display:flex;gap:16px;align-items:center;margin-top:22px;flex-wrap:wrap;}
+.btn{background:var(--brand);color:var(--on-brand);border:none;border-radius:10px;padding:15px 26px;font-size:18px;font-weight:700;font-family:var(--font-body);cursor:pointer;}
+.quiet{font-size:16px;}
+
+/* ---------- strips & cards ---------- */
+.strip{position:relative;display:flex;gap:14px;align-items:flex-start;border-radius:var(--radius);padding:18px 22px;margin-top:18px;border:1px solid var(--line);}
+.strip.good{background:var(--good-tint);border-color:transparent;}
+.strip.good .icon{color:var(--good);}
+.strip h3{font-size:18px;}
+.strip p{margin:4px 0 0;font-size:16px;color:var(--muted);}
+.strip .icon{flex:none;margin-top:2px;}
+.strip a{font-weight:700;}
+
+.goals{margin-top:18px;}
+.goals .eyebrow{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:700;}
+.goals h2{font-size:22px;margin:4px 0 14px;}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.tile{background:var(--surface-tint);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0;}
+.tile .ph{height:84px;border-radius:8px;background:var(--surface);border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);}
+.tile .t-name{font-weight:700;font-size:15.5px;line-height:1.3;}
+.badge{align-self:flex-start;font-size:12.5px;font-weight:700;border-radius:999px;padding:3px 10px;color:#fff;}
+.badge.safety{background:var(--p-safety);}
+.badge.zero{background:var(--good);}
+
+.order{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.order b{font-size:17px;}
+.order .quiet{margin-left:auto;}
+
+/* ---------- cart mini-mock ---------- */
+.mini-mock{margin-top:18px;}
+.mini-mock .frame-label{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:700;margin:26px 0 8px;}
+.cartline{display:flex;justify-content:space-between;gap:12px;font-size:16.5px;padding:10px 0;border-bottom:1px solid var(--line);}
+.beforeafter{display:grid;gap:6px;margin-top:14px;font-size:15.5px;color:var(--muted);}
+.ba-bar{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px;}
+.ba-bar .used{background:var(--line);}
+.ba-bar .order-part{background:var(--warn);opacity:.85;}
+.ba-bar .left-part{background:var(--p-otc);}
+
+/* ---------- annotations ---------- */
+.mark{position:absolute;top:-11px;right:14px;background:var(--note);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;}
+.mark.inline{position:static;flex:none;width:24px;height:24px;font-size:13px;}
+.rationale{margin-top:56px;border-top:3px solid var(--note);padding-top:18px;}
+.rationale h2{font-family:var(--font-display);font-weight:500;font-size:26px;}
+.rationale ol{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:16px;}
+.rationale li{display:flex;gap:14px;align-items:flex-start;}
+.rationale b{display:block;}
+.rationale p{margin:2px 0 0;color:var(--muted);font-size:16.5px;max-width:68ch;}
+footer.note{margin-top:48px;font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;max-width:72ch;}
+@media (max-width:640px){
+  .tiles{grid-template-columns:1fr;}
+  nav.main{display:none;}
+  .expiry{margin-left:0;}
+}
+</style>
+
+<div class="page">
+
+<header class="app">
+  <div class="logo">
+    <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><g fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round"><path d="M17 29C17 17 17 11 17 5"/><path d="M17 24c-5 0-8-2.5-9-7 5 0 8 2.5 9 7z" fill="var(--brand)" stroke="none"/><path d="M17 24c5 0 8-2.5 9-7-5 0-8 2.5-9 7z" fill="var(--brand)" stroke="none" opacity=".55"/><path d="M17 15c-4 0-6.5-2-7.5-5.5 4 0 6.5 2 7.5 5.5z" fill="var(--brand)" stroke="none" opacity=".8"/><path d="M17 15c4 0 6.5-2 7.5-5.5-4 0-6.5 2-7.5 5.5z" fill="var(--brand)" stroke="none" opacity=".35"/></g></svg>
+    <span>Laurel Complete Care<small>Member home</small></span>
+  </div>
+  <nav class="main"><a href="#" aria-current="page">Home</a><a href="#">Shop</a><a href="#">My orders</a><a href="#">Help</a></nav>
+  <div class="spacer"></div>
+  <button class="wallet-chip" type="button">
+    <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><rect x="1.5" y="4" width="17" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M13 10h4" stroke="currentColor" stroke-width="1.8"/></svg>
+    <span class="num">$184</span><span class="days">· 9 days left</span>
+  </button>
+  <div class="mark" style="top:auto;bottom:-11px;">1</div>
+</header>
+
+<section class="greeting">
+  <h1>Good morning, Margaret.</h1>
+  <p>Your plan set aside <strong>$300 for October</strong> — it's yours, and it's meant to be used. You have <strong>$184 left</strong>, and it won't carry over to November.</p>
+</section>
+
+<section class="card" aria-label="Your benefit dollars">
+  <div class="mark">2</div>
+  <div class="wallet-top">
+    <div>
+      <div class="label">Your benefit dollars · October</div>
+      <div class="amount num">$184 <small>left of $300</small></div>
+    </div>
+    <div class="expiry">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 4.5V8l2.5 1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Expires Fri, Oct 31 · 9 days
+    </div>
+  </div>
+
+  <div class="totalbar" role="img" aria-label="$116 used, $184 remaining across four benefits">
+    <span class="spent"></span>
+    <span style="background:var(--p-otc);flex-basis:30.7%"></span>
+    <span style="background:var(--p-safety);flex-basis:17.3%"></span>
+    <span style="background:var(--p-food);flex-basis:9.3%"></span>
+    <span style="background:var(--p-utility);flex-basis:4%;border-radius:0 7px 7px 0"></span>
+  </div>
+  <p class="barnote"><span class="num">$116</span> already put to work this month · the rest is ready below</p>
+
+  <ul class="purses">
+    <li class="purse">
+      <span class="dot" style="background:var(--p-otc)"></span>
+      <span class="name">Everyday health &amp; OTC</span>
+      <span class="left num">$92 <small>of $150</small></span>
+      <span class="what">Pain relief, vitamins, bladder care, first aid</span>
+      <span class="mini"><i style="width:61%;background:var(--p-otc)"></i></span>
+    </li>
+    <li class="purse">
+      <span class="dot" style="background:var(--p-safety)"></span>
+      <span class="name">Home &amp; bathroom safety</span>
+      <span class="left num">$52 <small>of $70</small></span>
+      <span class="what">Grab bars, night lights, non-slip mats</span>
+      <span class="mini"><i style="width:74%;background:var(--p-safety)"></i></span>
+    </li>
+    <li class="purse">
+      <span class="dot" style="background:var(--p-food)"></span>
+      <span class="name">Healthy food</span>
+      <span class="left num">$28 <small>of $50</small></span>
+      <span class="what">Groceries at participating stores</span>
+      <span class="mini"><i style="width:56%;background:var(--p-food)"></i></span>
+    </li>
+    <li class="purse">
+      <span class="dot" style="background:var(--p-utility)"></span>
+      <span class="name">Utilities</span>
+      <span class="left num">$12 <small>of $30</small></span>
+      <span class="what">Help with electric, gas, or water bills</span>
+      <span class="mini"><i style="width:40%;background:var(--p-utility)"></i></span>
+    </li>
+  </ul>
+
+  <div class="cta-row">
+    <button class="btn" type="button">Put my $184 to work</button>
+    <a class="quiet" href="#">See everything that's covered</a>
+    <div class="mark inline" style="margin-left:auto">3</div>
+  </div>
+</section>
+
+<div class="strip good">
+  <div class="mark">4</div>
+  <svg class="icon" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l7.5 3v6c0 5-3.2 8.3-7.5 10-4.3-1.7-7.5-5-7.5-10v-6l7.5-3z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 12l2.4 2.4 4.6-4.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div>
+    <h3>Some items cost you nothing at all</h3>
+    <p>Your plan covers <b>compression stockings</b> and <b>diabetic footwear</b> at $0 — separately from your $300. <a href="#">See your $0 items</a></p>
+  </div>
+</div>
+
+<section class="goals card" style="margin-top:18px;">
+  <div class="mark">5</div>
+  <div class="eyebrow">Because you told us: staying steady at home</div>
+  <h2>Three easy wins for your bathroom</h2>
+  <div class="tiles">
+    <div class="tile">
+      <div class="ph"><svg width="44" height="44" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38L38 10" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M7 31l10 10M31 7l10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div>
+      <span class="t-name">Suction grab bar, 16"</span>
+      <span class="badge safety">Home Safety · $24</span>
+    </div>
+    <div class="tile">
+      <div class="ph"><svg width="44" height="44" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="20" width="36" height="10" rx="5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M12 25h2M18 25h2M24 25h2M30 25h2M36 25h0" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div>
+      <span class="t-name">Non-slip bath mat, extra long</span>
+      <span class="badge safety">Home Safety · $18</span>
+    </div>
+    <div class="tile">
+      <div class="ph"><svg width="44" height="44" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="22" r="9" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 4v6M24 34v6M6 22h6M36 22h6M11 9l4 4M37 9l-4 4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div>
+      <span class="t-name">Motion night light, 2-pack</span>
+      <span class="badge safety">Home Safety · $12</span>
+    </div>
+  </div>
+</section>
+
+<div class="strip order card" style="background:var(--surface);">
+  <div class="mark">6</div>
+  <div>
+    <b>Your October order ships Friday.</b>
+    <p><span class="num">$76</span> of your benefit is already working for you in this order.</p>
+  </div>
+  <a class="quiet" href="#">Review order</a>
+</div>
+
+<section class="mini-mock">
+  <div class="frame-label">Same wallet, in the cart</div>
+  <div class="card" style="max-width:560px;">
+    <div class="mark">7</div>
+    <div class="cartline"><span>Overnight bladder protection, 39 ct <em style="color:var(--muted);font-style:normal">· Size M, saved</em></span><b class="num">$42.00</b></div>
+    <div class="cartline"><span>Suction grab bar, 16"</span><b class="num">$24.00</b></div>
+    <div class="cartline" style="border-bottom:none;"><span><b>Your benefit covers all of this.</b></span><b class="num" style="color:var(--good)">You pay $0</b></div>
+    <div class="beforeafter">
+      <span>Benefit dollars after this order: <b class="num" style="color:var(--ink)">$118 left</b> · still expires Oct 31</span>
+      <div class="ba-bar" role="img" aria-label="Of $300: $116 already used, $66 in this order, $118 remaining">
+        <span class="used" style="flex-basis:38.6%"></span>
+        <span class="order-part" style="flex-basis:22%"></span>
+        <span class="left-part" style="flex-basis:39.4%"></span>
+      </div>
+      <span style="font-size:13.5px;">used earlier · this order · still available</span>
+    </div>
+  </div>
+</section>
+
+<section class="rationale">
+  <h2>Why it's built this way</h2>
+  <ol>
+    <li><span class="mark inline">1</span><div><b>The balance never hides.</b><p>A wallet chip lives in the header on every page — balance plus days remaining, readable at arm's length. Seniors shouldn't dig into an account page to learn what they can spend; today most plan portals bury it, which is a big reason ~$5B of OTC dollars go unused each year.</p></div></li>
+    <li><span class="mark inline">2</span><div><b>Ownership first, countdown second.</b><p>The greeting frames the money as theirs and meant to be used ("your plan set aside $300 — it's yours"). The deadline is a calendar fact with a real date, styled in amber, never red: urgency without alarm, and no shame about what's already spent.</p></div></li>
+    <li><span class="mark inline">3</span><div><b>One primary action per state.</b><p>Every wallet state resolves to a single verb — here, "Put my $184 to work." Not four competing buttons. The dollar amount lives inside the button so the action and the stakes are one sentence.</p></div></li>
+    <li><span class="mark inline">4</span><div><b>"$0 for you" is its own message, not a product detail.</b><p>Items the plan covers outside the allowance (DME-rail items like compression stockings) get a dedicated green strip. It protects the $300 from being wasted on things that were already free — the quiet core of benefit optimization.</p></div></li>
+    <li><span class="mark inline">5</span><div><b>Purses connect to goals, not categories.</b><p>Suggestions are framed by what Margaret said she's trying to accomplish ("staying steady at home"), each item badged with the purse that pays for it. Badges speak benefit language — "Home Safety · $24" — never plan jargon like "SSBCI" or "coinsurance."</p></div></li>
+    <li><span class="mark inline">6</span><div><b>Show money working, not just remaining.</b><p>"$76 is already working for you in Friday's order" reframes spent dollars as progress. A wallet that only counts down feels like loss; one that shows value arriving feels like a plan being used well.</p></div></li>
+    <li><span class="mark inline">7</span><div><b>Before-and-after at the moment of commitment.</b><p>The cart answers the question every member silently asks: "what will I have left?" One bar shows used / this order / still available, plus the saved size from her Fit Profile — typed once, applied everywhere.</p></div></li>
+  </ol>
+</section>
+
+<footer class="note">
+  Laurel Complete Care is a fictional plan created for demonstration. Benefit structure modeled on publicly available 2026 Medicare Advantage plan documents. Product names and prices are illustrative. No real member data is shown.
+</footer>
+
+</div>
