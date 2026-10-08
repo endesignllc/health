@@ -53,7 +53,7 @@ export function WalletExpiryBanner({ wallet, className, variant = "default", pla
           className
         )}
       >
-        <div className="flex items-start gap-3 max-w-6xl mx-auto">
+        <div className="flex items-start gap-3 max-w-6xl mx-auto px-4 sm:px-6">
           {/* Clock icon */}
           <svg
             width="20"
@@ -128,7 +128,7 @@ export function WalletExpiryBanner({ wallet, className, variant = "default", pla
         className
       )}
     >
-      <div className="flex items-start gap-3 max-w-6xl mx-auto">
+      <div className="flex items-start gap-3 max-w-6xl mx-auto px-4 sm:px-6">
         {/* Warning icon */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
