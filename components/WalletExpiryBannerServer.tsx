@@ -8,6 +8,7 @@ interface WalletExpiryBannerServerProps {
 
 /**
  * Server component that resolves the wallet and renders the expiry banner.
+ * The client component handles hiding on home page for member home configs.
  */
 export async function WalletExpiryBannerServer({
   planConfig,
@@ -18,5 +19,5 @@ export async function WalletExpiryBannerServer({
     return null;
   }
 
-  return <WalletExpiryBanner wallet={wallet} variant={planConfig.expiryBannerVariant} />;
+  return <WalletExpiryBanner wallet={wallet} variant={planConfig.expiryBannerVariant} planConfig={planConfig} />;
 }

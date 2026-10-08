@@ -1,23 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn, formatPrice } from "@/lib/utils";
 import type { BenefitWalletSnapshot } from "@/lib/benefit-wallet/types";
+import type { PlanConfig } from "@/lib/plan-config/types";
 
 interface WalletExpiryBannerProps {
   wallet: BenefitWalletSnapshot;
   className?: string;
   /** Use calm amber style (Laurel theme) — never red, never all-caps */
   variant?: "default" | "calm";
+  /** Plan config for member home check */
+  planConfig?: PlanConfig;
 }
 
 /**
  * Displays an expiry warning banner when wallet period is ending soon.
  * Shows when expiresInDays <= 14 and there's remaining balance.
  */
-export function WalletExpiryBanner({ wallet, className, variant = "default" }: WalletExpiryBannerProps) {
+export function WalletExpiryBanner({ wallet, className, variant = "default", planConfig }: WalletExpiryBannerProps) {
   const [dismissed, setDismissed] = useState(false);
+  const pathname = usePathname();
+
+  // For member home, hide banner on home page (wallet is already shown there)
+  if (planConfig?.memberHome && pathname === "/") {
+    return null;
+  }
 
   // Only show if we have expiry info and days remaining
   if (dismissed || wallet.expiresInDays == null || wallet.expiresInDays > 14) {

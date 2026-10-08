@@ -65,13 +65,19 @@ export async function resolveBenefitWallet(
     const primaryPurse = walletConfig.purses[0];
     const defaultCadence = primaryPurse?.cadence ?? planConfig.defaultCadence;
 
-    // Build purse inputs — for v1 demo, attribute all cart spend to primary purse
+    // Compute total prior used from all purses
+    const totalPriorUsed = walletConfig.purses.reduce(
+      (sum, p) => sum + (p.usedCents ?? 0),
+      0
+    );
+
+    // Build purse inputs — use usedCents from config
     const purseInputs = walletConfig.purses.map((p, idx) => ({
       id: p.id,
       label: p.label,
       allowanceCents: p.allowanceCents,
-      priorUsedCents: 0,
-      cartCents: idx === 0 ? sessionSpendCents : 0, // All spend to primary purse
+      priorUsedCents: p.usedCents ?? 0,
+      cartCents: idx === 0 ? sessionSpendCents : 0, // Cart spend to primary purse
       cadence: p.cadence,
     }));
 
@@ -83,7 +89,7 @@ export async function resolveBenefitWallet(
       walletLabel: planConfig.name,
       allowanceCents: totalAllowance,
       cadence: defaultCadence,
-      priorUsedCents: 0,
+      priorUsedCents: totalPriorUsed,
       cartSubtotalCents: sessionSpendCents,
       periodLabel: walletConfig.periodLabel ?? defaultPeriodLabel(defaultCadence),
       showDemoBadge: !walletConfig.hideDemoBadge,

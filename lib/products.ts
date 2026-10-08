@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { products, productCategories, needs } from "@/db/schema";
-import { eq, and, ilike, or, asc, count, notInArray } from "drizzle-orm";
+import { eq, and, ilike, or, asc, count, notInArray, isNotNull, sql } from "drizzle-orm";
 
 /** Deprecated needs rows may remain for historical FKs — excluded from the build wizard */
 const EXCLUDED_BUILD_WIZARD_SLUGS = [
@@ -125,6 +125,43 @@ export async function getEligibleProducts() {
     where: eq(products.active, true),
     with: { category: true },
   });
+}
+
+/**
+ * Get home safety products with verified images for member home goals section.
+ * Prioritizes products with images from home-safety product classes.
+ */
+export async function getHomeSafetyProducts(limit: number = 3) {
+  // Get products tagged with home_safety eligibility that have images
+  const results = await db
+    .select({
+      id: products.id,
+      name: products.name,
+      imageUrl: products.imageUrl,
+      priceCents: products.priceCents,
+    })
+    .from(products)
+    .where(
+      and(
+        eq(products.active, true),
+        eq(products.eligible, true),
+        isNotNull(products.imageUrl),
+        // Products with home_safety tag or in home-safety classes
+        or(
+          sql`${products.tags} && ARRAY['eligibility:home_safety']::text[]`,
+          isNotNull(products.productClassId)
+        )
+      )
+    )
+    .orderBy(sql`random()`)
+    .limit(limit * 3); // Get more and filter for best images
+
+  // Filter to only those with fieldtex images (verified)
+  const withImages = results.filter(
+    (p) => p.imageUrl && !p.imageUrl.includes("placeholder")
+  );
+
+  return withImages.slice(0, limit);
 }
 
 export function formatPrice(cents: number): string {

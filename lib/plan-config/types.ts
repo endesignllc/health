@@ -6,6 +6,26 @@ export interface PurseDef {
   label: string;
   allowanceCents: number;
   cadence: BenefitCadence;
+  /** Demo: cents already used this period */
+  usedCents?: number;
+  /** What this purse covers (displayed under label) */
+  what?: string;
+  /** Fixed purse color (hex) */
+  color?: string;
+  /** Info-only purse: displays but doesn't link to shopping */
+  infoOnly?: boolean;
+}
+
+/** Demo member state (no real auth) */
+export interface DemoMember {
+  firstName: string;
+  goals: string[];
+}
+
+/** Demo order state */
+export interface DemoOrder {
+  shipsOn: string;
+  amountCents: number;
 }
 
 /** Color tokens for plan theming (HSL values without hsl() wrapper) */
@@ -32,6 +52,8 @@ export interface PlanWalletConfig {
   expiresInDays?: number;
   /** Period label (e.g., "October 2026") */
   periodLabel?: string;
+  /** Expiry display string (e.g., "Oct 31") */
+  expiresOn?: string;
   /** Hide the "demo allowance" badge */
   hideDemoBadge?: boolean;
 }
@@ -70,4 +92,10 @@ export interface PlanConfig {
   walletChipVariant?: "default" | "pill";
   /** Expiry banner style: "calm" = amber, never red */
   expiryBannerVariant?: "default" | "calm";
+  /** Demo member state (for member home page) */
+  demoMember?: DemoMember;
+  /** Demo order state (for order status strip) */
+  demoOrder?: DemoOrder;
+  /** Show member home instead of marketing home */
+  memberHome?: boolean;
 }

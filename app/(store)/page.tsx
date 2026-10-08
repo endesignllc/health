@@ -1,7 +1,20 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { getPlanConfig } from "@/lib/plan-config";
+import { LaurelMemberHome } from "@/components/LaurelMemberHome";
+import { getHomeSafetyProducts } from "@/lib/products";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const planConfig = getPlanConfig();
+
+  // Laurel member home
+  if (planConfig.memberHome) {
+    // Get products for goals section (home safety with images)
+    const goalProducts = await getHomeSafetyProducts(3);
+    return <LaurelMemberHome planConfig={planConfig} goalProducts={goalProducts} />;
+  }
+
+  // Default marketing home
   return (
     <>
       <section className="bg-primary text-primary-foreground py-16 sm:py-24 md:py-28 border-b-4 border-[hsl(203,89%,21%)]">
