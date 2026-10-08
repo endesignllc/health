@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cn, formatPrice } from "@/lib/utils";
 import type { BenefitCadence, BenefitWalletSnapshot } from "@/lib/benefit-wallet/types";
 
@@ -10,13 +11,46 @@ function cadenceShort(cadence: BenefitCadence): string {
 interface BenefitWalletChipProps {
   wallet: BenefitWalletSnapshot;
   className?: string;
+  /** Use navy pill style (Laurel theme) */
+  variant?: "default" | "pill";
 }
 
 /** Compact header wallet: label + available + cadence */
-export function BenefitWalletChip({ wallet, className }: BenefitWalletChipProps) {
+export function BenefitWalletChip({ wallet, className, variant = "default" }: BenefitWalletChipProps) {
   const isOver = wallet.availableCents < 0;
   const isLow = !isOver && wallet.allowanceCents > 0 && wallet.availableCents / wallet.allowanceCents < 0.1;
+  const daysLeft = wallet.expiresInDays;
 
+  // Navy pill variant (Laurel style per mockup)
+  if (variant === "pill") {
+    return (
+      <Link
+        href="/build"
+        className={cn(
+          "hidden sm:flex items-center gap-2 rounded-full px-4 py-2",
+          "bg-[#1C3D5F] text-white hover:bg-[#234a70] transition-colors",
+          className
+        )}
+        aria-label={`${formatPrice(Math.max(0, wallet.availableCents))} available${daysLeft != null ? `, ${daysLeft} days left` : ""}`}
+      >
+        {/* Wallet icon */}
+        <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" className="flex-none">
+          <rect x="1.5" y="4" width="17" height="12" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.8"/>
+          <path d="M13 10h4" stroke="currentColor" strokeWidth="1.8"/>
+        </svg>
+        <span className="font-bold tabular-nums">
+          {formatPrice(Math.max(0, wallet.availableCents))}
+        </span>
+        {daysLeft != null && (
+          <span className="font-normal opacity-85 text-sm">
+            · {daysLeft} day{daysLeft !== 1 ? "s" : ""} left
+          </span>
+        )}
+      </Link>
+    );
+  }
+
+  // Default boxy variant
   return (
     <div
       className={cn(

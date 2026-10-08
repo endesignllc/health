@@ -18,5 +18,5 @@ export async function WalletExpiryBannerServer({
     return null;
   }
 
-  return <WalletExpiryBanner wallet={wallet} />;
+  return <WalletExpiryBanner wallet={wallet} variant={planConfig.expiryBannerVariant} />;
 }

@@ -21,6 +21,33 @@ export function SiteLogo({
   const logoUrl = planConfig?.logoUrl ?? "/branding/logo.svg";
   const logoAlt = planConfig?.logoAlt ?? "HealthBenefits.shop";
 
+  // Laurel-style lockup: icon tile + stacked text
+  if (planConfig?.logoStyle === "lockup") {
+    return (
+      <div className="flex items-center gap-2.5">
+        <img
+          src={logoUrl}
+          width={36}
+          height={36}
+          alt=""
+          className="w-9 h-9 flex-none"
+          decoding="async"
+          loading={priority ? "eager" : "lazy"}
+        />
+        <div className="flex flex-col">
+          <span className="text-[17px] font-semibold leading-tight text-[#1C3D5F]">
+            {planConfig.name}
+          </span>
+          {planConfig.logoSubtitle && (
+            <span className="text-[11px] uppercase tracking-wider text-muted-foreground leading-tight">
+              {planConfig.logoSubtitle}
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <img
       src={logoUrl}

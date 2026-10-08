@@ -46,6 +46,10 @@ export interface PlanConfig {
   logoUrl: string;
   /** Logo alt text */
   logoAlt: string;
+  /** Logo presentation style: "lockup" = icon tile + stacked text */
+  logoStyle?: "default" | "lockup";
+  /** Subtitle under logo name in lockup mode (e.g., "HMO D-SNP") */
+  logoSubtitle?: string;
   /** Theme colors */
   colors: PlanColors;
   /** Wallet/benefit configuration */
@@ -62,4 +66,8 @@ export interface PlanConfig {
   visibleNeeds?: string[];
   /** Hide checkout button (demo mode) */
   hideCheckout?: boolean;
+  /** Wallet chip style in header: "pill" = navy rounded pill */
+  walletChipVariant?: "default" | "pill";
+  /** Expiry banner style: "calm" = amber, never red */
+  expiryBannerVariant?: "default" | "calm";
 }

@@ -105,3 +105,17 @@
     @apply bg-card border-2 border-border rounded-lg overflow-hidden shadow-sm hover:border-primary/35 transition-colors;
   }
 }
+
+/* Laurel theme overrides (applied via .laurel-theme wrapper) */
+@layer components {
+  .laurel-theme {
+    --background: 100 11% 95%;
+    --card: 0 0% 100%;
+    --border: 120 8% 87%;
+    --muted-foreground: 200 10% 38%;
+  }
+
+  .laurel-theme .card {
+    @apply border border-[#DDE3DE] rounded-xl shadow-none hover:shadow-md hover:-translate-y-0.5 transition-all duration-150;
+  }
+}

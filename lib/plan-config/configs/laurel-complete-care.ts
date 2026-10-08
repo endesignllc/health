@@ -11,6 +11,8 @@ export const laurelCompleteCare: PlanConfig = {
   name: "Laurel Complete Care",
   logoUrl: "/branding/laurel-logo.svg",
   logoAlt: "Laurel Complete Care",
+  logoStyle: "lockup",
+  logoSubtitle: "HMO D-SNP",
   colors: {
     // Navy/sky/coral palette per Highmark brand voice (not marks)
     primary: "220 60% 20%",           // Deep navy
@@ -60,4 +62,6 @@ export const laurelCompleteCare: PlanConfig = {
   // Only show audited needs in wizard
   visibleNeeds: ["bladder-support", "joint-comfort-mobility"],
   hideCheckout: true, // Demo stops at cart, no payment flow
+  walletChipVariant: "pill", // Navy rounded pill per mockup
+  expiryBannerVariant: "calm", // Amber, never red, per mockup
 };

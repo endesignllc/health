@@ -3,8 +3,10 @@ import { listProducts, getProductCategories } from "@/lib/products";
 import { formatPrice } from "@/lib/utils";
 import { ProductsSearchForm } from "./ProductsSearchForm";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { extractVariantListingAttribute } from "@/lib/variant-label";
+import { EligibilityBadges, getEligibilityBadges } from "@/components/EligibilityBadge";
+import { ProductImagePlaceholder } from "@/components/ProductImagePlaceholder";
+import { getPlanConfig } from "@/lib/plan-config";
 
 interface PageProps {
   searchParams: Promise<{ q?: string; category?: string; page?: string }>;
@@ -22,14 +24,19 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     listProducts({ categorySlug, search, limit, offset }),
     getProductCategories(),
   ]);
+  const planConfig = getPlanConfig();
 
   const { products: productList, total } = result;
   const totalPages = Math.ceil(total / limit);
+  const isLaurel = planConfig.slug === "laurel-complete-care";
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+      {/* Header row: title left, search/filter right */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <h1 className="text-3xl font-bold">Shop Products</h1>
+        <h1 className={isLaurel ? "text-2xl font-bold tracking-tight" : "text-3xl font-bold"}>
+          Shop Products
+        </h1>
         <ProductsSearchForm
           initialSearch={search}
           initialCategory={categorySlug}
@@ -56,46 +63,53 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {/* Product grid: minmax(240px, 1fr), 20px gap */}
+          <div className="grid gap-5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}>
             {productList.map((product) => {
               const variantDetail = extractVariantListingAttribute(product.name, product.description);
+              const eligibilityTypes = getEligibilityBadges(product.tags, product.category?.slug ?? "");
+              // Extract quantity limit from tags
+              const limitTag = product.tags?.find((t: string) => t.startsWith("limit:"));
+              const quantityLimit = limitTag ? limitTag.replace("limit:", "") : null;
+              
               return (
               <Link key={product.id} href={`/products/${product.id}`}>
-                <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="aspect-square bg-muted flex items-center justify-center">
+                <Card className="h-full overflow-hidden group hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
+                  {/* Image area: 4:3, object-contain, white bg, 12px radius */}
+                  <div className="aspect-[4/3] bg-white flex items-center justify-center overflow-hidden rounded-t-xl">
                     {product.imageUrl ? (
                       <img
                         src={product.imageUrl}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain p-2"
                       />
                     ) : (
-                      <svg
-                        className="w-16 h-16 text-muted-foreground/50"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14"
-                        />
-                      </svg>
+                      <ProductImagePlaceholder categorySlug={product.category?.slug} />
                     )}
                   </div>
-                  <CardContent className="p-4">
-                    <Badge variant="secondary" className="mb-2 text-xs">
-                      {product.category?.name ?? "Uncategorized"}
-                    </Badge>
-                    <h2 className="font-semibold line-clamp-2 mb-2">
+                  <CardContent className="p-4 flex flex-col gap-2">
+                    {/* Badge row: eligibility badges, max 2 + overflow */}
+                    <EligibilityBadges types={eligibilityTypes.slice(0, 2)} compact />
+                    
+                    {/* Name: 2-line clamp, 17px semibold */}
+                    <h2 className="font-semibold text-[17px] leading-snug line-clamp-2">
                       {product.name}
                     </h2>
-                    {variantDetail ? (
-                      <p className="text-xs text-muted-foreground line-clamp-2 mb-2">{variantDetail}</p>
-                    ) : null}
-                    <p className="text-lg font-bold text-primary">
+                    
+                    {/* Variant detail if present */}
+                    {variantDetail && (
+                      <p className="text-xs text-muted-foreground line-clamp-1">{variantDetail}</p>
+                    )}
+                    
+                    {/* Quantity limit chip if present */}
+                    {quantityLimit && (
+                      <span className="inline-flex self-start items-center px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-600">
+                        Limit: {quantityLimit}
+                      </span>
+                    )}
+                    
+                    {/* Price: bottom-aligned, tabular-nums */}
+                    <p className="text-lg font-bold text-primary tabular-nums mt-auto">
                       {formatPrice(product.priceCents)}
                     </p>
                   </CardContent>

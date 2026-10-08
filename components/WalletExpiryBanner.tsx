@@ -1,19 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { cn, formatPrice } from "@/lib/utils";
 import type { BenefitWalletSnapshot } from "@/lib/benefit-wallet/types";
 
 interface WalletExpiryBannerProps {
   wallet: BenefitWalletSnapshot;
   className?: string;
+  /** Use calm amber style (Laurel theme) — never red, never all-caps */
+  variant?: "default" | "calm";
 }
 
 /**
  * Displays an expiry warning banner when wallet period is ending soon.
  * Shows when expiresInDays <= 14 and there's remaining balance.
  */
-export function WalletExpiryBanner({ wallet, className }: WalletExpiryBannerProps) {
+export function WalletExpiryBanner({ wallet, className, variant = "default" }: WalletExpiryBannerProps) {
   const [dismissed, setDismissed] = useState(false);
 
   // Only show if we have expiry info and days remaining
@@ -27,6 +30,76 @@ export function WalletExpiryBanner({ wallet, className }: WalletExpiryBannerProp
   }
 
   const isUrgent = wallet.expiresInDays <= 3;
+  const periodName = wallet.periodLabel?.split(" ")[0] ?? "Your"; // "October" from "October 2026"
+
+  // Calm variant (Laurel style per mockup) — never red, never urgent
+  if (variant === "calm") {
+    return (
+      <div
+        role="alert"
+        className={cn(
+          "rounded-xl px-4 py-3",
+          "bg-[#FBF0DC] text-[#8F5600]",
+          className
+        )}
+      >
+        <div className="flex items-start gap-3 max-w-6xl mx-auto">
+          {/* Clock icon */}
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+            className="w-5 h-5 shrink-0 mt-0.5 text-[#8F5600]"
+          >
+            <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.8"/>
+            <path d="M8 4.5V8l2.5 1.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+          </svg>
+
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-[15px]">
+              Your {periodName} benefit expires in {wallet.expiresInDays} day{wallet.expiresInDays !== 1 ? "s" : ""}.
+            </p>
+            <p className="text-[15px] mt-0.5 opacity-90">
+              You have{" "}
+              <span className="font-semibold">{formatPrice(wallet.availableCents)}</span>{" "}
+              ready to use. It doesn't carry over — let's put it to work.
+            </p>
+          </div>
+
+          {/* Build bundle CTA */}
+          <Link
+            href="/build"
+            className="hidden sm:inline-flex items-center gap-1 px-4 py-2 rounded-lg bg-[#1C3D5F] text-white text-sm font-semibold hover:bg-[#234a70] transition-colors whitespace-nowrap"
+          >
+            Build my bundle
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className="ml-0.5">
+              <path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </Link>
+
+          {/* Dismiss button */}
+          <button
+            type="button"
+            onClick={() => setDismissed(true)}
+            className="p-1.5 rounded-lg hover:bg-black/10 transition-colors text-[#8F5600] shrink-0"
+            aria-label="Dismiss banner"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Default variant
   const daysText =
     wallet.expiresInDays === 0
       ? "expires today"

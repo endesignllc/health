@@ -73,7 +73,7 @@ export default async function Header({ planConfig }: HeaderProps) {
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
-            {wallet && <BenefitWalletChip wallet={wallet} />}
+            {wallet && <BenefitWalletChip wallet={wallet} variant={planConfig.walletChipVariant} />}
             <Link
               href="/cart"
               className="hidden md:inline-flex relative items-center gap-2 min-h-[44px] px-4 rounded-md text-base font-semibold text-primary hover:bg-accent transition-colors"
