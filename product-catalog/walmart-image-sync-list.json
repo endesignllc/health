@@ -1,0 +1,69 @@
+{
+  "_note": "Products needing Walmart image sync - Fieldtex catalog lacks suitable photos",
+  "syncList": [
+    {
+      "sku": "FTX-10485",
+      "name": "Incontinence A & D ointment 15 oz.",
+      "reason": "00049.jpeg is ointment box (wrong brand); may appear in bladder-support bundle under skin protection",
+      "interimImage": "/images/fieldtex/00049.jpeg",
+      "searchTerms": ["A&D ointment", "A+D diaper rash ointment"]
+    },
+    {
+      "sku": "FTX-90625",
+      "name": "Procare knee support extra large 23 in. - 25.5 in.",
+      "reason": "No knee support photo in catalog; 90209.jpeg box says 'BACK'",
+      "interimImage": "/images/fieldtex/90209.jpeg",
+      "searchTerms": ["knee support brace", "Procare knee support"]
+    },
+    {
+      "sku": "FTX-90626",
+      "name": "Procare elastic elbow support large 10 in. - 11.5 in.",
+      "reason": "No elbow support photo in catalog; 90209.jpeg box says 'BACK'",
+      "interimImage": "/images/fieldtex/90209.jpeg",
+      "searchTerms": ["elbow support brace", "Procare elbow support"]
+    },
+    {
+      "sku": "FTX-10809",
+      "name": "Men's black light support - XXL 15-20 mmhg",
+      "reason": "Hosiery section has no photos; 10609 is closest sock image. Family has $0 badge.",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["compression stockings men", "support hose 15-20 mmhg"],
+      "priority": "high"
+    },
+    {
+      "sku": "FTX-10810",
+      "name": "Unisex beige medium support - XXL 20-30 mmhg",
+      "reason": "Hosiery section has no photos; shares family with $0 badge products",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["compression stockings beige", "support hose 20-30 mmhg"]
+    },
+    {
+      "sku": "FTX-10811",
+      "name": "Unisex beige firm support - XXL 30-40 mmhg",
+      "reason": "Hosiery section has no photos",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["compression stockings firm", "support hose 30-40 mmhg"]
+    },
+    {
+      "sku": "FTX-10812",
+      "name": "CoolMax Unisex white knee high sock XXL 8-15 mmhg",
+      "reason": "Hosiery section has no photos",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["CoolMax compression socks", "knee high support socks"]
+    },
+    {
+      "sku": "FTX-00365",
+      "name": "Women's beige light support - extra large 15-20 mmhg",
+      "reason": "Hosiery section has no photos",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["compression stockings women", "support hose women"]
+    },
+    {
+      "sku": "FTX-10444",
+      "name": "Anti embolism stocking inspection toe XL",
+      "reason": "Hosiery section has no photos",
+      "interimImage": "/images/fieldtex/10609.jpeg",
+      "searchTerms": ["anti embolism stockings", "TED hose"]
+    }
+  ]
+}

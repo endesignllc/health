@@ -19,8 +19,8 @@ const CLASS_FALLBACK_IMAGES: Record<string, string> = {
   "compression-stockings": "10609.jpeg", // Sock-on-leg photo (hosiery section has no photos, this is closest)
   "bath-safety-aids": "10686.jpeg", // Sock aid with grips (daily living aid)
   "body-scales": "10832.jpeg", // Talking bath scale ✓ correct
-  "support-cushions": "10830.jpeg", // Cushion (needs verification)
-  "mobility-supports": "90209.jpeg", // Mueller back brace
+  "support-cushions": "10853.jpeg", // Fabric cushion (10830 was pulse oximeter!)
+  "mobility-supports": "90209.jpeg", // Mueller back brace (box says "BACK" - needs Walmart sync for knee/elbow)
 };
 
 // Specific product fallbacks based on similar items - VERIFIED
@@ -44,7 +44,14 @@ const PRODUCT_FALLBACKS: Record<string, string> = {
   "FTX-10888": "91095.jpeg", // Wrist support -> wrist support image
   "FTX-90625": "90209.jpeg", // Knee support -> back brace (general support)
   "FTX-10889": "90209.jpeg", // Hot/cold lumbar back brace -> Mueller back brace
-  "FTX-10903": "10830.jpeg", // Memory foam coccyx cushion -> cushion
+  "FTX-10903": "10853.jpeg", // Memory foam coccyx cushion -> fabric cushion (10830 was pulse oximeter!)
+};
+
+// Incontinence product fallbacks - VERIFIED round 2
+const INCONTINENCE_FALLBACKS: Record<string, string> = {
+  "FTX-10485": "00049.jpeg", // A&D ointment -> ointment box (wrong brand, needs Walmart sync)
+  "FTX-10499": "10709.jpeg", // Underwear/Pull-ups -> Prevail Air Plus briefs
+  "FTX-10823": "91068.jpeg", // Bed pads -> Prevail Total Care UNDERPADS (exact match!)
 };
 
 async function main() {
