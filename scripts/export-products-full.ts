@@ -6,7 +6,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 import { db } from "../lib/db";
 import { products, productCategories, productClasses, needProductRules, needs } from "../db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import * as fs from "fs";
 
 async function main() {
@@ -19,6 +19,8 @@ async function main() {
       categorySlug: productCategories.slug,
       productClass: productClasses.canonicalName,
       productClassSlug: productClasses.slug,
+      productClassId: productClasses.id,
+      categoryId: productCategories.id,
       priceCents: products.priceCents,
       imageUrl: products.imageUrl,
       externalProductUrl: products.externalProductUrl,
@@ -39,30 +41,47 @@ async function main() {
     .leftJoin(productCategories, eq(products.categoryId, productCategories.id))
     .leftJoin(productClasses, eq(products.productClassId, productClasses.id));
 
-  // need associations
-  const needRows = await db
-    .select({ productId: needProductRules.productId, classId: needProductRules.productClassId, needSlug: needs.slug })
+  // need associations via productClass.needId
+  const classNeedRows = await db
+    .select({ classId: productClasses.id, needSlug: needs.slug })
+    .from(productClasses)
+    .leftJoin(needs, eq(productClasses.needId, needs.id))
+    .where(sql`${productClasses.needId} IS NOT NULL`)
+    .catch(() => [] as { classId: string; needSlug: string | null }[]);
+
+  // need associations via category (need_product_rules.requiredCategoryId)
+  const categoryNeedRows = await db
+    .select({ categoryId: needProductRules.requiredCategoryId, needSlug: needs.slug })
     .from(needProductRules)
     .leftJoin(needs, eq(needProductRules.needId, needs.id))
-    .catch(() => [] as any[]);
+    .catch(() => [] as { categoryId: string; needSlug: string | null }[]);
 
   // fieldtex source sections
   let sectionMap: Record<string, string> = {};
   try { sectionMap = JSON.parse(fs.readFileSync("product-catalog/fieldtex-section-map.json", "utf8")); } catch {}
 
-  const byProduct: Record<string, Set<string>> = {};
-  for (const r of needRows as any[]) {
+  // Build lookup maps for needs by class and category
+  const needsByClass: Record<string, Set<string>> = {};
+  for (const r of classNeedRows) {
     if (!r.needSlug) continue;
-    const key = r.productId ?? `class:${r.classId}`;
-    (byProduct[key] ??= new Set()).add(r.needSlug);
+    (needsByClass[r.classId] ??= new Set()).add(r.needSlug);
+  }
+  const needsByCategory: Record<string, Set<string>> = {};
+  for (const r of categoryNeedRows) {
+    if (!r.needSlug) continue;
+    (needsByCategory[r.categoryId] ??= new Set()).add(r.needSlug);
   }
 
   const out = rows.map((r) => {
     const code = r.sku?.replace(/^FTX-/, "");
+    // Merge needs from class and category associations
+    const classNeeds = r.productClassId ? needsByClass[r.productClassId] : undefined;
+    const catNeeds = r.categoryId ? needsByCategory[r.categoryId] : undefined;
+    const allNeeds = new Set([...(classNeeds ?? []), ...(catNeeds ?? [])]);
     return {
       ...r,
       priceDollars: (r.priceCents / 100).toFixed(2),
-      needs: [...(byProduct[r.id as any] ?? [])].join("|"),
+      needs: [...allNeeds].join("|"),
       sourceSection: (code && sectionMap[code]) || "",
       tags: (r.tags ?? []).join("|"),
       alternateSkus: (r.alternateSkus ?? []).join("|"),
