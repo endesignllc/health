@@ -3,14 +3,19 @@ import { getCart } from "@/lib/cart";
 import { SiteLogo } from "@/components/SiteLogo";
 import { BenefitWalletChip } from "@/components/BenefitWalletChip";
 import { resolveBenefitWallet } from "@/lib/benefit-wallet/resolve";
+import type { PlanConfig } from "@/lib/plan-config/types";
 
 const navLinkClass =
   "inline-flex items-center min-h-[44px] px-3 rounded-md text-base font-semibold text-foreground hover:bg-accent hover:text-accent-foreground transition-colors underline-offset-4 hover:underline";
 
-export default async function Header() {
+interface HeaderProps {
+  planConfig: PlanConfig;
+}
+
+export default async function Header({ planConfig }: HeaderProps) {
   const cart = await getCart();
   const itemCount = cart?.items.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
-  const wallet = await resolveBenefitWallet();
+  const wallet = await resolveBenefitWallet({ planConfig });
 
   return (
     <header className="border-b-2 border-border bg-card shadow-sm sticky top-0 z-50">
@@ -21,7 +26,7 @@ export default async function Header() {
               href="/"
               className="shrink-0 inline-flex items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card hover:opacity-95 transition-opacity"
             >
-              <SiteLogo priority />
+              <SiteLogo planConfig={planConfig} priority />
             </Link>
             <Link
               href="/cart"

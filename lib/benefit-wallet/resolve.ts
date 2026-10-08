@@ -2,6 +2,8 @@ import { getCart } from "@/lib/cart";
 import { getBenefitWalletCapabilityConfig } from "./config";
 import { computeBenefitWalletSnapshot } from "./compute";
 import type { BenefitCadence, BenefitWalletSnapshot } from "./types";
+import type { PlanConfig } from "@/lib/plan-config/types";
+import { getPlanConfig, getTotalAllowanceCents } from "@/lib/plan-config";
 
 function cadenceFromCart(raw: string | null | undefined): BenefitCadence | null {
   if (raw === "monthly" || raw === "quarterly" || raw === "yearly") return raw;
@@ -20,6 +22,8 @@ export interface ResolveWalletOptions {
   /** Override member-declared allowance (e.g. bundle editor page) */
   memberAllowanceCents?: number | null;
   memberCadence?: string | null;
+  /** Plan config for plan-specific wallet settings */
+  planConfig?: PlanConfig;
 }
 
 /**
@@ -32,6 +36,7 @@ export async function resolveBenefitWallet(
   const config = getBenefitWalletCapabilityConfig();
   if (!config.enabled) return null;
 
+  const planConfig = options.planConfig ?? getPlanConfig();
   const cart = await getCart();
   const sessionSpendCents =
     options.sessionSpendCents ?? cart?.subtotalCents ?? 0;
@@ -53,13 +58,47 @@ export async function resolveBenefitWallet(
     });
   }
 
+  // Plan-driven wallet: use plan config purses
+  if (config.mode === "plan") {
+    const totalAllowance = getTotalAllowanceCents(planConfig);
+    const walletConfig = planConfig.wallet;
+    const primaryPurse = walletConfig.purses[0];
+    const defaultCadence = primaryPurse?.cadence ?? planConfig.defaultCadence;
+
+    // Build purse inputs — for v1 demo, attribute all cart spend to primary purse
+    const purseInputs = walletConfig.purses.map((p, idx) => ({
+      id: p.id,
+      label: p.label,
+      allowanceCents: p.allowanceCents,
+      priorUsedCents: 0,
+      cartCents: idx === 0 ? sessionSpendCents : 0, // All spend to primary purse
+      cadence: p.cadence,
+    }));
+
+    return computeBenefitWalletSnapshot({
+      enabled: true,
+      mode: "plan",
+      provenance: "plan",
+      status: "active",
+      walletLabel: planConfig.name,
+      allowanceCents: totalAllowance,
+      cadence: defaultCadence,
+      priorUsedCents: 0,
+      cartSubtotalCents: sessionSpendCents,
+      periodLabel: walletConfig.periodLabel ?? defaultPeriodLabel(defaultCadence),
+      showDemoBadge: !walletConfig.hideDemoBadge,
+      purses: purseInputs,
+      expiresInDays: walletConfig.expiresInDays,
+    });
+  }
+
   if (config.mode === "member_input") {
     const allowanceCents =
       options.memberAllowanceCents ?? cart?.budgetCents ?? null;
     if (allowanceCents == null || allowanceCents <= 0) return null;
 
     const cadence =
-      cadenceFromCart(options.memberCadence ?? cart?.cadence) ?? "quarterly";
+      cadenceFromCart(options.memberCadence ?? cart?.cadence) ?? planConfig.defaultCadence;
 
     return computeBenefitWalletSnapshot({
       enabled: true,

@@ -1,12 +1,15 @@
 import { cn, formatPrice } from "@/lib/utils";
 import { BudgetMeter } from "@/components/BudgetMeter";
 import { budgetMeterFromWallet } from "@/lib/benefit-wallet/budget-meter";
+import { MultiPurseWallet } from "@/components/MultiPurseWallet";
 import type { BenefitWalletSnapshot } from "@/lib/benefit-wallet/types";
 
 interface BenefitWalletCardProps {
   wallet: BenefitWalletSnapshot;
   className?: string;
   compact?: boolean;
+  /** Force single-purse view even if wallet has multiple purses */
+  forceSinglePurse?: boolean;
 }
 
 /** Full benefit wallet card with spend tally and progress meter */
@@ -14,7 +17,15 @@ export function BenefitWalletCard({
   wallet,
   className,
   compact = false,
+  forceSinglePurse = false,
 }: BenefitWalletCardProps) {
+  // Use multi-purse view when purses are present
+  const hasMultiplePurses = wallet.purses && wallet.purses.length > 1 && !forceSinglePurse;
+  
+  if (hasMultiplePurses) {
+    return <MultiPurseWallet wallet={wallet} className={className} />;
+  }
+
   const meter = budgetMeterFromWallet(wallet);
 
   return (
@@ -64,6 +75,11 @@ export function BenefitWalletCard({
       {wallet.periodLabel && (
         <p className={cn("text-muted-foreground mt-2", compact ? "text-xs" : "text-sm")}>
           Period: {wallet.periodLabel}
+        </p>
+      )}
+      {wallet.expiresInDays != null && wallet.expiresInDays > 0 && (
+        <p className={cn("text-amber-600 font-medium mt-2", compact ? "text-xs" : "text-sm")}>
+          {wallet.expiresInDays} days remaining in period
         </p>
       )}
     </div>

@@ -10,6 +10,7 @@ import type { QualifierAnswer } from "@/lib/qualifiers";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { QualifierPanel } from "@/components/QualifierPanel";
 import { extractVariantListingAttribute } from "@/lib/variant-label";
+import { EligibilityBadges, categoryToEligibility } from "@/components/EligibilityBadge";
 
 type BundleItemSection = "core" | "support" | "maintenance";
 
@@ -311,8 +312,17 @@ export function BundlesList({
                           >
                             <div className="flex justify-between gap-2">
                               <span>
-                                {item.productName}{" "}
-                                {item.quantity > 1 && `×${item.quantity}`}
+                                <span className="flex items-start gap-2">
+                                  <span>
+                                    {item.productName}{" "}
+                                    {item.quantity > 1 && `×${item.quantity}`}
+                                  </span>
+                                  <EligibilityBadges
+                                    types={categoryToEligibility(item.categorySlug)}
+                                    compact
+                                    className="shrink-0"
+                                  />
+                                </span>
                                 {variantDetail && (
                                   <span className="block text-xs text-muted-foreground font-normal mt-0.5">
                                     {variantDetail}

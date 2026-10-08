@@ -1,0 +1,65 @@
+import type { BenefitCadence } from "@/lib/benefit-wallet/types";
+
+/** A single benefit purse on a flex card */
+export interface PurseDef {
+  id: string;
+  label: string;
+  allowanceCents: number;
+  cadence: BenefitCadence;
+}
+
+/** Color tokens for plan theming (HSL values without hsl() wrapper) */
+export interface PlanColors {
+  /** Primary brand color - buttons, links, active states */
+  primary: string;
+  /** Primary foreground - text on primary backgrounds */
+  primaryForeground: string;
+  /** Accent - hover states, secondary surfaces */
+  accent: string;
+  /** Accent foreground */
+  accentForeground: string;
+  /** Secondary - muted backgrounds */
+  secondary: string;
+  /** Secondary foreground */
+  secondaryForeground: string;
+}
+
+/** Wallet configuration for a plan */
+export interface PlanWalletConfig {
+  /** Visible purses on the flex card */
+  purses: PurseDef[];
+  /** Days until current period expires (static for demo) */
+  expiresInDays?: number;
+  /** Period label (e.g., "October 2026") */
+  periodLabel?: string;
+  /** Hide the "demo allowance" badge */
+  hideDemoBadge?: boolean;
+}
+
+/** Plan-level configuration */
+export interface PlanConfig {
+  /** Unique identifier */
+  slug: string;
+  /** Display name (e.g., "Laurel Complete Care") */
+  name: string;
+  /** Path to logo asset (relative to /public) */
+  logoUrl: string;
+  /** Logo alt text */
+  logoAlt: string;
+  /** Theme colors */
+  colors: PlanColors;
+  /** Wallet/benefit configuration */
+  wallet: PlanWalletConfig;
+  /** Budget tier options for wizard (cents) */
+  budgetTiers: number[];
+  /** Default cadence */
+  defaultCadence: BenefitCadence;
+  /** Need slug → display name overrides */
+  needDisplayNames?: Record<string, string>;
+  /** Category slugs to exclude from bundles */
+  categoryExclusions?: string[];
+  /** Needs to show in wizard (if set, filters to only these) */
+  visibleNeeds?: string[];
+  /** Hide checkout button (demo mode) */
+  hideCheckout?: boolean;
+}

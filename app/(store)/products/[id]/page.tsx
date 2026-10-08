@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { extractVariantListingAttribute } from "@/lib/variant-label";
 import { InteractionFlagNotice } from "@/components/InteractionFlagNotice";
+import { EligibilityBadges, categoryToEligibility } from "@/components/EligibilityBadge";
 
 export default async function ProductDetailPage({
   params,
@@ -74,9 +75,14 @@ export default async function ProductDetailPage({
         </div>
 
         <div>
-          <Badge variant="secondary" className="mb-3">
-            {product.category?.name ?? "Uncategorized"}
-          </Badge>
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <Badge variant="secondary">
+              {product.category?.name ?? "Uncategorized"}
+            </Badge>
+            <EligibilityBadges
+              types={categoryToEligibility(product.category?.slug ?? "")}
+            />
+          </div>
           <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
           {heroVariantDetail ? (
             <p className="text-sm text-muted-foreground mb-4">{heroVariantDetail}</p>

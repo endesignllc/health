@@ -21,7 +21,7 @@ function parseCadence(raw: string | undefined): BenefitCadence {
 
 function parseMode(raw: string | undefined): IntegrationMode {
   const v = (raw ?? "member_input").trim().toLowerCase();
-  if (v === "static" || v === "member_input") return v;
+  if (v === "static" || v === "member_input" || v === "plan") return v;
   return "member_input";
 }
 

@@ -3,6 +3,7 @@ import { BuildWizardForm } from "./BuildWizardForm";
 import { BenefitWalletCard } from "@/components/BenefitWalletCard";
 import { resolveBenefitWallet } from "@/lib/benefit-wallet/resolve";
 import { getBenefitWalletCapabilityConfig } from "@/lib/benefit-wallet/config";
+import { getPlanConfig, getNeedDisplayName, isNeedVisibleInWizard } from "@/lib/plan-config";
 
 export const dynamic = "force-dynamic";
 
@@ -15,12 +16,17 @@ const BUDGET_OPTIONS = [
 ];
 
 export default async function BuildPage() {
+  const planConfig = getPlanConfig();
   const needsList = await getBuildWizardNeeds();
-  const needsForForm = needsList.map((n) => ({
-    id: n.id,
-    slug: n.slug,
-    name: n.name,
-  }));
+  
+  // Apply plan-specific need display names and filtering
+  const needsForForm = needsList
+    .filter((n) => isNeedVisibleInWizard(n.slug, planConfig))
+    .map((n) => ({
+      id: n.id,
+      slug: n.slug,
+      name: getNeedDisplayName(n.slug, n.name, planConfig),
+    }));
 
   const walletConfig = getBenefitWalletCapabilityConfig();
   const staticWallet =

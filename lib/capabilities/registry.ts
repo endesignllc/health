@@ -12,6 +12,7 @@ export type IntegrationMode =
   | "off"
   | "static"
   | "member_input"
+  | "plan"
   | "api"
   | "file"
   | "edi"

@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { SiteLogo } from "@/components/SiteLogo";
+import type { PlanConfig } from "@/lib/plan-config/types";
 
 const footerLink =
   "inline-flex items-center min-h-[44px] text-base font-medium text-foreground underline-offset-4 hover:underline decoration-2 hover:text-primary transition-colors";
 
-export default function Footer() {
+interface FooterProps {
+  planConfig: PlanConfig;
+}
+
+export default function Footer({ planConfig }: FooterProps) {
   return (
     <footer className="mt-auto border-t-2 border-border bg-muted">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
@@ -14,7 +19,7 @@ export default function Footer() {
               href="/"
               className="inline-flex rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-muted hover:opacity-95 transition-opacity"
             >
-              <SiteLogo className="h-[1.875rem] w-auto max-w-[min(100%,420px)]" />
+              <SiteLogo planConfig={planConfig} className="h-[1.875rem] w-auto max-w-[min(100%,420px)]" />
             </Link>
             <p className="mt-5 text-base text-muted-foreground leading-relaxed max-w-sm">
               Build a budget-fitting bundle of health and wellness products. Shop by need—never by diagnosis.
@@ -72,7 +77,7 @@ export default function Footer() {
 
         <div className="mt-14 pt-8 border-t-2 border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-base text-muted-foreground text-center sm:text-left">
-            © {new Date().getFullYear()} Health Benefits Shop. Not medical advice.
+            © {new Date().getFullYear()} {planConfig.name}. Not medical advice.
           </p>
         </div>
       </div>

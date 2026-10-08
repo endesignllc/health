@@ -25,6 +25,7 @@
     "db:extract-medline-pdf-catalog": "npx tsx scripts/extract-medline-pdf-catalog.ts",
     "db:import-merged-pdf-catalog": "npx tsx scripts/import-merged-pdf-catalog.ts",
     "db:extract-pdf-images": "npx tsx scripts/extract-pdf-images-and-map.ts",
+    "db:extract-fieldtex-catalog": "npx tsx scripts/extract-fieldtex-catalog.ts",
     "intel:extract-pdfs": "npx tsx scripts/product-intel/extract-pdf-catalog-rows.ts",
     "intel:build-rollups": "npx tsx scripts/product-intel/build-medline-rollups.ts",
     "intel:pipeline": "npm run intel:extract-pdfs && npm run intel:build-rollups",

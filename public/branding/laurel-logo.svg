@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 60" fill="none">
+  <!-- Laurel wreath icon -->
+  <g fill="#1a365d">
+    <!-- Left branch -->
+    <path d="M12 30c0-8 6-15 15-18-3 5-4 11-2 17 2-6 6-11 12-14-4 4-6 10-5 16 3-5 8-9 14-11-5 3-8 8-8 14 4-4 9-7 15-8-5 2-9 6-10 11h8v6h-8c1 5 5 9 10 11-6-1-11-4-15-8 0 6 3 11 8 14-6-2-11-6-14-11 1 6 3 12 5 16-6-3-10-8-12-14 2 6 1 12-2 17-9-3-15-10-15-18z"/>
+    <!-- Right branch (mirrored) -->
+    <path d="M58 30c0-8-6-15-15-18 3 5 4 11 2 17-2-6-6-11-12-14 4 4 6 10 5 16-3-5-8-9-14-11 5 3 8 8 8 14-4-4-9-7-15-8 5 2 9 6 10 11h-8v6h8c-1 5-5 9-10 11 6-1 11-4 15-8 0 6-3 11-8 14 6-2 11-6 14-11-1 6-3 12-5 16 6-3 10-8 12-14-2 6-1 12 2 17 9-3 15-10 15-18z"/>
+  </g>
+  <!-- Text -->
+  <text x="75" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="600" fill="#1a365d">
+    Laurel Complete Care
+  </text>
+  <text x="75" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#4a5568" letter-spacing="0.5">
+    HMO D-SNP
+  </text>
+</svg>

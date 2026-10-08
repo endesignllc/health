@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { buildBundles, BundleValidationError } from "@/lib/bundle-builder";
+import { buildBundles, BundleValidationError, BuiltBundle } from "@/lib/bundle-builder";
 import type { QualifierAnswer } from "@/lib/qualifiers";
 import { db } from "@/lib/db";
 import { products } from "@/db/schema";
 import { inArray } from "drizzle-orm";
+import { getPlanConfig, getNeedDisplayName } from "@/lib/plan-config";
 
 const QualifierAnswerSchema = z.object({
   questionSlug: z.string().min(1),
@@ -56,7 +57,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const bundles = await buildBundles({
+    const bundlesRaw = await buildBundles({
       needSlugs: mergedSlugs,
       includeEveryday,
       budgetCents: d.budgetCents,
@@ -67,6 +68,16 @@ export async function POST(req: NextRequest) {
       qualifierAnswers: d.qualifierAnswers as QualifierAnswer[],
       needQualifierAnswers: d.needQualifierAnswers,
     });
+
+    // Apply plan-specific display names
+    const planConfig = getPlanConfig();
+    const bundles: BuiltBundle[] = bundlesRaw.map((bundle) => ({
+      ...bundle,
+      needName: getNeedDisplayName(bundle.needSlug, bundle.needName, planConfig),
+      needNames: bundle.needSlugs.map((slug, idx) =>
+        getNeedDisplayName(slug, bundle.needNames[idx] ?? slug, planConfig)
+      ),
+    }));
 
     let alternateMap: Record<
       string,
