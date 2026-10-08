@@ -17,7 +17,7 @@ async function main() {
       description: products.description,
       category: productCategories.name,
       categorySlug: productCategories.slug,
-      productClass: productClasses.name,
+      productClass: productClasses.canonicalName,
       productClassSlug: productClasses.slug,
       priceCents: products.priceCents,
       imageUrl: products.imageUrl,
