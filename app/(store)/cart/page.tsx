@@ -6,11 +6,13 @@ import { CartItemActions } from "./CartItemActions";
 import { CheckoutSection } from "./CheckoutSection";
 import { CartOptionFlow } from "./CartOptionFlow";
 import { InteractionFlagNotice } from "@/components/InteractionFlagNotice";
+import { getPlanConfig } from "@/lib/plan-config";
 
 export default async function CartPage() {
+  const planConfig = getPlanConfig();
   const cart = await getCart();
   const wallet = cart
-    ? await resolveBenefitWallet({ sessionSpendCents: cart.subtotalCents })
+    ? await resolveBenefitWallet({ sessionSpendCents: cart.subtotalCents, planConfig })
     : null;
   const isEmpty = !cart || cart.items.length === 0;
 
@@ -122,6 +124,7 @@ export default async function CartPage() {
             cadence={cart.cadence}
             unresolvedOptionCount={cart.unresolvedOptionCount}
             wallet={wallet}
+            hideCheckout={planConfig.hideCheckout}
           />
         </div>
       </div>

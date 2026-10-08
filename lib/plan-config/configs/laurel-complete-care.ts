@@ -59,5 +59,5 @@ export const laurelCompleteCare: PlanConfig = {
   },
   // Only show audited needs in wizard
   visibleNeeds: ["bladder-support", "joint-comfort-mobility"],
-  hideCheckout: false, // Script stops at cart, button visible
+  hideCheckout: true, // Demo stops at cart, no payment flow
 };

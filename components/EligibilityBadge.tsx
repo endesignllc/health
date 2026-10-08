@@ -2,7 +2,13 @@
 
 import { cn } from "@/lib/utils";
 
-export type EligibilityType = "otc" | "home_safety" | "food" | "utilities" | "dual_purpose";
+export type EligibilityType = 
+  | "otc" 
+  | "home_safety" 
+  | "food" 
+  | "utilities" 
+  | "dual_purpose"
+  | "zero_cost";
 
 interface EligibilityBadgeProps {
   type: EligibilityType;
@@ -43,6 +49,12 @@ const BADGE_CONFIG: Record<
     shortLabel: "Dual*",
     bgClass: "bg-slate-100",
     textClass: "text-slate-600",
+  },
+  zero_cost: {
+    label: "$0 with your plan",
+    shortLabel: "$0",
+    bgClass: "bg-green-500",
+    textClass: "text-white",
   },
 };
 
@@ -133,4 +145,42 @@ export function categoryToEligibility(categorySlug: string): EligibilityType[] {
   }
 
   return badges;
+}
+
+/** Map product tags to eligibility types */
+export function tagsToEligibility(tags: string[]): EligibilityType[] {
+  const badges: EligibilityType[] = [];
+  
+  for (const tag of tags) {
+    if (tag === "eligibility:otc") badges.push("otc");
+    if (tag === "eligibility:home_safety") badges.push("home_safety");
+    if (tag === "eligibility:food") badges.push("food");
+    if (tag === "eligibility:utilities") badges.push("utilities");
+    if (tag === "eligibility:dual_purpose") badges.push("dual_purpose");
+    if (tag === "eligibility:zero_cost") badges.push("zero_cost");
+  }
+  
+  // Default to OTC if no eligibility tags found
+  if (badges.length === 0) {
+    badges.push("otc");
+  }
+  
+  return badges;
+}
+
+/** Get eligibility from tags first, fall back to category */
+export function getEligibilityBadges(
+  tags: string[] | null | undefined,
+  categorySlug: string
+): EligibilityType[] {
+  // Check tags first
+  if (tags && tags.length > 0) {
+    const eligibilityTags = tags.filter((t) => t.startsWith("eligibility:"));
+    if (eligibilityTags.length > 0) {
+      return tagsToEligibility(eligibilityTags);
+    }
+  }
+  
+  // Fall back to category-based
+  return categoryToEligibility(categorySlug);
 }
