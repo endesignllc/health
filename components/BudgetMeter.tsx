@@ -10,6 +10,8 @@ interface BudgetMeterProps {
   className?: string;
   /** Smaller layout for cart sidebar */
   compact?: boolean;
+  /** Hide the cap amount. The member wizard states that number once, on the previous step. */
+  showCap?: boolean;
 }
 
 function cadenceLabel(cadence: Cadence | string | null | undefined): string | null {
@@ -26,6 +28,7 @@ export function BudgetMeter({
   walletLabel = "Your benefit",
   className,
   compact = false,
+  showCap = true,
 }: BudgetMeterProps) {
   const remainingCents = budgetCents - usedCents;
   const percentUsed =
@@ -53,9 +56,11 @@ export function BudgetMeter({
             <p className="text-xs text-muted-foreground mt-0.5">{period}</p>
           )}
         </div>
-        <p className={cn("text-muted-foreground shrink-0", compact ? "text-sm" : "text-base")}>
-          {formatPrice(budgetCents)}
-        </p>
+        {showCap ? (
+          <p className={cn("text-muted-foreground shrink-0", compact ? "text-sm" : "text-base")}>
+            {formatPrice(budgetCents)}
+          </p>
+        ) : null}
       </div>
 
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-3">

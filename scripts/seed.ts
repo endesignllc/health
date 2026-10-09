@@ -22,6 +22,7 @@ import {
   carts,
 } from "../db/schema";
 import { and, eq, inArray, ne, sql } from "drizzle-orm";
+import { BATHROOM_AND_FALL_ALIASES } from "../lib/class-aliases";
 import { computeAndPersistProductClassStats } from "../lib/product-class-stats";
 import { z } from "zod";
 
@@ -715,6 +716,7 @@ async function seed() {
   >;
 
   const aliasTuples: [string, string][] = [
+    ...BATHROOM_AND_FALL_ALIASES.map((row) => [row.classSlug, row.alias] as [string, string]),
     ["digital-arm-bp-monitor", "blood pressure monitor"],
     ["digital-arm-bp-monitor", "bp monitor"],
     ["digital-arm-bp-monitor", "bp cuff"],

@@ -225,6 +225,7 @@ export function BundlesList({
   ]);
 
   const bundle = bundles[0];
+  const planConfig = getPlanConfig();
   if (!bundle) {
     return (
       <p className="text-muted-foreground text-sm">
@@ -251,6 +252,8 @@ export function BundlesList({
           usedCents={bundle.subtotalCents}
           cadence={bundle.cadence}
           compact
+          walletLabel={planConfig.memberHome ? "Your bundle" : "Your benefit"}
+          showCap={!planConfig.memberHome}
         />
         {bundle.purseAllocation && bundle.purseAllocation.length > 0 && (
           <p className="text-base mt-3">
@@ -327,7 +330,6 @@ export function BundlesList({
                           Boolean(classId) && !seenClassIds.has(classId as string);
                         if (classId) seenClassIds.add(classId);
                         // Derive badges from class benefit rails
-                        const planConfig = getPlanConfig();
                         const { badges } = deriveBenefitBadges(
                           { productClass: item.productClass, tags: item.productTags },
                           planConfig

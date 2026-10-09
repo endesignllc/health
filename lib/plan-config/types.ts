@@ -109,4 +109,9 @@ export interface PlanConfig {
    * A fixed SKU list. Not a catalog query.
    */
   goalSkus?: string[];
+  /**
+   * Grocery picks on the bundle results page, in display order.
+   * A fixed SKU list. Shown only when the food purse has a balance.
+   */
+  grocerySkus?: string[];
 }

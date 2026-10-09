@@ -81,6 +81,8 @@ export const laurelCompleteCare: PlanConfig = {
     shipsOn: "Friday",
     amountCents: 7600,
   },
-  // Bathroom / fall-prevention wins. Images verified on disk. Order is the widget order.
-  goalSkus: ["FTX-10007", "FTX-10744", "FTX-10832"],
+  // Grab bar, night light, shower chair. Images verified. Order is the widget order.
+  goalSkus: ["SOL-B008KMF6J0", "SOL-B082319CWJ", "SOL-B002VWK0WI"],
+  // Oatmeal, coffee, nutrition shake, canned tuna. Images verified. Order is the results-page order.
+  grocerySkus: ["SOL-B01KMHY4KM", "SOL-B01KL4HWWS", "SOL-B09BBY5GPD", "SOL-B00E3QNEGY"],
 };

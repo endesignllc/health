@@ -1,9 +1,13 @@
 export const dynamic = "force-dynamic";
 import { buildBundles, formatPrice } from "@/lib/bundle-builder";
 import { BundlesList } from "@/components/BundlesList";
+import { GroceryOffer } from "@/components/GroceryOffer";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { normalizeNeedSlugsFromUrl } from "@/lib/legacy-need-slugs";
+import { getPlanConfig } from "@/lib/plan-config";
+import { shoppableBudgetFromPlan } from "@/lib/shoppable-budget";
+import { getGoalProducts } from "@/lib/products";
 
 interface PageProps {
   searchParams: Promise<{
@@ -71,6 +75,14 @@ export default async function BundlesPage({ searchParams }: PageProps) {
     needQualifierAnswers,
   });
 
+  const planConfig = getPlanConfig();
+  const memberBudget = planConfig.memberHome ? shoppableBudgetFromPlan(planConfig) : null;
+  const foodCents = memberBudget?.wizardExcludedCents ?? 0;
+  const groceries = foodCents > 0 ? await getGoalProducts(planConfig.grocerySkus ?? []) : [];
+  const groceryPath =
+    planConfig.wallet.purses.find((purse) => purse.excludeFromWizard)?.catalogPath ??
+    "/products?category=healthy-food";
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
       <h1 className="text-3xl font-bold mb-2">Your optimized bundle</h1>
@@ -78,11 +90,19 @@ export default async function BundlesPage({ searchParams }: PageProps) {
         We help you shop for everyday health essentials based on your preferences
         and budget—no medical information required.
       </p>
-      <p className="text-muted-foreground mb-2">
-        Budget: {formatPrice(budgetCents)}{" "}
-        {cadence === "quarterly" ? "per quarter" : "per month"}. We shape this
-        set to use your allowance up to a small buffer so you stay within benefit.
-      </p>
+      {memberBudget ? (
+        <p className="text-muted-foreground mb-2">
+          This set uses the bundle dollars from the previous step
+          {cadence === "quarterly" ? ", per quarter" : ""}
+          {foodCents > 0 ? ". Groceries are below." : "."}
+        </p>
+      ) : (
+        <p className="text-muted-foreground mb-2">
+          Budget: {formatPrice(budgetCents)}{" "}
+          {cadence === "quarterly" ? "per quarter" : "per month"}. We shape this
+          set to use your allowance up to a small buffer so you stay within benefit.
+        </p>
+      )}
       <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
         Items are grouped by what you asked for—needs show tier-guided picks first,
         then everyday essentials when selected.
@@ -104,6 +124,7 @@ export default async function BundlesPage({ searchParams }: PageProps) {
           needQualifierAnswers,
         }}
       />
+      <GroceryOffer products={groceries} foodCents={foodCents} catalogPath={groceryPath} />
     </div>
   );
 }

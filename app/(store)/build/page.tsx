@@ -47,7 +47,7 @@ export default async function BuildPage({ searchParams }: PageProps) {
       <h1 className="text-3xl font-bold mb-2">Build Your Bundle</h1>
       <p className="text-muted-foreground mb-8">
         {memberBudget
-          ? "Tell us what you're trying to accomplish—we build one bundle from the benefit dollars you can spend here. We never ask for a diagnosis."
+          ? "Tell us what you're trying to accomplish—we build one bundle, then your groceries. We never ask for a diagnosis."
           : staticWallet
           ? "Your benefit allowance is shown below. Pick your needs—we build one optimized bundle per period. We never ask for a diagnosis."
           : "Tell us your benefit budget and needs—we build one optimized bundle per period. We never ask for a diagnosis."}

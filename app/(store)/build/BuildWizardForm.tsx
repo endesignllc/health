@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -490,7 +489,11 @@ export function BuildWizardForm({
         className="w-full min-h-[56px] text-lg"
         disabled={submitDisabled || submitBudgetBlocked}
       >
-        {memberBudget ? `Continue with ${formatPrice(memberSpendCents)}` : "See my optimized bundle"}
+        {memberBudget
+          ? memberSpendCents === shoppableCents
+            ? "See my bundle"
+            : `Continue with ${formatPrice(memberSpendCents)}`
+          : "See my optimized bundle"}
       </Button>
     </form>
   );
@@ -524,31 +527,34 @@ function MemberBudgetFields({
   return (
     <div className="space-y-4">
       <p className="text-base leading-relaxed">
-        <span className="font-semibold tabular-nums">{formatPrice(budget.shoppableCents)}</span>
-        {" of your "}
-        <span className="font-semibold tabular-nums">{formatPrice(budget.totalAvailableCents)}</span>
-        {" can be spent here."}
+        {budget.wizardExcludedCents > 0 ? (
+          <>
+            Your bundle: up to{" "}
+            <span className="font-semibold tabular-nums">{formatPrice(budget.shoppableCents)}</span>
+            {" · "}
+            Your groceries:{" "}
+            <span className="font-semibold tabular-nums">{formatPrice(budget.wizardExcludedCents)}</span>
+            {" — we'll handle both."}
+          </>
+        ) : (
+          <>
+            <span className="font-semibold tabular-nums">{formatPrice(budget.shoppableCents)}</span>
+            {" of your "}
+            <span className="font-semibold tabular-nums">{formatPrice(budget.totalAvailableCents)}</span>
+            {" can be spent here."}
+          </>
+        )}
         {budget.infoOnlyCents > 0 && infoNames ? (
           <>
             {" "}
             Your {infoNames} dollars ({formatPrice(budget.infoOnlyCents)}) are used at participating stores.
           </>
         ) : null}
-        {budget.wizardExcludedCents > 0 ? (
-          <>
-            {" "}
-            Your Food dollars ({formatPrice(budget.wizardExcludedCents)}) are spent in{" "}
-            <Link href="/products?category=healthy-food" className="font-semibold underline">
-              Shop Products → Healthy food
-            </Link>
-            .
-          </>
-        ) : null}
       </p>
 
       <div className="space-y-3">
         <button type="button" className={optionClass(spendChoice === "all")} onClick={onChooseAll}>
-          Use everything I have left — {formatPrice(budget.shoppableCents)}
+          Use everything I have left
         </button>
         <button type="button" className={optionClass(spendChoice === "save")} onClick={onChooseSave}>
           Save some for later

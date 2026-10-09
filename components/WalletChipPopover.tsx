@@ -287,15 +287,6 @@ export function WalletChipPopover({ wallet, planConfig, className }: WalletChipP
             {infoOnlyNote && (
               <p className="mt-4 text-base text-muted-foreground leading-snug">{infoOnlyNote}</p>
             )}
-            {shoppable.wizardExcludedCents > 0 && (
-              <p className="mt-4 text-base text-muted-foreground leading-snug">
-                Your Food dollars ({formatPrice(shoppable.wizardExcludedCents)}) are spent in{" "}
-                <Link href="/products?category=healthy-food" onClick={handleAction} className="font-semibold underline">
-                  Shop Products → Healthy food
-                </Link>
-                .
-              </p>
-            )}
 
             {/* Actions */}
             <div className="mt-5 flex flex-col items-center gap-3">
@@ -304,7 +295,7 @@ export function WalletChipPopover({ wallet, planConfig, className }: WalletChipP
                 onClick={handleAction}
                 className="w-full inline-flex items-center justify-center min-h-[44px] px-4 py-2 rounded-lg bg-[#1C3D5F] text-white text-base font-semibold hover:bg-[#234a70] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1C3D5F] focus:ring-offset-2"
               >
-                Put my {formatPrice(shoppable.shoppableCents)} to work
+                Put my {formatPrice(shoppable.totalAvailableCents)} to work
               </Link>
               <Link
                 href="/"

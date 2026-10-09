@@ -7,9 +7,10 @@ import { ShoppingCart } from "lucide-react";
 
 interface AddToCartButtonProps {
   productId: string;
+  compact?: boolean;
 }
 
-export function AddToCartButton({ productId }: AddToCartButtonProps) {
+export function AddToCartButton({ productId, compact = false }: AddToCartButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +40,8 @@ export function AddToCartButton({ productId }: AddToCartButtonProps) {
     <Button
       onClick={handleClick}
       disabled={loading}
-      className="min-h-[48px] px-8"
+      size={compact ? "sm" : "default"}
+      className={compact ? "min-h-[40px]" : "min-h-[48px] px-8"}
     >
       <ShoppingCart className="w-4 h-4 mr-2" />
       {loading ? "Adding…" : "Add to Cart"}

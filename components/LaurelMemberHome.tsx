@@ -44,7 +44,6 @@ export function LaurelMemberHome({ planConfig, goalProducts = [] }: LaurelMember
   const expiry = expiryPresentation(period);
   
   const shoppable = shoppableBudgetFromPlan(planConfig);
-  const shoppableRemaining = shoppable.shoppableCents;
   const infoOnlyNote =
     shoppable.infoOnlyCents > 0
       ? `Your ${joinPurseLabels(shoppable.infoOnlyLabels)} dollars (${formatPrice(shoppable.infoOnlyCents)}) are used at participating stores.`
@@ -182,23 +181,14 @@ export function LaurelMemberHome({ planConfig, goalProducts = [] }: LaurelMember
         {infoOnlyNote && (
           <p className="text-base text-muted-foreground mt-5">{infoOnlyNote}</p>
         )}
-        {shoppable.wizardExcludedCents > 0 && (
-          <p className="text-base text-muted-foreground mt-5">
-            Your Food dollars ({formatPrice(shoppable.wizardExcludedCents)}) are spent in{" "}
-            <Link href="/products?category=healthy-food" className="font-bold text-[#1C3D5F] hover:underline">
-              Shop Products → Healthy food
-            </Link>
-            .
-          </p>
-        )}
 
         {/* CTA row */}
         <div className="flex flex-wrap items-center gap-4 mt-6">
           <Link
-            href={`/build?budget=${shoppableRemaining}`}
+            href={`/build?budget=${shoppable.shoppableCents}`}
             className="inline-flex items-center justify-center px-6 py-4 rounded-[10px] bg-[#1C3D5F] text-white text-lg font-bold hover:bg-[#234a70] transition-colors"
           >
-            Put my {formatPrice(shoppableRemaining)} to work
+            Put my {formatPrice(shoppable.totalAvailableCents)} to work
           </Link>
           <Link href="/products" className="text-base hover:underline">
             See everything that's covered
