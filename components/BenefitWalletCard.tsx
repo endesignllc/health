@@ -3,6 +3,7 @@ import { BudgetMeter } from "@/components/BudgetMeter";
 import { budgetMeterFromWallet } from "@/lib/benefit-wallet/budget-meter";
 import { MultiPurseWallet } from "@/components/MultiPurseWallet";
 import type { BenefitWalletSnapshot } from "@/lib/benefit-wallet/types";
+import { expiryTier } from "@/lib/benefit-period";
 
 interface BenefitWalletCardProps {
   wallet: BenefitWalletSnapshot;
@@ -77,9 +78,11 @@ export function BenefitWalletCard({
           Period: {wallet.periodLabel}
         </p>
       )}
-      {wallet.expiresInDays != null && wallet.expiresInDays > 0 && (
+      {wallet.expiresInDays != null && expiryTier(wallet.expiresInDays) !== "quiet" && (
         <p className={cn("text-amber-600 font-medium mt-2", compact ? "text-xs" : "text-sm")}>
-          {wallet.expiresInDays} days remaining in period
+          {wallet.expiresInDays <= 0
+            ? "Expires today."
+            : `${wallet.expiresInDays} day${wallet.expiresInDays === 1 ? "" : "s"} remaining in period`}
         </p>
       )}
     </div>

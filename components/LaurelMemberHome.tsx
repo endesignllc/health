@@ -3,6 +3,8 @@ import { formatPrice } from "@/lib/utils";
 import type { PlanConfig, PurseDef } from "@/lib/plan-config/types";
 import { EligibilityBadges } from "@/components/EligibilityBadge";
 import { deriveBenefitBadges } from "@/lib/benefit-badges";
+import { joinPurseLabels, shoppableBudgetFromPlan } from "@/lib/shoppable-budget";
+import { currentBenefitPeriod, expiryPresentation, greetingForHour } from "@/lib/benefit-period";
 
 interface LaurelMemberHomeProps {
   planConfig: PlanConfig;
@@ -34,34 +36,30 @@ function computeWalletTotals(purses: PurseDef[]) {
   };
 }
 
-/** Time-of-day greeting */
-function getGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour < 12) return "Good morning";
-  if (hour < 17) return "Good afternoon";
-  return "Good evening";
-}
-
 export function LaurelMemberHome({ planConfig, goalProducts = [] }: LaurelMemberHomeProps) {
   const { wallet, demoMember, demoOrder, needDisplayNames } = planConfig;
   const purses = wallet.purses;
   const { totalAllowance, totalUsed, totalRemaining } = computeWalletTotals(purses);
+  const period = currentBenefitPeriod();
+  const expiry = expiryPresentation(period);
   
-  // Compute shoppable remaining (OTC + home_safety, not infoOnly)
-  const shoppableRemaining = purses
-    .filter(p => !p.infoOnly)
-    .reduce((sum, p) => sum + (p.allowanceCents - (p.usedCents ?? 0)), 0);
+  const shoppable = shoppableBudgetFromPlan(planConfig);
+  const shoppableRemaining = shoppable.shoppableCents;
+  const infoOnlyNote =
+    shoppable.infoOnlyCents > 0
+      ? `Your ${joinPurseLabels(shoppable.infoOnlyLabels)} dollars (${formatPrice(shoppable.infoOnlyCents)}) are used at participating stores.`
+      : null;
 
   const firstName = demoMember?.firstName ?? "there";
-  const periodName = wallet.periodLabel ?? "this month";
-  const nextPeriod = periodName === "October" ? "November" : "next month";
+  const periodName = period.periodLabel;
+  const nextPeriod = period.nextPeriodLabel;
 
   return (
     <div className="max-w-[880px] mx-auto px-4 py-0 pb-16">
       {/* Section 1: Greeting */}
       <section className="pt-9 pb-5 px-1">
         <h1 className="text-[clamp(28px,5vw,38px)] font-medium leading-tight" style={{ fontFamily: 'var(--font-display, Georgia, serif)' }}>
-          {getGreeting()}, {firstName}.
+          {greetingForHour(period.hour)}, {firstName}.
         </h1>
         <p className="mt-2.5 text-muted-foreground max-w-[56ch]">
           Your plan set aside <strong className="text-foreground">{formatPrice(totalAllowance)} for {periodName}</strong> — 
@@ -90,22 +88,26 @@ export function LaurelMemberHome({ planConfig, goalProducts = [] }: LaurelMember
           </div>
           
           {/* Expiry pill */}
-          {wallet.expiresInDays != null && (
-            <div className="flex items-center gap-2 bg-[#FBF0DC] text-[#8F5600] rounded-full px-3.5 py-2 font-bold text-[15px] self-center">
-              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-                <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.8"/>
-                <path d="M8 4.5V8l2.5 1.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-              </svg>
-              Expires {wallet.expiresOn ?? `in ${wallet.expiresInDays} days`} · {wallet.expiresInDays} days
-            </div>
-          )}
+          <div
+            className={`flex items-center gap-2 rounded-full px-3.5 py-2 text-[15px] self-center ${
+              expiry.amber
+                ? "bg-[#FBF0DC] text-[#8F5600]"
+                : "bg-[#F3F5F4] text-[#5C6762]"
+            } ${expiry.emphasize ? "font-extrabold" : expiry.amber ? "font-bold" : "font-medium"}`}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.8"/>
+              <path d="M8 4.5V8l2.5 1.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
+            {expiry.pillText}
+          </div>
         </div>
 
         {/* Segmented total bar */}
         <div 
           className="flex h-3.5 rounded-[7px] overflow-hidden gap-0.5 mt-5 mb-1.5 bg-transparent"
           role="img"
-          aria-label={`${formatPrice(totalUsed)} used, ${formatPrice(totalRemaining)} remaining across four benefits`}
+          aria-label={`${formatPrice(totalUsed)} used, ${formatPrice(totalRemaining)} remaining across ${purses.length} benefits`}
         >
           {/* Used segment (gray) */}
           <span 
@@ -148,7 +150,13 @@ export function LaurelMemberHome({ planConfig, goalProducts = [] }: LaurelMember
                   />
                   {/* Label + what */}
                   <div className="min-w-0">
-                    <span className="font-bold">{purse.label}</span>
+                    {purse.catalogPath ? (
+                      <Link href={purse.catalogPath} className="font-bold hover:underline">
+                        {purse.label}
+                      </Link>
+                    ) : (
+                      <span className="font-bold">{purse.label}</span>
+                    )}
                     {purse.what && (
                       <span className="block text-sm text-muted-foreground">{purse.what}</span>
                     )}
@@ -171,13 +179,26 @@ export function LaurelMemberHome({ planConfig, goalProducts = [] }: LaurelMember
           })}
         </ul>
 
+        {infoOnlyNote && (
+          <p className="text-base text-muted-foreground mt-5">{infoOnlyNote}</p>
+        )}
+        {shoppable.wizardExcludedCents > 0 && (
+          <p className="text-base text-muted-foreground mt-5">
+            Your Food dollars ({formatPrice(shoppable.wizardExcludedCents)}) are spent in{" "}
+            <Link href="/products?category=healthy-food" className="font-bold text-[#1C3D5F] hover:underline">
+              Shop Products → Healthy food
+            </Link>
+            .
+          </p>
+        )}
+
         {/* CTA row */}
         <div className="flex flex-wrap items-center gap-4 mt-6">
           <Link
             href={`/build?budget=${shoppableRemaining}`}
             className="inline-flex items-center justify-center px-6 py-4 rounded-[10px] bg-[#1C3D5F] text-white text-lg font-bold hover:bg-[#234a70] transition-colors"
           >
-            Put my {formatPrice(totalRemaining)} to work
+            Put my {formatPrice(shoppableRemaining)} to work
           </Link>
           <Link href="/products" className="text-base hover:underline">
             See everything that's covered

@@ -147,6 +147,19 @@ Per class: slug · member label · default benefit rails · notes/rules.
 | `diabetes-care` | Diabetes care (socks, glucose, organizers) | OTC | diabetic shoes/inserts → DME |
 | `home-tests` | Home test kits | OTC | |
 
+### 13. Healthy Food — "Healthy food"
+
+Added for the Healthy Benefits+ catalogs (Solutran/Wellcare and UCare). Food-rail classes
+are shoppable on the food purse; `nutrition-shakes` is also OTC.
+
+| Slug | Member Label | Rails | Notes |
+|------|--------------|-------|-------|
+| `nutrition-shakes` | Nutrition shakes | OTC+Food | Dual-rail |
+| `pantry-staples` | Pantry staples | Food | |
+| `breakfast-grains` | Breakfast & grains | Food | |
+| `healthy-snacks` | Healthy snacks | Food | |
+| `beverages` | Beverages | Food | |
+
 ---
 
 ## Cross-cutting flags (not categories)
@@ -190,3 +203,4 @@ Each class row in the DB carries:
 | Date | Change | Author |
 |------|--------|--------|
 | 2026-10-08 | Initial v1 proposal | — |
+| 2026-10-09 | Group 13 Healthy Food (5 classes) for Healthy Benefits+ catalogs | — |

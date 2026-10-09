@@ -61,6 +61,7 @@ type BuiltBundle = {
   items: BundleLine[];
   budgetUtilizationPercent: number;
   sufficiency: BundleSufficiencySummary;
+  purseAllocation?: { id: string; label: string; cents: number }[];
 };
 
 const SECTION_ORDER: BundleItemSection[] = ["core", "support", "maintenance"];
@@ -251,6 +252,19 @@ export function BundlesList({
           cadence={bundle.cadence}
           compact
         />
+        {bundle.purseAllocation && bundle.purseAllocation.length > 0 && (
+          <p className="text-base mt-3">
+            Uses{" "}
+            {bundle.purseAllocation.map((purse, index) => (
+              <span key={purse.id}>
+                {index > 0 ? " + " : ""}
+                <span className="font-semibold tabular-nums">{formatPrice(purse.cents)}</span>{" "}
+                {purse.label}
+              </span>
+            ))}
+            .
+          </p>
+        )}
         {(bundle.coreSubtotalCents > 0 ||
           bundle.supportSubtotalCents > 0 ||
           bundle.maintenanceSubtotalCents > 0) && (

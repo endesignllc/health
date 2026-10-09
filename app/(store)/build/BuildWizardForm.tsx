@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -9,6 +10,14 @@ import { Check } from "lucide-react";
 import { normalizeNeedSlugsFromUrl } from "@/lib/legacy-need-slugs";
 import { Input } from "@/components/ui/input";
 import type { BenefitCadence } from "@/lib/benefit-wallet/types";
+import { formatPrice } from "@/lib/utils";
+import {
+  clampMemberSpendCents,
+  joinPurseLabels,
+  MEMBER_SPEND_MIN_CENTS,
+  MEMBER_SPEND_STEP_CENTS,
+  type ShoppableBudget,
+} from "@/lib/shoppable-budget";
 
 interface NeedQualifierQuestion {
   id: string;
@@ -59,6 +68,10 @@ interface BuildWizardFormProps {
     cadence: BenefitCadence;
     walletLabel: string;
   };
+  /** Laurel member wallet: shoppable dollars replace the denomination grid */
+  memberBudget?: ShoppableBudget;
+  /** From ?budget= — shoppable amount selects "use everything" */
+  initialBudgetCents?: number;
 }
 
 function bundleCadenceFromWallet(cadence: BenefitCadence): "monthly" | "quarterly" {
@@ -70,6 +83,8 @@ export function BuildWizardForm({
   budgetOptions,
   needs,
   walletLockedBudget,
+  memberBudget,
+  initialBudgetCents,
 }: BuildWizardFormProps) {
   const router = useRouter();
   const [budgetCents, setBudgetCents] = useState(
@@ -80,6 +95,20 @@ export function BuildWizardForm({
   const [cadence, setCadence] = useState<"monthly" | "quarterly">(
     walletLockedBudget ? bundleCadenceFromWallet(walletLockedBudget.cadence) : "monthly"
   );
+  const shoppableCents = memberBudget?.shoppableCents ?? 0;
+  const partialInitial =
+    memberBudget &&
+    initialBudgetCents != null &&
+    initialBudgetCents !== shoppableCents &&
+    initialBudgetCents >= MEMBER_SPEND_MIN_CENTS &&
+    initialBudgetCents <= shoppableCents;
+  const [spendChoice, setSpendChoice] = useState<"all" | "save">(partialInitial ? "save" : "all");
+  const [saveCents, setSaveCents] = useState(
+    partialInitial
+      ? initialBudgetCents!
+      : clampMemberSpendCents(shoppableCents - MEMBER_SPEND_STEP_CENTS, shoppableCents)
+  );
+  const [saveDollarsText, setSaveDollarsText] = useState("");
   const [needSlugs, setNeedSlugs] = useState<string[]>([]);
   const [includeEveryday, setIncludeEveryday] = useState(true);
 
@@ -129,7 +158,20 @@ export function BuildWizardForm({
 
   const submitDisabled = needSlugs.length === 0 && !includeEveryday;
 
-  const resolvedBudget = walletLockedBudget
+  const typedSaveCents = Number.parseFloat(saveDollarsText);
+  const memberSpendCents =
+    spendChoice === "all"
+      ? shoppableCents
+      : clampMemberSpendCents(
+          saveDollarsText.trim() === "" || !Number.isFinite(typedSaveCents)
+            ? saveCents
+            : Math.round(typedSaveCents * 100),
+          shoppableCents
+        );
+
+  const resolvedBudget = memberBudget
+    ? ({ ok: true as const, cents: memberSpendCents })
+    : walletLockedBudget
     ? ({ ok: true as const, cents: walletLockedBudget.allowanceCents })
     : budgetSource === "preset"
       ? ({ ok: true as const, cents: budgetCents })
@@ -182,15 +224,41 @@ export function BuildWizardForm({
       {/* Step 1: Budget + Cadence */}
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-semibold">Step 1: Your Allowance</h2>
-          <p className="text-sm text-muted-foreground">
-            {walletLockedBudget
-              ? "Your benefit allowance is set from your account."
-              : "Choose your budget and how often you receive it."}
-          </p>
+          <h2 className="text-lg font-semibold">
+            {memberBudget ? "Your budget" : "Step 1: Your Allowance"}
+          </h2>
+          {!memberBudget && (
+            <p className="text-sm text-muted-foreground">
+              {walletLockedBudget
+                ? "Your benefit allowance is set from your account."
+                : "Choose your budget and how often you receive it."}
+            </p>
+          )}
         </CardHeader>
         <CardContent className="space-y-6">
-          {walletLockedBudget ? (
+          {memberBudget ? (
+            <MemberBudgetFields
+              budget={memberBudget}
+              spendChoice={spendChoice}
+              saveCents={saveCents}
+              saveDollarsText={saveDollarsText}
+              onChooseAll={() => {
+                setSpendChoice("all");
+                setSaveDollarsText("");
+              }}
+              onChooseSave={() => {
+                setSpendChoice("save");
+                setSaveDollarsText("");
+              }}
+              onStep={(delta) => {
+                setSaveDollarsText("");
+                setSaveCents(
+                  clampMemberSpendCents(memberSpendCents + delta, memberBudget.shoppableCents)
+                );
+              }}
+              onTypeDollars={setSaveDollarsText}
+            />
+          ) : walletLockedBudget ? (
             <p className="text-sm rounded-lg border bg-muted/40 px-4 py-3">
               <span className="font-medium text-foreground">{walletLockedBudget.walletLabel}</span>
               {": "}
@@ -422,8 +490,109 @@ export function BuildWizardForm({
         className="w-full min-h-[56px] text-lg"
         disabled={submitDisabled || submitBudgetBlocked}
       >
-        See my optimized bundle
+        {memberBudget ? `Continue with ${formatPrice(memberSpendCents)}` : "See my optimized bundle"}
       </Button>
     </form>
+  );
+}
+
+function MemberBudgetFields({
+  budget,
+  spendChoice,
+  saveCents,
+  saveDollarsText,
+  onChooseAll,
+  onChooseSave,
+  onStep,
+  onTypeDollars,
+}: {
+  budget: ShoppableBudget;
+  spendChoice: "all" | "save";
+  saveCents: number;
+  saveDollarsText: string;
+  onChooseAll: () => void;
+  onChooseSave: () => void;
+  onStep: (deltaCents: number) => void;
+  onTypeDollars: (value: string) => void;
+}) {
+  const infoNames = joinPurseLabels(budget.infoOnlyLabels);
+  const optionClass = (selected: boolean) =>
+    `w-full min-h-[56px] px-4 py-3 rounded-lg border-2 text-left text-base font-medium transition-colors ${
+      selected ? "border-primary bg-primary/10 text-primary" : "border-muted hover:border-primary/50"
+    }`;
+
+  return (
+    <div className="space-y-4">
+      <p className="text-base leading-relaxed">
+        <span className="font-semibold tabular-nums">{formatPrice(budget.shoppableCents)}</span>
+        {" of your "}
+        <span className="font-semibold tabular-nums">{formatPrice(budget.totalAvailableCents)}</span>
+        {" can be spent here."}
+        {budget.infoOnlyCents > 0 && infoNames ? (
+          <>
+            {" "}
+            Your {infoNames} dollars ({formatPrice(budget.infoOnlyCents)}) are used at participating stores.
+          </>
+        ) : null}
+        {budget.wizardExcludedCents > 0 ? (
+          <>
+            {" "}
+            Your Food dollars ({formatPrice(budget.wizardExcludedCents)}) are spent in{" "}
+            <Link href="/products?category=healthy-food" className="font-semibold underline">
+              Shop Products → Healthy food
+            </Link>
+            .
+          </>
+        ) : null}
+      </p>
+
+      <div className="space-y-3">
+        <button type="button" className={optionClass(spendChoice === "all")} onClick={onChooseAll}>
+          Use everything I have left — {formatPrice(budget.shoppableCents)}
+        </button>
+        <button type="button" className={optionClass(spendChoice === "save")} onClick={onChooseSave}>
+          Save some for later
+        </button>
+      </div>
+
+      {spendChoice === "save" && (
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            className="min-h-[44px] min-w-[44px] px-3 rounded-lg border-2 border-muted text-base font-semibold hover:border-primary/50"
+            onClick={() => onStep(-MEMBER_SPEND_STEP_CENTS)}
+            aria-label="Decrease budget by $20"
+          >
+            −$20
+          </button>
+          <div className="relative flex-1">
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" aria-hidden>
+              $
+            </span>
+            <Input
+              type="text"
+              inputMode="decimal"
+              autoComplete="off"
+              value={saveDollarsText === "" ? String(saveCents / 100) : saveDollarsText}
+              onChange={(e) => onTypeDollars(e.target.value)}
+              className="pl-7 min-h-[44px] text-base tabular-nums"
+              aria-label="Amount to spend now"
+            />
+          </div>
+          <button
+            type="button"
+            className="min-h-[44px] min-w-[44px] px-3 rounded-lg border-2 border-muted text-base font-semibold hover:border-primary/50"
+            onClick={() => onStep(MEMBER_SPEND_STEP_CENTS)}
+            aria-label="Increase budget by $20"
+          >
+            +$20
+          </button>
+        </div>
+      )}
+
+      {budget.renewsOn && (
+        <p className="text-base text-muted-foreground">Your benefit renews {budget.renewsOn}.</p>
+      )}
+    </div>
   );
 }

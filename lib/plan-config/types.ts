@@ -14,6 +14,10 @@ export interface PurseDef {
   color?: string;
   /** Info-only purse: displays but doesn't link to shopping */
   infoOnly?: boolean;
+  /** Counts in the wallet total, shoppable in the catalog, not in the bundle wizard. */
+  excludeFromWizard?: boolean;
+  /** Shop filter for this purse, when the catalog carries it. */
+  catalogPath?: string;
 }
 
 /** Demo member state (no real auth) */
@@ -48,12 +52,14 @@ export interface PlanColors {
 export interface PlanWalletConfig {
   /** Visible purses on the flex card */
   purses: PurseDef[];
-  /** Days until current period expires (static for demo) */
+  /** Days until expiry. Prefer currentBenefitPeriod(); this is a frozen fallback. */
   expiresInDays?: number;
   /** Period label (e.g., "October 2026") */
   periodLabel?: string;
   /** Expiry display string (e.g., "Oct 31") */
   expiresOn?: string;
+  /** Next renewal display string (e.g., "November 1") */
+  renewsOn?: string;
   /** Hide the "demo allowance" badge */
   hideDemoBadge?: boolean;
 }
@@ -98,4 +104,9 @@ export interface PlanConfig {
   demoOrder?: DemoOrder;
   /** Show member home instead of marketing home */
   memberHome?: boolean;
+  /**
+   * "Because you told us" widget, in display order.
+   * A fixed SKU list. Not a catalog query.
+   */
+  goalSkus?: string[];
 }

@@ -20,9 +20,56 @@ import {
   type NeedQualifierAdjustment,
 } from "@/lib/need-qualifiers";
 import { isExcludedFromRecommendations } from "@/lib/interaction-flags";
+import { getPlanConfig } from "@/lib/plan-config";
+import {
+  choosePurse,
+  scalePurseCaps,
+  shoppableBudgetFromPlan,
+  type PurseSpendCap,
+} from "@/lib/shoppable-budget";
 export type { Cadence } from "@/lib/sufficiency";
 
 const DEFAULT_BUFFER_CENTS = 500; // $5
+
+function productRails(product: { productClass: { benefitRails: string[] | null } | null }): string[] | null {
+  return product.productClass?.benefitRails ?? null;
+}
+
+/** Largest quantity that fits the global cap and a single purse cap. */
+function qtyThatFits(
+  ledger: PurseSpendCap[] | null,
+  product: EligibleProduct,
+  maxQty: number,
+  roomCents: number
+): number {
+  const price = product.priceCents;
+  if (price <= 0 || maxQty < 1 || roomCents < price) return 0;
+  let qty = Math.min(maxQty, Math.floor(roomCents / price));
+  if (!ledger) return qty;
+  while (qty >= 1 && !choosePurse(ledger, productRails(product), price * qty)) {
+    qty -= 1;
+  }
+  return Math.max(0, qty);
+}
+
+function commitSpend(
+  ledger: PurseSpendCap[] | null,
+  product: EligibleProduct,
+  lineTotal: number,
+  globalSpent: { cents: number },
+  capCents: number
+): boolean {
+  if (lineTotal <= 0 || globalSpent.cents + lineTotal > capCents) return false;
+  if (!ledger) {
+    globalSpent.cents += lineTotal;
+    return true;
+  }
+  const purse = choosePurse(ledger, productRails(product), lineTotal);
+  if (!purse) return false;
+  purse.spentCents += lineTotal;
+  globalSpent.cents += lineTotal;
+  return true;
+}
 
 /** Unknown slug / resolver mismatch — maps to HTTP 400 + sanitized body */
 export class BundleValidationError extends Error {
@@ -98,6 +145,8 @@ export interface BuiltBundle {
   items: BundleItem[];
   budgetUtilizationPercent: number;
   sufficiency: BundleSufficiencySummary;
+  /** Actual purse draw when the member wallet caps spend per purse. */
+  purseAllocation?: { id: string; label: string; cents: number }[];
 }
 
 export interface BundleBuilderInput {
@@ -358,6 +407,7 @@ async function allocateEverydayEssentials(params: {
   globalSpent: { cents: number };
   capCents: number;
   urlOrder: string[];
+  ledger: PurseSpendCap[] | null;
 }): Promise<void> {
   const {
     everydayBudgetMax,
@@ -370,6 +420,7 @@ async function allocateEverydayEssentials(params: {
     globalSpent,
     capCents,
     urlOrder,
+    ledger,
   } = params;
 
   let everydaySpent = 0;
@@ -398,16 +449,17 @@ async function allocateEverydayEssentials(params: {
     const currentQty = qtyByProduct.get(product.id) ?? 0;
     if (currentQty >= maxQty) continue;
 
-    const canAdd = Math.min(
+    const canAdd = qtyThatFits(
+      ledger,
+      product,
       maxQty - currentQty,
-      Math.floor(remaining / product.priceCents)
+      Math.min(remaining, everydayBudgetMax - everydaySpent)
     );
     if (canAdd < 1) continue;
 
     const qty = canAdd;
     const lineTotal = product.priceCents * qty;
-    if (globalSpent.cents + lineTotal <= capCents && everydaySpent + lineTotal <= everydayBudgetMax) {
-      globalSpent.cents += lineTotal;
+    if (everydaySpent + lineTotal <= everydayBudgetMax && commitSpend(ledger, product, lineTotal, globalSpent, capCents)) {
       everydaySpent += lineTotal;
       addOrMergeLine(
         items,
@@ -441,6 +493,7 @@ function fillRemainingBudget(params: {
   cadence: Cadence;
   urlOrder: string[];
   resolvedNeeds: NeedRow[];
+  ledger: PurseSpendCap[] | null;
 }): void {
   const {
     eligibleProducts,
@@ -455,6 +508,7 @@ function fillRemainingBudget(params: {
     cadence,
     urlOrder,
     resolvedNeeds,
+    ledger,
   } = params;
 
   const MIN_REMAINING_CENTS = 100; // stop when $1 or less remains
@@ -511,14 +565,11 @@ function fillRemainingBudget(params: {
     const maxQty = maxQtyForCadence(cadence, supplyDays);
     if (currentQty >= maxQty) continue;
 
-    const canAdd = Math.min(
-      maxQty - currentQty,
-      Math.floor(room() / product.priceCents)
-    );
+    const canAdd = qtyThatFits(ledger, product, maxQty - currentQty, room());
     if (canAdd < 1) continue;
 
     const lineTotal = product.priceCents * canAdd;
-    globalSpent.cents += lineTotal;
+    if (!commitSpend(ledger, product, lineTotal, globalSpent, capCents)) continue;
 
     // Find the need this product belongs to (for bundleSection)
     const existingItem = items.find((i) => i.productId === product.id);
@@ -545,11 +596,11 @@ function fillRemainingBudget(params: {
 
     const supplyDays = product.supplyDays ?? 30;
     const maxQty = maxQtyForCadence(cadence, supplyDays);
-    const canAdd = Math.min(maxQty, Math.floor(room() / product.priceCents));
+    const canAdd = qtyThatFits(ledger, product, maxQty, room());
     if (canAdd < 1) continue;
 
     const lineTotal = product.priceCents * canAdd;
-    globalSpent.cents += lineTotal;
+    if (!commitSpend(ledger, product, lineTotal, globalSpent, capCents)) continue;
 
     // Tag products with affinity as belonging to the primary need
     const tags = (product.tags ?? []).map((t) => t.toLowerCase());
@@ -586,6 +637,7 @@ async function allocateSingleNeed(params: {
   capCents: number;
   urlOrder: string[];
   includeEverydaySlot: boolean;
+  ledger: PurseSpendCap[] | null;
 }): Promise<void> {
   const {
     need,
@@ -602,6 +654,7 @@ async function allocateSingleNeed(params: {
     capCents,
     urlOrder,
     includeEverydaySlot,
+    ledger,
   } = params;
 
   const tierNum = need.priorityTier as BundleNeedTier;
@@ -667,11 +720,10 @@ async function allocateSingleNeed(params: {
       const maxQty = maxQtyForCadence(cadence, supplyDays);
       const rm = roomNeed();
       if (rm <= 0) break;
-      const qty = Math.min(maxQty, Math.floor(rm / product.priceCents) || 1);
+      const qty = qtyThatFits(ledger, product, maxQty, rm);
       if (qty < 1) continue;
       const lineTotal = product.priceCents * qty;
-      if (globalSpent.cents + lineTotal <= capCents && needSpent + lineTotal <= subNeedCap) {
-        globalSpent.cents += lineTotal;
+      if (needSpent + lineTotal <= subNeedCap && commitSpend(ledger, product, lineTotal, globalSpent, capCents)) {
         needSpent += lineTotal;
         addOrMergeLine(items, qtyByProduct, product, qty, "core", bundleSection, tierNum, urlOrder);
       }
@@ -706,12 +758,11 @@ async function allocateSingleNeed(params: {
     const maxQty = maxQtyForCadence(cadence, supplyDays);
     const currentQty = qtyByProduct.get(product.id) ?? 0;
     if (currentQty >= maxQty) continue;
-    const canAdd = Math.min(maxQty - currentQty, Math.floor(rm / product.priceCents));
+    const canAdd = qtyThatFits(ledger, product, maxQty - currentQty, rm);
     if (canAdd < 1) continue;
     const qty = canAdd;
     const lineTotal = product.priceCents * qty;
-    if (globalSpent.cents + lineTotal <= capCents && needSpent + lineTotal <= subNeedCap) {
-      globalSpent.cents += lineTotal;
+    if (needSpent + lineTotal <= subNeedCap && commitSpend(ledger, product, lineTotal, globalSpent, capCents)) {
       needSpent += lineTotal;
       addOrMergeLine(items, qtyByProduct, product, qty, "support", bundleSection, tierNum, urlOrder);
     }
@@ -740,12 +791,11 @@ async function allocateSingleNeed(params: {
     const maxQty = maxQtyForCadence(cadence, supplyDays);
     const currentQty = qtyByProduct.get(product.id) ?? 0;
     if (currentQty >= maxQty) continue;
-    const canAdd = Math.min(maxQty - currentQty, Math.floor(rm / product.priceCents));
+    const canAdd = qtyThatFits(ledger, product, maxQty - currentQty, rm);
     if (canAdd < 1) continue;
     const qty = canAdd;
     const lineTotal = product.priceCents * qty;
-    if (globalSpent.cents + lineTotal <= capCents && needSpent + lineTotal <= subNeedCap) {
-      globalSpent.cents += lineTotal;
+    if (needSpent + lineTotal <= subNeedCap && commitSpend(ledger, product, lineTotal, globalSpent, capCents)) {
       needSpent += lineTotal;
       addOrMergeLine(items, qtyByProduct, product, qty, "maintenance", bundleSection, tierNum, urlOrder);
     }
@@ -795,7 +845,17 @@ async function buildQualifierContext(eligibleProducts: EligibleProduct[], qualif
  */
 export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBundle[]> {
   const bufferCents = input.bufferCents ?? DEFAULT_BUFFER_CENTS;
-  const capCents = Math.max(0, input.budgetCents - bufferCents);
+  const planConfig = getPlanConfig();
+  const memberBudget = planConfig.memberHome ? shoppableBudgetFromPlan(planConfig) : null;
+  const ledger: PurseSpendCap[] | null = memberBudget
+    ? scalePurseCaps(memberBudget.shoppablePurses, input.budgetCents).map((p) => ({
+        ...p,
+        spentCents: 0,
+      }))
+    : null;
+  const capCents = ledger
+    ? ledger.reduce((sum, p) => sum + p.capCents, 0)
+    : Math.max(0, input.budgetCents - bufferCents);
   const usageIntensity: UsageIntensity = input.usageIntensity ?? "daily";
 
   const urlOrder = normalizeNeedSlugInput(input);
@@ -859,6 +919,7 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
       isEverydayEssential: p.isEverydayEssential,
     }))
     .filter((p) => {
+      if ((p.tags ?? []).includes("exclude-from-bundles")) return false;
       if (!p.productClassId) return true;
       const flags = flagsByClassId.get(p.productClassId);
       return !isExcludedFromRecommendations(flags);
@@ -918,8 +979,7 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
       const qty = Math.min(maxQty, 1); // Start with 1 for durables
       const lineTotal = product.priceCents * qty;
       
-      if (globalSpent.cents + lineTotal <= capCents) {
-        globalSpent.cents += lineTotal;
+      if (commitSpend(ledger, product, lineTotal, globalSpent, capCents)) {
         addOrMergeLine(
           items,
           qtyByProduct,
@@ -948,6 +1008,7 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
       globalSpent,
       capCents,
       urlOrder,
+      ledger,
     });
   } else if (resolvedNeeds.length > 0) {
     const everydayReserve =
@@ -981,6 +1042,7 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
           capCents,
           urlOrder,
           includeEverydaySlot: includeSlot,
+          ledger,
         });
       }
     }
@@ -998,6 +1060,7 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
         globalSpent,
         capCents,
         urlOrder,
+        ledger,
       });
     }
 
@@ -1015,6 +1078,7 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
       cadence: input.cadence,
       urlOrder,
       resolvedNeeds,
+      ledger,
     });
   }
 
@@ -1040,6 +1104,9 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
       sumSectionCents(items, "core") + sumSectionCents(items, "support"),
     maintenanceSubtotalCents: sumSectionCents(items, "maintenance"),
     items,
+    purseAllocation: ledger
+      ?.filter((p) => p.spentCents > 0)
+      .map((p) => ({ id: p.id, label: p.label, cents: p.spentCents })),
     budgetUtilizationPercent: 0,
     sufficiency: {
       targetDays: input.cadence === "monthly" ? 30 : 90,

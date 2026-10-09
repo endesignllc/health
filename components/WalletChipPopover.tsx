@@ -5,6 +5,8 @@ import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
 import type { BenefitWalletSnapshot, PurseSnapshot } from "@/lib/benefit-wallet/types";
 import type { PlanConfig } from "@/lib/plan-config/types";
+import { joinPurseLabels, shoppableBudgetFromPlan } from "@/lib/shoppable-budget";
+import { currentBenefitPeriod, expiryPresentation } from "@/lib/benefit-period";
 
 interface WalletChipPopoverProps {
   wallet: BenefitWalletSnapshot;
@@ -39,8 +41,21 @@ export function WalletChipPopover({ wallet, planConfig, className }: WalletChipP
   const popoverRef = useRef<HTMLDivElement>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const daysLeft = wallet.expiresInDays;
-  const expiresOn = planConfig.wallet.expiresOn;
+  const shoppable = shoppableBudgetFromPlan(planConfig);
+  const infoOnlyNote =
+    shoppable.infoOnlyCents > 0
+      ? `Your ${joinPurseLabels(shoppable.infoOnlyLabels)} dollars (${formatPrice(shoppable.infoOnlyCents)}) are used at participating stores.`
+      : null;
+  const livePeriod = planConfig.defaultCadence === "monthly" ? currentBenefitPeriod() : null;
+  const expiry = livePeriod ? expiryPresentation(livePeriod) : null;
+  const daysLeft = livePeriod?.daysRemaining ?? wallet.expiresInDays;
+  const chipText =
+    expiry?.chipText ??
+    (daysLeft != null && daysLeft <= 14
+      ? daysLeft <= 0
+        ? "· today"
+        : `· ${daysLeft} day${daysLeft === 1 ? "" : "s"} left`
+      : null);
   const periodLabel = getPeriodLabel(wallet);
 
   // Check for mobile on mount and resize
@@ -161,7 +176,7 @@ export function WalletChipPopover({ wallet, planConfig, className }: WalletChipP
         `}
         aria-haspopup="dialog"
         aria-expanded={isOpen}
-        aria-label={`${formatPrice(Math.max(0, wallet.availableCents))} available${daysLeft != null ? `, ${daysLeft} days left` : ""}. Open wallet details.`}
+        aria-label={`${formatPrice(Math.max(0, wallet.availableCents))} available${chipText ? `, ${chipText.replace(/^· /, "")}` : ""}. Open wallet details.`}
       >
         {/* Wallet icon */}
         <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" className="flex-none">
@@ -171,9 +186,9 @@ export function WalletChipPopover({ wallet, planConfig, className }: WalletChipP
         <span className="font-bold tabular-nums">
           {formatPrice(Math.max(0, wallet.availableCents))}
         </span>
-        {daysLeft != null && (
+        {chipText && (
           <span className="font-normal opacity-85 text-sm">
-            · {daysLeft} day{daysLeft !== 1 ? "s" : ""} left
+            {chipText}
           </span>
         )}
         {/* Chevron */}
@@ -221,9 +236,9 @@ export function WalletChipPopover({ wallet, planConfig, className }: WalletChipP
                   {" "}left of {formatPrice(wallet.allowanceCents)}
                 </span>
               </p>
-              {expiresOn && (
-                <p className="text-sm text-[#8F5600] mt-1">
-                  Expires {expiresOn}
+              {expiry && (
+                <p className={`text-sm mt-1 ${expiry.amber ? "text-[#8F5600]" : "text-[#5C6762]"} ${expiry.emphasize ? "font-extrabold" : "font-medium"}`}>
+                  {expiry.pillText}
                 </p>
               )}
             </div>
@@ -269,14 +284,27 @@ export function WalletChipPopover({ wallet, planConfig, className }: WalletChipP
               })}
             </div>
 
+            {infoOnlyNote && (
+              <p className="mt-4 text-base text-muted-foreground leading-snug">{infoOnlyNote}</p>
+            )}
+            {shoppable.wizardExcludedCents > 0 && (
+              <p className="mt-4 text-base text-muted-foreground leading-snug">
+                Your Food dollars ({formatPrice(shoppable.wizardExcludedCents)}) are spent in{" "}
+                <Link href="/products?category=healthy-food" onClick={handleAction} className="font-semibold underline">
+                  Shop Products → Healthy food
+                </Link>
+                .
+              </p>
+            )}
+
             {/* Actions */}
             <div className="mt-5 flex flex-col items-center gap-3">
               <Link
-                href="/build"
+                href={`/build?budget=${shoppable.shoppableCents}`}
                 onClick={handleAction}
                 className="w-full inline-flex items-center justify-center min-h-[44px] px-4 py-2 rounded-lg bg-[#1C3D5F] text-white text-base font-semibold hover:bg-[#234a70] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1C3D5F] focus:ring-offset-2"
               >
-                Put my {formatPrice(wallet.availableCents)} to work
+                Put my {formatPrice(shoppable.shoppableCents)} to work
               </Link>
               <Link
                 href="/"

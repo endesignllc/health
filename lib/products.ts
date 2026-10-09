@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { products, productCategories, productClasses, needs } from "@/db/schema";
-import { eq, and, ilike, or, asc, count, notInArray, isNotNull, sql, inArray } from "drizzle-orm";
+import { eq, and, ilike, or, asc, count, notInArray, inArray } from "drizzle-orm";
 
 /** Deprecated needs rows may remain for historical FKs — excluded from the build wizard */
 const EXCLUDED_BUILD_WIZARD_SLUGS = [
@@ -143,14 +143,15 @@ export async function getEligibleProducts() {
 }
 
 /**
- * Get home safety products with verified images for member home goals section.
- * Prioritizes products with images from home-safety product classes.
+ * Member-home goals widget. Returns the given SKUs in that order.
+ * Active, eligible, and a real image are required. Missing SKUs are skipped.
  */
-export async function getHomeSafetyProducts(limit: number = 3) {
-  // Get products from classes with home_safety benefit rail
+export async function getGoalProducts(skus: string[]) {
+  if (skus.length === 0) return [];
   const results = await db
     .select({
       id: products.id,
+      sku: products.sku,
       name: products.name,
       imageUrl: products.imageUrl,
       priceCents: products.priceCents,
@@ -167,20 +168,14 @@ export async function getHomeSafetyProducts(limit: number = 3) {
       and(
         eq(products.active, true),
         eq(products.eligible, true),
-        isNotNull(products.imageUrl),
-        // Products in classes with home_safety rail
-        sql`${productClasses.benefitRails} && ARRAY['home_safety']::text[]`
+        inArray(products.sku, skus)
       )
-    )
-    .orderBy(sql`random()`)
-    .limit(limit * 3); // Get more and filter for best images
+    );
 
-  // Filter to only those with fieldtex images (verified)
-  const withImages = results.filter(
-    (p) => p.imageUrl && !p.imageUrl.includes("placeholder")
-  );
-
-  return withImages.slice(0, limit);
+  const order = new Map(skus.map((sku, index) => [sku, index]));
+  return results
+    .filter((product) => product.imageUrl && !product.imageUrl.includes("placeholder"))
+    .sort((a, b) => (order.get(a.sku) ?? 0) - (order.get(b.sku) ?? 0));
 }
 
 export function formatPrice(cents: number): string {

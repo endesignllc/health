@@ -6,7 +6,8 @@ import type { PlanConfig } from "../types";
  * 
  * Reference: $300/month SSBCI combined purse, no rollover, Medline fulfillment
  * 
- * Demo state: $300 total, $116 used, $184 remaining — matches mockup exactly
+ * Demo state: three purses, $270 allowance, $98 used, $172 remaining.
+ * Food is in the catalog. The bundle wizard still spends OTC + home safety only.
  */
 export const laurelCompleteCare: PlanConfig = {
   slug: "laurel-complete-care",
@@ -50,27 +51,16 @@ export const laurelCompleteCare: PlanConfig = {
         allowanceCents: 5000,
         usedCents: 2200,
         cadence: "monthly",
-        what: "Groceries at participating stores",
+        what: "Groceries in Shop Products",
         color: "#A14FB5",
-        infoOnly: true,
-      },
-      {
-        id: "utilities",
-        label: "Utilities",
-        allowanceCents: 3000,
-        usedCents: 1800,
-        cadence: "monthly",
-        what: "Help with electric, gas, or water bills",
-        color: "#B45309",
-        infoOnly: true,
+        excludeFromWizard: true,
+        catalogPath: "/products?category=healthy-food",
       },
     ],
-    expiresInDays: 9,
-    expiresOn: "Fri, Oct 31",
     periodLabel: "October",
     hideDemoBadge: true,
   },
-  // Total $300/month across purses (150 + 70 + 50 + 30)
+  // Total $270/month across purses (150 + 70 + 50)
   budgetTiers: [10000, 15000, 20000, 25000, 30000],
   defaultCadence: "monthly",
   needDisplayNames: {
@@ -91,4 +81,6 @@ export const laurelCompleteCare: PlanConfig = {
     shipsOn: "Friday",
     amountCents: 7600,
   },
+  // Bathroom / fall-prevention wins. Images verified on disk. Order is the widget order.
+  goalSkus: ["FTX-10007", "FTX-10744", "FTX-10832"],
 };

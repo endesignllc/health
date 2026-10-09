@@ -154,7 +154,7 @@ export function tagsToEligibility(tags: string[]): BenefitBadgeType[] {
   for (const tag of tags) {
     if (tag === "eligibility:otc") badges.push("otc");
     if (tag === "eligibility:home_safety") badges.push("home_safety");
-    if (tag === "eligibility:zero_cost" || tag === "eligibility:dme_zero") badges.push("dme_zero");
+    if (tag === "eligibility:zero_cost") badges.push("dme_zero");
     if (tag === "eligibility:food") badges.push("food");
     if (tag === "eligibility:utilities") badges.push("utilities");
   }

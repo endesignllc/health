@@ -16,7 +16,7 @@ const GenerateSchema = z.object({
   needSlug: z.string().optional(),
   needSlugs: z.array(z.string()).optional(),
   includeEveryday: z.boolean().optional(),
-  budgetCents: z.number().int().min(2500).max(500_000),
+  budgetCents: z.number().int().min(2000).max(500_000),
   cadence: z.enum(["monthly", "quarterly"]),
   goals: z.array(z.string()).optional().default([]),
   usageIntensity: z.enum(["daily", "occasional"]).optional().default("daily"),

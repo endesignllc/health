@@ -2,15 +2,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getPlanConfig } from "@/lib/plan-config";
 import { LaurelMemberHome } from "@/components/LaurelMemberHome";
-import { getHomeSafetyProducts } from "@/lib/products";
+import { getGoalProducts } from "@/lib/products";
 
 export default async function HomePage() {
   const planConfig = getPlanConfig();
 
   // Laurel member home
   if (planConfig.memberHome) {
-    // Get products for goals section (home safety with images)
-    const goalProducts = await getHomeSafetyProducts(3);
+    const goalProducts = await getGoalProducts(planConfig.goalSkus ?? []);
     return <LaurelMemberHome planConfig={planConfig} goalProducts={goalProducts} />;
   }
 

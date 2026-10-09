@@ -18,7 +18,7 @@ interface PageProps {
   }>;
 }
 
-const BUNDLE_PAGE_BUDGET_MIN_CENTS = 2500;
+const BUNDLE_PAGE_BUDGET_MIN_CENTS = 2000;
 const BUNDLE_PAGE_BUDGET_MAX_CENTS = 500_000;
 
 export default async function BundlesPage({ searchParams }: PageProps) {

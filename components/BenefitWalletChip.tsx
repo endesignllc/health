@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cn, formatPrice } from "@/lib/utils";
 import type { BenefitCadence, BenefitWalletSnapshot } from "@/lib/benefit-wallet/types";
+import { expiryTier } from "@/lib/benefit-period";
 
 function cadenceShort(cadence: BenefitCadence): string {
   if (cadence === "monthly") return "month";
@@ -20,6 +21,13 @@ export function BenefitWalletChip({ wallet, className, variant = "default" }: Be
   const isOver = wallet.availableCents < 0;
   const isLow = !isOver && wallet.allowanceCents > 0 && wallet.availableCents / wallet.allowanceCents < 0.1;
   const daysLeft = wallet.expiresInDays;
+  const showDayCount = daysLeft != null && expiryTier(daysLeft) !== "quiet";
+  const chipText =
+    !showDayCount || daysLeft == null
+      ? null
+      : daysLeft <= 0
+        ? "· today"
+        : `· ${daysLeft} day${daysLeft === 1 ? "" : "s"} left`;
 
   // Navy pill variant (Laurel style per mockup)
   if (variant === "pill") {
@@ -31,7 +39,7 @@ export function BenefitWalletChip({ wallet, className, variant = "default" }: Be
           "bg-[#1C3D5F] text-white hover:bg-[#234a70] transition-colors",
           className
         )}
-        aria-label={`${formatPrice(Math.max(0, wallet.availableCents))} available${daysLeft != null ? `, ${daysLeft} days left` : ""}`}
+        aria-label={`${formatPrice(Math.max(0, wallet.availableCents))} available${chipText ? `, ${chipText.replace(/^· /, "")}` : ""}`}
       >
         {/* Wallet icon */}
         <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" className="flex-none">
@@ -41,9 +49,9 @@ export function BenefitWalletChip({ wallet, className, variant = "default" }: Be
         <span className="font-bold tabular-nums">
           {formatPrice(Math.max(0, wallet.availableCents))}
         </span>
-        {daysLeft != null && (
+        {chipText && (
           <span className="font-normal opacity-85 text-sm">
-            · {daysLeft} day{daysLeft !== 1 ? "s" : ""} left
+            {chipText}
           </span>
         )}
       </Link>

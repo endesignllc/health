@@ -5,8 +5,9 @@
  * 
  * Derivation logic:
  * 1. Get product's class benefit_rails (the universal eligibility layer)
- * 2. Intersect with active plan config's purse ids + dme_zero (the plan layer)
- * 3. Apply per-product tag overrides (e.g., eligibility:zero_cost on specific SKUs)
+ * 2. Intersect with active plan config's purse ids (the plan layer)
+ * 3. "$0 with your plan" comes only from the eligibility:zero_cost tag.
+ *    The dme_zero class rail is a future per-plan flag and does not render a badge.
  * 4. Products without class rails → no badges (never a fallback)
  */
 
@@ -16,7 +17,7 @@ import type { PlanConfig } from "@/lib/plan-config/types";
 export type BenefitBadgeType =
   | "otc"
   | "home_safety"
-  | "dme_zero"      // renders as "$0 with your plan"
+  | "dme_zero"      // "$0 with your plan" — eligibility:zero_cost tag only
   | "food"
   | "utilities"
   | "vision"
@@ -28,7 +29,6 @@ export type BenefitBadgeType =
 const RAIL_TO_BADGE: Record<string, BenefitBadgeType> = {
   otc: "otc",
   home_safety: "home_safety",
-  dme_zero: "dme_zero",
   food: "food",
   utilities: "utilities",
   vision: "vision",
@@ -41,7 +41,6 @@ const TAG_TO_BADGE: Record<string, BenefitBadgeType> = {
   "eligibility:otc": "otc",
   "eligibility:home_safety": "home_safety",
   "eligibility:zero_cost": "dme_zero",
-  "eligibility:dme_zero": "dme_zero",
   "eligibility:food": "food",
   "eligibility:utilities": "utilities",
   "eligibility:vision": "vision",
@@ -67,25 +66,17 @@ export interface BadgeDerivationResult {
 }
 
 /**
- * Get plan-active rails from config
- * Includes purse IDs + always includes dme_zero (it's a special $0-with-plan state)
+ * Purse ids on this plan. dme_zero is not a display rail.
  */
 function getActivePlanRails(planConfig: PlanConfig): Set<string> {
   const activeRails = new Set<string>();
   
-  // Add purse IDs as active rails
   for (const purse of planConfig.wallet.purses) {
-    // Normalize purse ID to rail ID
-    // e.g., "otc-allowance" → "otc", "home-safety" → "home_safety"
     const railId = purse.id
       .replace("-allowance", "")
       .replace(/-/g, "_");
     activeRails.add(railId);
   }
-  
-  // dme_zero is always active if any purse covers DME items
-  // (it represents $0-copay items that the plan pays in full)
-  activeRails.add("dme_zero");
   
   return activeRails;
 }
@@ -110,8 +101,10 @@ export function deriveBenefitBadges(
   const classRails = product.productClass?.benefitRails ?? [];
   isDualPurpose = product.productClass?.dualPurpose ?? false;
   
-  // 2. Intersect class rails with plan's active rails
+  // 2. Intersect class rails with plan's active purses.
+  // dme_zero stays on the class for a future plan flag. It does not paint a badge.
   for (const rail of classRails) {
+    if (rail === "dme_zero") continue;
     if (activeRails.has(rail)) {
       const badge = RAIL_TO_BADGE[rail];
       if (badge && !badges.includes(badge)) {
@@ -161,9 +154,10 @@ export function deriveBenefitBadges(
 export function getAllProductBadges(product: ProductForBadging): BenefitBadgeType[] {
   const badges: BenefitBadgeType[] = [];
   
-  // Get class rails
+  // Get class rails. dme_zero does not render.
   const classRails = product.productClass?.benefitRails ?? [];
   for (const rail of classRails) {
+    if (rail === "dme_zero") continue;
     const badge = RAIL_TO_BADGE[rail];
     if (badge && !badges.includes(badge)) {
       badges.push(badge);

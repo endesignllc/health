@@ -222,6 +222,10 @@ export const products = pgTable("products", {
   /** Typical units consumed per day when not derived from supplyDays (e.g. 2 pads/day). */
   estimatedDailyUse: integer("estimated_daily_use"),
   vendor: text("vendor"), // e.g. medline, walmart — fulfillment / sourcing
+  /** Programs that list this product: memorial-hermann, h5608, ccp, fieldtex, solutran, ucare, walmart, medline-base. */
+  sources: text("sources").array(),
+  /** Distinct programs on this row. >= 3 marks a typical plan product. */
+  catalogCount: integer("catalog_count").default(1).notNull(),
   /** Peer substitute SKUs for substitution / marination (same class). */
   alternateSkus: text("alternate_skus").array(),
   eligible: boolean("eligible").default(true).notNull(),

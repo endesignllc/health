@@ -1,6 +1,7 @@
 "use client";
 
 import type { BenefitWalletSnapshot, PurseSnapshot } from "@/lib/benefit-wallet/types";
+import { expiryTier } from "@/lib/benefit-period";
 import { cn, formatPrice } from "@/lib/utils";
 
 interface MultiPurseWalletProps {
@@ -75,9 +76,11 @@ export function MultiPurseWallet({ wallet, className }: MultiPurseWalletProps) {
             {wallet.periodLabel && (
               <p className="text-xs text-muted-foreground mt-0.5">
                 {wallet.periodLabel}
-                {wallet.expiresInDays != null && wallet.expiresInDays > 0 && (
+                {wallet.expiresInDays != null && expiryTier(wallet.expiresInDays) !== "quiet" && (
                   <span className="ml-1.5 text-amber-600 font-medium">
-                    · {wallet.expiresInDays} days left
+                    {wallet.expiresInDays <= 0
+                      ? "· today"
+                      : `· ${wallet.expiresInDays} day${wallet.expiresInDays === 1 ? "" : "s"} left`}
                   </span>
                 )}
               </p>

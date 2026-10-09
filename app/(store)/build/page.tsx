@@ -4,8 +4,13 @@ import { BenefitWalletCard } from "@/components/BenefitWalletCard";
 import { resolveBenefitWallet } from "@/lib/benefit-wallet/resolve";
 import { getBenefitWalletCapabilityConfig } from "@/lib/benefit-wallet/config";
 import { getPlanConfig, getNeedDisplayName, isNeedVisibleInWizard } from "@/lib/plan-config";
+import { shoppableBudgetFromPlan } from "@/lib/shoppable-budget";
 
 export const dynamic = "force-dynamic";
+
+interface PageProps {
+  searchParams: Promise<{ budget?: string }>;
+}
 
 const BUDGET_OPTIONS = [
   { value: 2500, label: "$25" },
@@ -15,8 +20,11 @@ const BUDGET_OPTIONS = [
   { value: 30000, label: "$300" },
 ];
 
-export default async function BuildPage() {
+export default async function BuildPage({ searchParams }: PageProps) {
+  const params = await searchParams;
   const planConfig = getPlanConfig();
+  const memberBudget = planConfig.memberHome ? shoppableBudgetFromPlan(planConfig) : null;
+  const requestedBudget = Number.parseInt(params.budget ?? "", 10);
   const needsList = await getBuildWizardNeeds();
   
   // Apply plan-specific need display names and filtering
@@ -30,7 +38,7 @@ export default async function BuildPage() {
 
   const walletConfig = getBenefitWalletCapabilityConfig();
   const staticWallet =
-    walletConfig.enabled && walletConfig.mode === "static"
+    !memberBudget && walletConfig.enabled && walletConfig.mode === "static"
       ? await resolveBenefitWallet({ sessionSpendCents: 0 })
       : null;
 
@@ -38,7 +46,9 @@ export default async function BuildPage() {
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
       <h1 className="text-3xl font-bold mb-2">Build Your Bundle</h1>
       <p className="text-muted-foreground mb-8">
-        {staticWallet
+        {memberBudget
+          ? "Tell us what you're trying to accomplish—we build one bundle from the benefit dollars you can spend here. We never ask for a diagnosis."
+          : staticWallet
           ? "Your benefit allowance is shown below. Pick your needs—we build one optimized bundle per period. We never ask for a diagnosis."
           : "Tell us your benefit budget and needs—we build one optimized bundle per period. We never ask for a diagnosis."}
       </p>
@@ -57,6 +67,8 @@ export default async function BuildPage() {
               }
             : undefined
         }
+        memberBudget={memberBudget ?? undefined}
+        initialBudgetCents={Number.isFinite(requestedBudget) ? requestedBudget : undefined}
       />
     </div>
   );

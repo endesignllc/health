@@ -4,6 +4,7 @@ import { computeBenefitWalletSnapshot } from "./compute";
 import type { BenefitCadence, BenefitWalletSnapshot } from "./types";
 import type { PlanConfig } from "@/lib/plan-config/types";
 import { getPlanConfig, getTotalAllowanceCents } from "@/lib/plan-config";
+import { currentBenefitPeriod } from "@/lib/benefit-period";
 
 function cadenceFromCart(raw: string | null | undefined): BenefitCadence | null {
   if (raw === "monthly" || raw === "quarterly" || raw === "yearly") return raw;
@@ -81,6 +82,8 @@ export async function resolveBenefitWallet(
       cadence: p.cadence,
     }));
 
+    const livePeriod = defaultCadence === "monthly" ? currentBenefitPeriod() : null;
+
     return computeBenefitWalletSnapshot({
       enabled: true,
       mode: "plan",
@@ -91,10 +94,10 @@ export async function resolveBenefitWallet(
       cadence: defaultCadence,
       priorUsedCents: totalPriorUsed,
       cartSubtotalCents: sessionSpendCents,
-      periodLabel: walletConfig.periodLabel ?? defaultPeriodLabel(defaultCadence),
+      periodLabel: livePeriod?.periodLabel ?? walletConfig.periodLabel ?? defaultPeriodLabel(defaultCadence),
       showDemoBadge: !walletConfig.hideDemoBadge,
       purses: purseInputs,
-      expiresInDays: walletConfig.expiresInDays,
+      expiresInDays: livePeriod?.daysRemaining ?? walletConfig.expiresInDays,
     });
   }
 

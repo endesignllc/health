@@ -28,6 +28,8 @@ async function main() {
       unitsPerPackage: products.unitsPerPackage,
       estimatedDailyUse: products.estimatedDailyUse,
       vendor: products.vendor,
+      sources: products.sources,
+      catalogCount: products.catalogCount,
       alternateSkus: products.alternateSkus,
       eligible: products.eligible,
       tags: products.tags,
@@ -84,6 +86,7 @@ async function main() {
       needs: [...allNeeds].join("|"),
       sourceSection: (code && sectionMap[code]) || "",
       tags: (r.tags ?? []).join("|"),
+      sources: (r.sources ?? []).join("|"),
       alternateSkus: (r.alternateSkus ?? []).join("|"),
     };
   });

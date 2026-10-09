@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn, formatPrice } from "@/lib/utils";
 import type { BenefitWalletSnapshot } from "@/lib/benefit-wallet/types";
 import type { PlanConfig } from "@/lib/plan-config/types";
+import { currentBenefitPeriod, expiryPresentation } from "@/lib/benefit-period";
 
 interface WalletExpiryBannerProps {
   wallet: BenefitWalletSnapshot;
@@ -22,15 +22,14 @@ interface WalletExpiryBannerProps {
  */
 export function WalletExpiryBanner({ wallet, className, variant = "default", planConfig }: WalletExpiryBannerProps) {
   const [dismissed, setDismissed] = useState(false);
-  const pathname = usePathname();
 
-  // For member home, hide banner on home page (wallet is already shown there)
-  if (planConfig?.memberHome && pathname === "/") {
-    return null;
-  }
+  const period = planConfig?.defaultCadence === "monthly" ? currentBenefitPeriod() : null;
+  const expiry = period ? expiryPresentation(period) : null;
+  const daysLeft = period?.daysRemaining ?? wallet.expiresInDays;
+  const showBanner = expiry ? expiry.showBanner : daysLeft != null && daysLeft <= 14;
 
-  // Only show if we have expiry info and days remaining
-  if (dismissed || wallet.expiresInDays == null || wallet.expiresInDays > 14) {
+  // Quiet when more than 14 days remain. The count lives in the date utility.
+  if (dismissed || !showBanner || daysLeft == null) {
     return null;
   }
 
@@ -39,8 +38,9 @@ export function WalletExpiryBanner({ wallet, className, variant = "default", pla
     return null;
   }
 
-  const isUrgent = wallet.expiresInDays <= 3;
-  const periodName = wallet.periodLabel?.split(" ")[0] ?? "Your"; // "October" from "October 2026"
+  const isUrgent = daysLeft <= 3;
+  const periodName = period?.periodLabel ?? wallet.periodLabel?.split(" ")[0] ?? "Your";
+  const bannerLead = expiry?.bannerLead ?? `Your ${periodName} benefit expires in ${daysLeft} day${daysLeft === 1 ? "" : "s"}.`;
 
   // Calm variant (Laurel style per mockup) — never red, never urgent
   if (variant === "calm") {
@@ -67,8 +67,8 @@ export function WalletExpiryBanner({ wallet, className, variant = "default", pla
           </svg>
 
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-[15px]">
-              Your {periodName} benefit expires in {wallet.expiresInDays} day{wallet.expiresInDays !== 1 ? "s" : ""}.
+            <p className={expiry?.emphasize ? "font-extrabold text-[15px]" : "font-semibold text-[15px]"}>
+              {bannerLead}
             </p>
             <p className="text-[15px] mt-0.5 opacity-90">
               You have{" "}
@@ -111,11 +111,13 @@ export function WalletExpiryBanner({ wallet, className, variant = "default", pla
 
   // Default variant
   const daysText =
-    wallet.expiresInDays === 0
+    daysLeft <= 0
       ? "expires today"
-      : wallet.expiresInDays === 1
-        ? "expires tomorrow"
-        : `expires in ${wallet.expiresInDays} days`;
+      : expiry?.tier === "urgent"
+        ? `expires this ${period?.weekdayName ?? "week"}`
+        : daysLeft === 1
+          ? "expires tomorrow"
+          : `expires in ${daysLeft} days`;
 
   return (
     <div
