@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCart } from "@/lib/cart";
 import { SiteLogo } from "@/components/SiteLogo";
 import { BenefitWalletChip } from "@/components/BenefitWalletChip";
+import { WalletChipPopover } from "@/components/WalletChipPopover";
 import { resolveBenefitWallet } from "@/lib/benefit-wallet/resolve";
 import type { PlanConfig } from "@/lib/plan-config/types";
 
@@ -73,7 +74,11 @@ export default async function Header({ planConfig }: HeaderProps) {
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
-            {wallet && <BenefitWalletChip wallet={wallet} variant={planConfig.walletChipVariant} />}
+            {wallet && planConfig.walletChipVariant === "pill" ? (
+              <WalletChipPopover wallet={wallet} planConfig={planConfig} />
+            ) : wallet ? (
+              <BenefitWalletChip wallet={wallet} variant={planConfig.walletChipVariant} />
+            ) : null}
             <Link
               href="/cart"
               className="hidden md:inline-flex relative items-center gap-2 min-h-[44px] px-4 rounded-md text-base font-semibold text-primary hover:bg-accent transition-colors"
