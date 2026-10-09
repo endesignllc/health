@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { extractVariantListingAttribute } from "@/lib/variant-label";
 import { InteractionFlagNotice } from "@/components/InteractionFlagNotice";
-import { EligibilityBadges, categoryToEligibility } from "@/components/EligibilityBadge";
+import { EligibilityBadges } from "@/components/EligibilityBadge";
+import { deriveBenefitBadges } from "@/lib/benefit-badges";
+import { getPlanConfig } from "@/lib/plan-config";
 
 export default async function ProductDetailPage({
   params,
@@ -18,6 +20,9 @@ export default async function ProductDetailPage({
 
   const product = await getProductById(id);
   if (!product || !product.active) notFound();
+
+  const planConfig = getPlanConfig();
+  const { badges, isDualPurpose } = deriveBenefitBadges(product, planConfig);
 
   const related = await listProducts({
     categorySlug: product.category?.slug ?? "",
@@ -79,11 +84,14 @@ export default async function ProductDetailPage({
             <Badge variant="secondary">
               {product.category?.name ?? "Uncategorized"}
             </Badge>
-            <EligibilityBadges
-              types={categoryToEligibility(product.category?.slug ?? "")}
-            />
+            <EligibilityBadges types={badges} maxBadges={3} />
           </div>
           <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+          {isDualPurpose && (
+            <p className="text-sm text-amber-700 bg-amber-50 px-3 py-2 rounded-md mb-4">
+              💡 This product may require a recommendation from your healthcare provider on some plans.
+            </p>
+          )}
           {heroVariantDetail ? (
             <p className="text-sm text-muted-foreground mb-4">{heroVariantDetail}</p>
           ) : null}
@@ -123,6 +131,7 @@ export default async function ProductDetailPage({
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.map((p) => {
               const variantDetail = extractVariantListingAttribute(p.name, p.description);
+              const { badges: relatedBadges } = deriveBenefitBadges(p, planConfig);
               return (
               <Link key={p.id} href={`/products/${p.id}`}>
                 <div className="border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
@@ -150,7 +159,8 @@ export default async function ProductDetailPage({
                     )}
                   </div>
                   <div className="p-3">
-                    <p className="font-medium line-clamp-2 text-sm">{p.name}</p>
+                    <EligibilityBadges types={relatedBadges} maxBadges={2} compact />
+                    <p className="font-medium line-clamp-2 text-sm mt-1">{p.name}</p>
                     {variantDetail ? (
                       <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{variantDetail}</p>
                     ) : null}

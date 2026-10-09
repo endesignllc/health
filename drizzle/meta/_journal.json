@@ -43,6 +43,13 @@
       "when": 1780019646213,
       "tag": "0005_orange_ghost_rider",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791508706482,
+      "tag": "0006_parched_wind_dancer",
+      "breakpoints": true
     }
   ]
 }

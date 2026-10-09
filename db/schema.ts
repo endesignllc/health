@@ -37,6 +37,12 @@ export const productClasses = pgTable("product_classes", {
   needId: uuid("need_id").references(() => needs.id, { onDelete: "set null" }),
   /** Clinical interaction flags — non-empty means exclude from auto-recommendations */
   interactionFlags: text("interaction_flags").array(),
+  /** Benefit rails this class is eligible for: otc, home_safety, dme_zero, food, utilities, vision, hearing, dental */
+  benefitRails: text("benefit_rails").array(),
+  /** True for DUAL classes (vitamins/supplements) — triggers "talk with your provider" microcopy */
+  dualPurpose: boolean("dual_purpose").default(false),
+  /** Member-facing label (shelf language) */
+  memberLabel: text("member_label"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

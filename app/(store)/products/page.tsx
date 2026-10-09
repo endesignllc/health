@@ -4,7 +4,8 @@ import { formatPrice } from "@/lib/utils";
 import { ProductsSearchForm } from "./ProductsSearchForm";
 import { Card, CardContent } from "@/components/ui/card";
 import { extractVariantListingAttribute } from "@/lib/variant-label";
-import { EligibilityBadges, getEligibilityBadges } from "@/components/EligibilityBadge";
+import { EligibilityBadges } from "@/components/EligibilityBadge";
+import { deriveBenefitBadges } from "@/lib/benefit-badges";
 import { ProductImagePlaceholder } from "@/components/ProductImagePlaceholder";
 import { getPlanConfig } from "@/lib/plan-config";
 
@@ -67,7 +68,8 @@ export default async function ProductsPage({ searchParams }: PageProps) {
           <div className="grid gap-5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}>
             {productList.map((product) => {
               const variantDetail = extractVariantListingAttribute(product.name, product.description);
-              const eligibilityTypes = getEligibilityBadges(product.tags, product.category?.slug ?? "");
+              // Derive badges from class benefit_rails intersected with plan purses
+              const { badges } = deriveBenefitBadges(product, planConfig);
               // Extract quantity limit from tags
               const limitTag = product.tags?.find((t: string) => t.startsWith("limit:"));
               const quantityLimit = limitTag ? limitTag.replace("limit:", "") : null;
@@ -89,7 +91,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                   </div>
                   <CardContent className="p-4 flex flex-col gap-2">
                     {/* Badge row: eligibility badges, max 2 + overflow */}
-                    <EligibilityBadges types={eligibilityTypes.slice(0, 2)} compact />
+                    <EligibilityBadges types={badges} maxBadges={2} compact />
                     
                     {/* Name: 2-line clamp, 17px semibold */}
                     <h2 className="font-semibold text-[17px] leading-snug line-clamp-2">

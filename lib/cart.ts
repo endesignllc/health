@@ -62,6 +62,13 @@ export interface CartItemWithProduct {
     label: string;
     priceCents: number;
   }[];
+  /** Product tags for badge derivation overrides */
+  productTags: string[] | null;
+  /** Product class with benefit rails for badge derivation */
+  productClass: {
+    benefitRails: string[] | null;
+    dualPurpose: boolean | null;
+  } | null;
 }
 
 export interface CartWithItems {
@@ -114,6 +121,13 @@ export async function getCart(): Promise<CartWithItems | null> {
       requiresOptionSelection: false,
       familyKey: null,
       familyOptions: [],
+      productTags: i.product!.tags,
+      productClass: i.product!.productClass
+        ? {
+            benefitRails: i.product!.productClass.benefitRails,
+            dualPurpose: i.product!.productClass.dualPurpose,
+          }
+        : null,
     }));
 
   const familyNames = [...new Set(baseItems.map((i) => i.productName))];

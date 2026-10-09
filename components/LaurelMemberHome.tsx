@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
 import type { PlanConfig, PurseDef } from "@/lib/plan-config/types";
+import { EligibilityBadges } from "@/components/EligibilityBadge";
+import { deriveBenefitBadges } from "@/lib/benefit-badges";
 
 interface LaurelMemberHomeProps {
   planConfig: PlanConfig;
@@ -9,6 +11,11 @@ interface LaurelMemberHomeProps {
     name: string;
     imageUrl: string | null;
     priceCents: number;
+    tags?: string[] | null;
+    productClass?: {
+      benefitRails: string[] | null;
+      dualPurpose: boolean | null;
+    } | null;
   }>;
 }
 
@@ -203,28 +210,34 @@ export function LaurelMemberHome({ planConfig, goalProducts = [] }: LaurelMember
           </div>
           <h2 className="text-xl font-bold mt-1 mb-4">Three easy wins for your bathroom</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            {goalProducts.slice(0, 3).map((product) => (
-              <Link 
-                key={product.id} 
-                href={`/products/${product.id}`}
-                className="bg-[#EDF2EE] border border-[#DDE3DE] rounded-xl p-3.5 flex flex-col gap-2.5 hover:shadow-md hover:-translate-y-0.5 transition-all"
-              >
-                <div className="h-[84px] rounded-lg bg-white border border-dashed border-[#DDE3DE] flex items-center justify-center overflow-hidden">
-                  {product.imageUrl ? (
-                    <img src={product.imageUrl} alt="" className="w-full h-full object-contain p-1" />
-                  ) : (
-                    <svg className="w-10 h-10 text-muted-foreground" viewBox="0 0 48 48" aria-hidden="true">
-                      <path d="M10 38L38 10" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
-                      <path d="M7 31l10 10M31 7l10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
-                    </svg>
-                  )}
-                </div>
-                <span className="font-bold text-[15.5px] leading-snug line-clamp-2">{product.name}</span>
-                <span className="inline-flex self-start px-2.5 py-0.5 rounded-full text-xs font-bold text-white bg-[#0D9470]">
-                  Home Safety · {formatPrice(product.priceCents)}
-                </span>
-              </Link>
-            ))}
+            {goalProducts.slice(0, 3).map((product) => {
+              const { badges } = deriveBenefitBadges(product, planConfig);
+              return (
+                <Link 
+                  key={product.id} 
+                  href={`/products/${product.id}`}
+                  className="bg-[#EDF2EE] border border-[#DDE3DE] rounded-xl p-3.5 flex flex-col gap-2.5 hover:shadow-md hover:-translate-y-0.5 transition-all"
+                >
+                  <div className="h-[84px] rounded-lg bg-white border border-dashed border-[#DDE3DE] flex items-center justify-center overflow-hidden">
+                    {product.imageUrl ? (
+                      <img src={product.imageUrl} alt="" className="w-full h-full object-contain p-1" />
+                    ) : (
+                      <svg className="w-10 h-10 text-muted-foreground" viewBox="0 0 48 48" aria-hidden="true">
+                        <path d="M10 38L38 10" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
+                        <path d="M7 31l10 10M31 7l10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                      </svg>
+                    )}
+                  </div>
+                  <span className="font-bold text-[15.5px] leading-snug line-clamp-2">{product.name}</span>
+                  <div className="flex items-center gap-2">
+                    <EligibilityBadges types={badges} maxBadges={2} compact />
+                    <span className="text-sm font-semibold text-primary tabular-nums">
+                      {formatPrice(product.priceCents)}
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
       )}

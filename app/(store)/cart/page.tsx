@@ -6,6 +6,8 @@ import { CartItemActions } from "./CartItemActions";
 import { CheckoutSection } from "./CheckoutSection";
 import { CartOptionFlow } from "./CartOptionFlow";
 import { InteractionFlagNotice } from "@/components/InteractionFlagNotice";
+import { EligibilityBadges } from "@/components/EligibilityBadge";
+import { deriveBenefitBadges } from "@/lib/benefit-badges";
 import { getPlanConfig } from "@/lib/plan-config";
 
 export default async function CartPage() {
@@ -68,50 +70,65 @@ export default async function CartPage() {
                     if (aNeeds === bNeeds) return 0;
                     return aNeeds ? -1 : 1;
                   })
-                  .map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex gap-4 p-4 items-center"
-                  >
-                    <div className="w-16 h-16 bg-muted rounded flex-shrink-0 flex items-center justify-center">
-                      <svg
-                        className="w-8 h-8 text-muted-foreground"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                        />
-                      </svg>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium">{item.productName}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {formatPrice(item.lineTotalCents / item.quantity)} × {item.quantity}
-                      </p>
-                      {item.requiresOptionSelection && (
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {item.optionSelectionConfirmed
-                            ? `Options selected: ${item.optionSelectionLabel ?? "Selected"}`
-                            : "Select options"}
+                  .map((item) => {
+                    const { badges } = deriveBenefitBadges(
+                      { productClass: item.productClass, tags: item.productTags },
+                      planConfig
+                    );
+                    return (
+                    <div
+                      key={item.id}
+                      className="flex gap-4 p-4 items-center"
+                    >
+                      <div className="w-16 h-16 bg-muted rounded flex-shrink-0 flex items-center justify-center overflow-hidden">
+                        {item.productImageUrl ? (
+                          <img
+                            src={item.productImageUrl}
+                            alt={item.productName}
+                            className="w-full h-full object-contain"
+                          />
+                        ) : (
+                          <svg
+                            className="w-8 h-8 text-muted-foreground"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={1.5}
+                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <EligibilityBadges types={badges} maxBadges={2} compact />
+                        <p className="font-medium mt-1">{item.productName}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {formatPrice(item.lineTotalCents / item.quantity)} × {item.quantity}
                         </p>
-                      )}
-                      <InteractionFlagNotice flags={item.interactionFlags} />
-                      <CartItemActions
-                        cartItemId={item.id}
-                        quantity={item.quantity}
-                        productId={item.productId}
-                      />
+                        {item.requiresOptionSelection && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {item.optionSelectionConfirmed
+                              ? `Options selected: ${item.optionSelectionLabel ?? "Selected"}`
+                              : "Select options"}
+                          </p>
+                        )}
+                        <InteractionFlagNotice flags={item.interactionFlags} />
+                        <CartItemActions
+                          cartItemId={item.id}
+                          quantity={item.quantity}
+                          productId={item.productId}
+                        />
+                      </div>
+                      <div className="text-right flex-shrink-0 font-semibold">
+                        {formatPrice(item.lineTotalCents)}
+                      </div>
                     </div>
-                    <div className="text-right flex-shrink-0 font-semibold">
-                      {formatPrice(item.lineTotalCents)}
-                    </div>
-                  </div>
-                ))}
+                  );
+                  })}
               </div>
             </div>
           ))}

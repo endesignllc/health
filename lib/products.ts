@@ -1,6 +1,6 @@
 import { db } from "./db";
-import { products, productCategories, needs } from "@/db/schema";
-import { eq, and, ilike, or, asc, count, notInArray, isNotNull, sql } from "drizzle-orm";
+import { products, productCategories, productClasses, needs } from "@/db/schema";
+import { eq, and, ilike, or, asc, count, notInArray, isNotNull, sql, inArray } from "drizzle-orm";
 
 /** Deprecated needs rows may remain for historical FKs — excluded from the build wizard */
 const EXCLUDED_BUILD_WIZARD_SLUGS = [
@@ -96,25 +96,40 @@ export async function listProducts(options: ListProductsOptions = {}) {
     db.select({ count: count() }).from(products).where(whereClause),
   ]);
 
-  const categoryIds = [...new Set(list.map((p) => p.categoryId))];
+  // Fetch categories
+  const categoryIds = [...new Set(list.map((p) => p.categoryId).filter(Boolean))] as string[];
   const categories =
     categoryIds.length > 0
       ? await db
           .select()
           .from(productCategories)
-          .where(
-            (categoryIds.length === 1
-              ? eq(productCategories.id, categoryIds[0]!)
-              : or(...categoryIds.map((id) => eq(productCategories.id, id))))!
-          )
+          .where(inArray(productCategories.id, categoryIds))
       : [];
-
   const catMap = Object.fromEntries(categories.map((c) => [c.id, c]));
+
+  // Fetch product classes with benefit rails
+  const classIds = [...new Set(list.map((p) => p.productClassId).filter(Boolean))] as string[];
+  const classes =
+    classIds.length > 0
+      ? await db
+          .select({
+            id: productClasses.id,
+            slug: productClasses.slug,
+            canonicalName: productClasses.canonicalName,
+            benefitRails: productClasses.benefitRails,
+            dualPurpose: productClasses.dualPurpose,
+            memberLabel: productClasses.memberLabel,
+          })
+          .from(productClasses)
+          .where(inArray(productClasses.id, classIds))
+      : [];
+  const classMap = Object.fromEntries(classes.map((c) => [c.id, c]));
 
   return {
     products: list.map((p) => ({
       ...p,
       category: catMap[p.categoryId] ?? null,
+      productClass: p.productClassId ? classMap[p.productClassId] ?? null : null,
     })),
     total: Number(totalResult[0]?.count ?? 0),
   };
@@ -132,25 +147,29 @@ export async function getEligibleProducts() {
  * Prioritizes products with images from home-safety product classes.
  */
 export async function getHomeSafetyProducts(limit: number = 3) {
-  // Get products tagged with home_safety eligibility that have images
+  // Get products from classes with home_safety benefit rail
   const results = await db
     .select({
       id: products.id,
       name: products.name,
       imageUrl: products.imageUrl,
       priceCents: products.priceCents,
+      tags: products.tags,
+      productClassId: products.productClassId,
+      productClass: {
+        benefitRails: productClasses.benefitRails,
+        dualPurpose: productClasses.dualPurpose,
+      },
     })
     .from(products)
+    .leftJoin(productClasses, eq(products.productClassId, productClasses.id))
     .where(
       and(
         eq(products.active, true),
         eq(products.eligible, true),
         isNotNull(products.imageUrl),
-        // Products with home_safety tag or in home-safety classes
-        or(
-          sql`${products.tags} && ARRAY['eligibility:home_safety']::text[]`,
-          isNotNull(products.productClassId)
-        )
+        // Products in classes with home_safety rail
+        sql`${productClasses.benefitRails} && ARRAY['home_safety']::text[]`
       )
     )
     .orderBy(sql`random()`)

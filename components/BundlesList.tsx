@@ -10,7 +10,9 @@ import type { QualifierAnswer } from "@/lib/qualifiers";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { QualifierPanel } from "@/components/QualifierPanel";
 import { extractVariantListingAttribute } from "@/lib/variant-label";
-import { EligibilityBadges, categoryToEligibility } from "@/components/EligibilityBadge";
+import { EligibilityBadges } from "@/components/EligibilityBadge";
+import { deriveBenefitBadges } from "@/lib/benefit-badges";
+import { getPlanConfig } from "@/lib/plan-config";
 
 type BundleItemSection = "core" | "support" | "maintenance";
 
@@ -21,6 +23,11 @@ type BundleLine = {
   productDescription: string | null;
   productImageUrl: string | null;
   productClassId: string | null;
+  productClass: {
+    benefitRails: string[] | null;
+    dualPurpose: boolean | null;
+  } | null;
+  productTags: string[] | null;
   categoryId: string;
   categorySlug: string;
   priceCents: number;
@@ -305,6 +312,12 @@ export function BundlesList({
                         const shouldRenderPanel =
                           Boolean(classId) && !seenClassIds.has(classId as string);
                         if (classId) seenClassIds.add(classId);
+                        // Derive badges from class benefit rails
+                        const planConfig = getPlanConfig();
+                        const { badges } = deriveBenefitBadges(
+                          { productClass: item.productClass, tags: item.productTags },
+                          planConfig
+                        );
                         return (
                           <li
                             key={`${bundleSectionSlug}-${item.section}-${item.productId}`}
@@ -318,7 +331,8 @@ export function BundlesList({
                                     {item.quantity > 1 && `×${item.quantity}`}
                                   </span>
                                   <EligibilityBadges
-                                    types={categoryToEligibility(item.categorySlug)}
+                                    types={badges}
+                                    maxBadges={2}
                                     compact
                                     className="shrink-0"
                                   />

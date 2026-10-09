@@ -56,6 +56,13 @@ export interface BundleItem {
   productDescription: string | null;
   productImageUrl: string | null;
   productClassId: string | null;
+  /** Product class with benefit rails for badge derivation */
+  productClass: {
+    benefitRails: string[] | null;
+    dualPurpose: boolean | null;
+  } | null;
+  /** Product tags for badge override */
+  productTags: string[] | null;
   categoryId: string;
   categorySlug: string;
   priceCents: number;
@@ -117,6 +124,10 @@ type EligibleProduct = {
   description: string | null;
   imageUrl: string | null;
   productClassId: string | null;
+  productClass: {
+    benefitRails: string[] | null;
+    dualPurpose: boolean | null;
+  } | null;
   categoryId: string;
   category: { slug: string } | null;
   priceCents: number;
@@ -235,6 +246,8 @@ function addOrMergeLine(
       productDescription: product.description,
       productImageUrl: product.imageUrl,
       productClassId: product.productClassId,
+      productClass: product.productClass,
+      productTags: product.tags,
       categoryId: product.categoryId,
       categorySlug: product.category?.slug ?? "",
       priceCents: product.priceCents,
@@ -811,7 +824,7 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
 
   const eligibleProductsRaw = await db.query.products.findMany({
     where: and(eq(products.active, true), eq(products.eligible, true)),
-    with: { category: true },
+    with: { category: true, productClass: true },
   });
 
   const classFlagRows = await db
@@ -832,6 +845,12 @@ export async function buildBundles(input: BundleBuilderInput): Promise<BuiltBund
       description: p.description ?? null,
       imageUrl: p.imageUrl,
       productClassId: p.productClassId,
+      productClass: p.productClass
+        ? {
+            benefitRails: p.productClass.benefitRails,
+            dualPurpose: p.productClass.dualPurpose,
+          }
+        : null,
       categoryId: p.categoryId,
       category: p.category,
       priceCents: p.priceCents,
