@@ -1,0 +1,97 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Frame 1 — Your Plan Pays</title>
+<style>
+/* 1920x1080 video frame — capture at 100% zoom */
+:root{
+  --bg:#F4F6F3; --surface:#FFF; --ink:#1E2A33; --muted:#53636C; --line:#DDE3DE;
+  --brand:#1C3D5F; --good:#1F7A4D; --good-tint:#E6F2EB; --warn-tint:#FBF0DC; --warn:#8F5600;
+  --otc:#2B6CB0; --hs:#0D9470;
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{width:1920px;height:1080px;background:var(--bg);color:var(--ink);
+  font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-size:22px;line-height:1.45;
+  display:flex;align-items:center;justify-content:center;}
+.frame{width:1560px}
+.eyebrow{font-size:17px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:54px;margin:0 0 8px;letter-spacing:-.5px}
+h1 b{color:var(--brand)}
+.sub{color:var(--muted);font-size:24px;margin:0 0 36px}
+.cols{display:flex;gap:28px;align-items:stretch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:30px 34px}
+.receipt{flex:1.5}
+.row{display:grid;grid-template-columns:1fr auto auto;gap:8px 20px;padding:15px 0;border-bottom:1px solid var(--line);align-items:center}
+.row .name{font-weight:700}
+.row .meta{grid-column:1;font-size:17px;color:var(--muted)}
+.chip{font-size:15px;font-weight:700;color:#fff;border-radius:999px;padding:4px 13px;justify-self:start}
+.chip.otc{background:var(--otc)} .chip.hs{background:var(--hs)} .chip.zero{background:var(--good)}
+.amt{font-variant-numeric:tabular-nums;font-weight:700;font-size:23px;text-align:right}
+.amt small{display:block;font-weight:400;font-size:15px;color:var(--muted)}
+.strike{text-decoration:line-through;color:var(--muted);font-weight:400}
+.totals{flex:1;display:flex;flex-direction:column;gap:18px}
+.pursepay{display:flex;justify-content:space-between;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line)}
+.pursepay .left small{display:block;font-size:16px;color:var(--muted)}
+.dot{display:inline-block;width:13px;height:13px;border-radius:4px;margin-right:9px;vertical-align:baseline}
+.youpay{background:var(--good-tint);border:none;text-align:center;padding:30px}
+.youpay .label{font-size:19px;letter-spacing:1.5px;text-transform:uppercase;color:var(--good);font-weight:700}
+.youpay .zero{font-family:Georgia,serif;font-size:76px;color:var(--good);font-variant-numeric:tabular-nums;line-height:1.1}
+.after{background:var(--surface);border:1px solid var(--line)}
+.after .bar{display:flex;height:16px;border-radius:8px;overflow:hidden;gap:2px;margin:14px 0 10px}
+.after .bar span{display:block}
+.legend{display:flex;gap:26px;font-size:16px;color:var(--muted)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px}
+footer{margin-top:26px;font-size:16px;color:var(--muted)}
+</style></head><body>
+<div class="frame">
+  <div class="eyebrow">Laurel Complete Care · Margaret's October order · Concept</div>
+  <h1>Her plan pays <b>$105.25</b> of this order. Here's how.</h1>
+  <p class="sub">Every item routed to the benefit that pays best — automatically, before checkout.</p>
+
+  <div class="cols">
+    <div class="card receipt">
+      <div class="row">
+        <span class="name">Overnight bladder protection, 39 ct · Size M <span style="color:var(--muted);font-weight:400">(saved size)</span></span>
+        <span class="chip otc">Everyday health &amp; OTC</span><span class="amt">$42.00</span>
+      </div>
+      <div class="row">
+        <span class="name">Protective skin barrier cream, 3 oz</span>
+        <span class="chip otc">Everyday health &amp; OTC</span><span class="amt">$8.50</span>
+      </div>
+      <div class="row">
+        <span class="name">Suction grab bar, 16"</span>
+        <span class="chip hs">Home &amp; bathroom safety</span><span class="amt">$24.00</span>
+      </div>
+      <div class="row">
+        <span class="name">Motion night light, 2-pack</span>
+        <span class="chip hs">Home &amp; bathroom safety</span><span class="amt">$12.00</span>
+      </div>
+      <div class="row" style="border-bottom:none">
+        <span class="name">Compression stockings, 20–30 mmHg · Size M <span style="color:var(--muted);font-weight:400">(saved size)</span></span>
+        <span class="chip zero">$0 with your plan</span>
+        <span class="amt"><span class="strike">$18.75</span> $0.00<small>covered separately — didn't touch her $300</small></span>
+      </div>
+    </div>
+
+    <div class="totals">
+      <div class="card">
+        <div class="pursepay"><span class="left"><span class="dot" style="background:var(--otc)"></span><b>Everyday health &amp; OTC</b><small>pays $50.50 · $41.50 remains</small></span><span class="amt">$50.50</span></div>
+        <div class="pursepay"><span class="left"><span class="dot" style="background:var(--hs)"></span><b>Home &amp; bathroom safety</b><small>pays $36.00 · $16.00 remains</small></span><span class="amt">$36.00</span></div>
+        <div class="pursepay" style="border-bottom:none"><span class="left"><span class="dot" style="background:var(--good)"></span><b>Plan coverage ($0 items)</b><small>value delivered outside the allowance</small></span><span class="amt">$18.75</span></div>
+      </div>
+      <div class="card youpay">
+        <div class="label">Margaret pays</div>
+        <div class="zero">$0.00</div>
+      </div>
+      <div class="card after">
+        <b>Her October benefit after this order: $97.50 left</b> · still expires Oct 31
+        <div class="bar">
+          <span style="background:var(--line);flex-basis:38.7%"></span>
+          <span style="background:var(--warn);opacity:.8;flex-basis:28.8%"></span>
+          <span style="background:var(--otc);flex-basis:32.5%;border-radius:0 8px 8px 0"></span>
+        </div>
+        <div class="legend"><span><i style="background:var(--line)"></i>used earlier · $116.00</span><span><i style="background:var(--warn);opacity:.8"></i>this order · $86.50</span><span><i style="background:var(--otc)"></i>still available · $97.50</span></div>
+      </div>
+    </div>
+  </div>
+  <footer>Concept screen — benefit routing shown here ships in the integration phase. Laurel Complete Care is a fictional plan; figures are illustrative.</footer>
+</div>
+</body></html>
