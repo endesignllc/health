@@ -139,7 +139,7 @@ async function main() {
     category: category?.slug ?? null,
     bundleChanged,
     bundlesRestored: JSON.stringify(beforeBundles) === JSON.stringify(restored),
-    aliasCount: (aliasCount as { rows: { n: number }[] }).rows[0]?.n ?? 0,
+    aliasCount: Number((aliasCount.rows[0] as { n?: unknown } | undefined)?.n ?? 0),
     products: updated,
   }, null, 2));
 }
